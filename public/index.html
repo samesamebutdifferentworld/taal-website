@@ -336,7 +336,7 @@ footer .links { display:flex; gap:20px; }
   .builder { grid-template-columns:minmax(0,1fr); gap:12px; }
   .reel { gap:20px; }
   .reel-stage { order:-1; aspect-ratio:auto; padding:36px 0; }
-  .reel-phone { height:auto; width:min(62%, 250px); }
+  .reel-phone { height:auto; width:min(58%, 230px); }
   .calc-box summary { flex-wrap:wrap; padding:22px 24px; }
   .calc-box summary small { width:100%; order:3; }
   .calc { padding:32px 24px; gap:36px; }
@@ -380,7 +380,7 @@ footer .links { display:flex; gap:20px; }
   nav .btn { padding:9px 14px; font-size:14px; }
   .how h2 { margin-bottom:36px; }
   .faq-all > summary small { display:none; }
-  .reel-stage { padding:28px 0; }
+  .reel-stage { padding:24px 0; }
   .step-card { padding:24px; }
   .demo { padding:96px 0; }
   .demo-cta .btn { justify-self:stretch; }
@@ -850,9 +850,23 @@ const CONTACT_EMAIL = 'EMAIL';
     i = (n + tabs.length) % tabs.length;
     tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i); t.tabIndex = k === i ? 0 : -1; const bar = t.querySelector('.bar i'); bar.style.animation = 'none'; bar.offsetWidth; bar.style.animation = ''; });
     imgs.forEach((im, k) => { im.classList.toggle('on', k === i); im.classList.toggle('past', k < i); });
+    shuffle();
     stage.style.setProperty('--gx', glow[i][0]); stage.style.setProperty('--gy', glow[i][1]);
     if (user) reel.classList.remove('auto-off');
   }
+  // On a phone the screen and the captions stack, so the caption being shown moves up to sit right under the screen.
+  const narrow = matchMedia('(max-width: 960px)');
+  function shuffle() {
+    const before = tabs.map(t => t.getBoundingClientRect().top);
+    tabs.forEach((t, k) => { t.style.order = narrow.matches ? (k === i ? -1 : k) : ''; });
+    if (still || !narrow.matches) return;
+    tabs.forEach((t, k) => {
+      const dy = before[k] - t.getBoundingClientRect().top;
+      if (!dy) return;
+      t.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.7,.2,1)' });
+    });
+  }
+  narrow.addEventListener('change', shuffle);
   if (still) reel.style.setProperty('--dur', '0s'), tabs.forEach(t => t.querySelector('.bar').hidden = true);
   tabs.forEach((t, k) => {
     t.addEventListener('click', () => go(k, true));
