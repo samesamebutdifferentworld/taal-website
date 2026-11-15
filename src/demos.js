@@ -37,9 +37,10 @@ async function build(request, env, url) {
   if (get('website')) return json({ error: 'Please try again.' }, 400);
 
   const lead = {
-    name: text(get('name'), 80, 'your name'),
+    // Only the email is required; everything else has a sensible default.
+    name: get('name').slice(0, 80),
     email: email(get('email')),
-    studio: text(get('studio'), 60, 'your studio name'),
+    studio: get('studio').slice(0, 60) || 'Your studio',
     kind: KINDS[get('kind')] ? get('kind') : 'fitness',
     colour: hex(get('colour')) || '#135855',
     accent: hex(get('accent')) || '#D8BF8C',
@@ -110,7 +111,7 @@ async function build(request, env, url) {
     to: lead.email,
     subject: `Your ${made.name} demo is ready`,
     replyTo: env.CONTACT_EMAIL,
-    ...readyEmail({ first: lead.name.split(' ')[0], studio: made.name, ...links, until, contact: env.CONTACT_EMAIL }),
+    ...readyEmail({ first: lead.name ? lead.name.split(' ')[0] : 'there', studio: made.name, ...links, until, contact: env.CONTACT_EMAIL }),
   });
   await notify(env, `New demo: ${made.name}`, [
     ['Name', lead.name], ['Email', lead.email], ['Studio', made.name], ['Type', KINDS[lead.kind]],
@@ -218,11 +219,6 @@ function fail(status, error) { throw new Reply(json({ error }, status)); }
 
 function json(b, status = 200) {
   return new Response(JSON.stringify(b), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
-}
-
-function text(v, max, label) {
-  if (!v) fail(400, `Add ${label}.`);
-  return v.slice(0, max);
 }
 
 function email(v) {

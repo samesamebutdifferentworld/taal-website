@@ -75,11 +75,18 @@ test('without a call link, the demo points back to the call section of the page'
 });
 
 test('missing details and bad files are refused before anything is built', async () => {
-  assert.equal((await build({ studio: '' })).status, 400);
   assert.equal((await build({ email: 'nope' })).status, 400);
   assert.equal((await build({ logo: new File(['x'], 'a.gif', { type: 'image/gif' }) })).status, 400);
   assert.equal((await build({ website: 'spam.test' })).status, 400);
   assert.equal(built.length, 0);
+});
+
+test('only the email is required', async () => {
+  const res = await build({ studio: '', name: '' });
+  assert.equal(res.status, 200);
+  assert.equal(built.at(-1).name, 'Your studio');
+  assert.ok(sent.some((m) => /Hi there/.test(JSON.stringify(m))));
+  built.length = 0; sent.length = 0;
 });
 
 test('odd values fall back to safe ones', async () => {
