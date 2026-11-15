@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Taal: your own booking app, in your brand</title>
-<meta name="description" content="Bookings, memberships, payments and the back office for gyms and wellness studios, in your own brand. £900 to set up, then about £60 a month, with no per-member fees.">
+<meta name="description" content="Bookings, memberships, payments and the back office for gyms and wellness studios, in your own brand. Pay once to set it up, from £1,900, then it runs for about £1 a day. No monthly fee to us.">
 <meta property="og:title" content="Taal: your own booking app, in your brand">
-<meta property="og:description" content="Bookings, memberships, payments and the back office for gyms and wellness studios. £900 to set up, then about £60 a month.">
+<meta property="og:description" content="Bookings, memberships, payments and the back office for gyms and wellness studios. Pay once, own it, and it runs for about £1 a day.">
 <meta name="theme-color" content="#0F5C57">
 <link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Crect x='5' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='10.5' y='4' width='3' height='16' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='16' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
@@ -187,6 +187,9 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .pricing .intro { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-bottom:48px; }
 .pricing h2 { font-size:clamp(34px, 4.4vw, 56px); }
 .pricing .intro p { color:var(--mute); max-width:30em; }
+.pricing .intro > div, .pricing .intro .copy { display:grid; gap:10px; }
+.founding { font-size:15px; color:var(--green) !important; }
+.founding b { font-weight:700; }
 .builder { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:20px; align-items:stretch; }
 .opts { display:flex; flex-direction:column; gap:12px; }
 .opt { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:18px; align-items:center; background:#fff; border-radius:20px; padding:20px 22px; cursor:pointer; box-shadow:inset 0 0 0 1.5px transparent; transition:box-shadow .2s, opacity .2s; position:relative; }
@@ -200,6 +203,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 #tMonth { white-space:nowrap; }
 .opt-text b { display:block; font-family:'Funnel Display', sans-serif; font-size:19px; letter-spacing:-0.01em; margin-bottom:3px; }
 .opt-text span { color:var(--mute); font-size:15px; }
+.opt-text b span { color:inherit; font-size:inherit; }
 .opt-price { font-family:'Funnel Display', sans-serif; font-size:22px; font-weight:650; white-space:nowrap; }
 .opt input { position:absolute; opacity:0; width:1px; height:1px; }
 .sw { width:46px; height:28px; border-radius:999px; background:#C9D1CA; position:relative; transition:background .2s; flex-shrink:0; }
@@ -225,6 +229,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .incl summary { font-size:15px; font-weight:600; color:var(--green); justify-content:flex-start; gap:10px; }
 .incl summary::after { font-size:18px; }
 .incl p { font-size:15px; margin-top:8px; }
+.incl-list { margin:10px 0 0; padding-left:20px; font-size:15px; color:var(--mute); display:grid; gap:6px; max-width:52em; }
 
 /* calculator */
 .calc-box { margin-top:56px; background:var(--tint); border-radius:28px; border:0; padding:0; }
@@ -391,7 +396,7 @@ footer .links { display:flex; gap:20px; }
 <header class="hero" id="top"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">Try it before you switch.</span></h1>
-    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month. Build a working demo in your brand in a minute, before you pay anything.</p>
+    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. Pay once to set it up, from £1,900, then it runs for about £1 a day. Build a working demo in your brand in a minute, before you pay anything.</p>
   </div>
 
   <div class="try">
@@ -471,8 +476,8 @@ footer .links { display:flex; gap:20px; }
     </div>
     <div>
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A9C2B2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/><circle cx="9" cy="7" r="4"/></svg>
-      <h3>No per-member fees</h3>
-      <p>Grow from 50 <span data-t="people">members</span> to 2,000 and your monthly cost stays the same.</p>
+      <h3>Pay once, own it</h3>
+      <p>No monthly fee to us. It runs for about £1 a day, whether you have 50 <span data-t="people">members</span> or 2,000.</p>
     </div>
   </div>
 </div></section>
@@ -544,27 +549,35 @@ footer .links { display:flex; gap:20px; }
 
 <section class="pricing" id="pricing"><div class="wrap">
   <div class="intro">
-    <h2>Simple pricing</h2>
-    <p>Pay once to set up, then one flat monthly cost, however many members you have. These are launch prices.</p>
+    <h2>Pay once, own it</h2><div class="copy">
+    <p>Pay once and it's yours. After that it runs for about £1 a day, paid to the providers directly, with no monthly fee to us.</p>
+    <p class="founding"><b>Founding offer:</b> 30% off setup for our first three studios, in return for a short case study.</p></div>
   </div>
   <div class="builder">
     <div class="opts" role="group" aria-label="Choose what you need">
-      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, setup, member import and training.</span></span><span class="opt-price">£900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play, with push alerts. Released a few weeks after you go live.</span></span><span class="opt-price">+£900</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Full studio website</b><span>Your whole public website in your brand, not just the booking pages: home, about, team, hours and FAQs, with your live timetable and prices built in.</span></span><span class="opt-price">+£400</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
-      <div class="opt members-opt"><label for="members" class="opt-text"><b>Active <span data-t="people">members</span></b><span>The monthly fee stays the same up to 2,000 <span data-t="people">members</span>, then rises a little for email.</span></label><output id="membersOut" for="members" class="opt-price">150</output>
+      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, your members moved across, training and 12 months of updates.</span></span><span class="opt-price" id="pBase">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play in your studio's name, with push alerts. Released a few weeks after you go live.</span></span><span class="opt-price">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Full studio website</b><span>Your whole public website in your brand, not just the booking pages: home, about, team, hours and FAQs, with your live timetable and prices built in.</span></span><span class="opt-price">+£800</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
+      <div class="opt members-opt"><label for="members" class="opt-text"><b>Active <span data-t="people">members</span></b><span>Setup is £1,900 up to 2,000 <span data-t="people">members</span> and £2,900 from 2,000 to 10,000. Running costs rise a little for email above 2,000.</span></label><output id="membersOut" for="members" class="opt-price">150</output>
         <input type="range" id="members" min="25" max="10000" step="25" value="150" aria-describedby="membersOut"></div>
+      <label class="opt"><span class="opt-text"><b>Care plan, after the first year</b><span>Updates, fixes, app updates for Apple and Google, and support. Optional, paid yearly.</span></span><span class="opt-price">£360 a year</span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan after the first year"><i class="sw" aria-hidden="true"></i></label>
     </div>
     <div class="total" aria-live="polite">
-      <div class="t-row"><span class="t-label">Once, to set up</span><div class="t-price" id="tSetup">£2,200</div><span class="t-note">Half when you sign, half when you go live</span></div>
-      <div class="t-row"><span class="t-label">Then each month, 12-month minimum</span><div class="t-price" id="tMonth">£60</div><span class="t-note">£30 to us, about <span id="tRun">£30</span> for hosting and email, paid to the providers directly</span></div>
-      <div class="t-years"><span class="t-label">What that adds up to</span><span><b id="tY1">£2,920</b> in year one</span><span><b id="tLater">£720</b> a year after that</span></div>
+      <div class="t-row"><span class="t-label">Once, to set up</span><div class="t-price" id="tSetup">£2,200</div><span class="t-note">Paid in three parts: when you sign, when you get your test version and when you go live</span></div>
+      <div class="t-row"><span class="t-label">Then each month</span><div class="t-price" id="tMonth">£30</div><span class="t-note">For hosting and email, paid to the providers from your own accounts. No monthly fee to us.</span></div>
+      <div class="t-years"><span class="t-label">What that adds up to</span><span><b id="tY1">£2,920</b> in year one</span><span><b id="tLater">£360</b> a year after that<span id="tCare"></span></span></div>
       <a class="btn light to-demo" href="demo.html">Build your demo</a>
     </div>
   </div>
-  <p class="allin">The £60 is paid monthly. After the first 12 months you can stop it with 30 days' notice. Prices exclude VAT.</p>
-  <details class="incl"><summary>What's in the £60 a month?</summary>
-    <p>£30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to the hosting and email providers from your own accounts. That covers up to about 2,000 active members; above that we move your email to a bulk service, which adds about 60p a month per extra 100 members.</p></details>
+  <p class="allin">Setup includes 12 months of updates and support. After that the care plan is optional, and the system is yours either way. Prices exclude VAT.</p>
+  <details class="incl"><summary>What's included in setup?</summary>
+    <ul class="incl-list">
+      <li>Your hosting, email and app store accounts, set up in your studio's name and on your own billing</li>
+      <li>Your brand, timetable, prices and team, set up for you</li>
+      <li>Your members, memberships and credits moved across from your current system</li>
+      <li>Training for your team, including how to change prices, the timetable and emails yourself</li>
+      <li>12 months of updates, fixes and support, including app updates Apple and Google require</li>
+    </ul></details>
 
   <details class="calc-box" id="calculator"><summary><span>Work out your saving</span><small>Compare with what you pay now</small></summary>
   <div class="calc">
@@ -573,7 +586,7 @@ footer .links { display:flex; gap:20px; }
         <label for="current">What you pay for software now, each month</label>
         <div class="money"><span>£</span><input type="number" id="current" inputmode="decimal" min="0" step="5" value="200"></div>
       </div>
-      <p class="fine">Uses the options and member count you picked above.</p>
+      <p class="fine">Uses the options, member count and care plan you picked above.</p>
     </div>
     <div class="result" aria-live="polite">
       <div>
@@ -604,12 +617,14 @@ footer .links { display:flex; gap:20px; }
 <section class="faq" id="questions"><div class="wrap">
   <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across, data and apps</small></summary>
   <div class="faq-list">
-    <details><summary>What does the £60 a month include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to the hosting and email providers. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
-    <details><summary>Why do I pay for hosting and email directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that we move your email to a bulk service built for high volumes, which adds about 60p a month per extra 100 members: about £66 a month all in at 3,000 members, £78 at 5,000 and £108 at 10,000.</p></details>
+    <details><summary>What do we pay after setup?</summary><p>Only the running costs: about £30 a month for hosting and email, paid to the providers from your own accounts. That's about £1 a day. With your own apps, Apple also charges about £79 a year and Google $25 once. There's no monthly fee to us.</p></details>
+    <details><summary>How do we pay for setup?</summary><p>In three parts: a third when you sign, a third when we hand over your test version and the rest when you go live. Our first three studios get 30% off setup, in return for a short case study.</p></details>
+    <details><summary>Who sets up the accounts?</summary><p>We do, in your studio's name and on your own billing: hosting, email, payments and your Apple and Google developer accounts. Apple asks businesses for a D-U-N-S number, which is free, and we'll help you get one.</p></details>
+    <details><summary>Why do I pay for hosting and email directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that we move your email to a bulk service built for high volumes, which adds about 60p a month per extra 100 members: about £36 a month at 3,000 members, £48 at 5,000 and £78 at 10,000.</p></details>
     <details><summary>How long until we switch?</summary><p>You can build a working demo yourself in about a minute, and your full system is ready to test within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. And you can export or delete a member's data when they ask, as UK GDPR requires.</p></details>
-    <details><summary>What if we stop the monthly plan?</summary><p>The plan runs for at least 12 months from when you go live, then month to month with 30 days' notice. The software is licensed while the plan runs. If it stops, you get 30 days' grace, then the system becomes read-only: bookings and payments pause, but you can still sign in and export all your data.</p></details>
+    <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan at £360 a year, or ask us for updates when you need them. App updates that Apple or Google require are £150 each without the care plan.</p></details>
     <details><summary>What happens to our data if we leave?</summary><p>It's yours. It lives in your own accounts and you can export it any time. If you ever leave, it leaves with you.</p></details>
     <details><summary>Who owns the apps?</summary><p>You do. They're published under your own Apple and Google developer accounts, in your studio's name. Apple charges about £79 a year and Google $25 once.</p></details>
     <details><summary>What about card fees?</summary><p>Stripe charges its standard rates on each payment. We don't add anything on top.</p></details>
@@ -841,16 +856,22 @@ const CONTACT_EMAIL = 'EMAIL';
 (function () {
   const $ = id => document.getElementById(id);
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
-  function run() {
-    const m = +$('members').value, now = Math.max(0, +$('current').value || 0) * 12, apps = $('optApps').checked, site = $('optSite').checked;
+  // Setup by size, running costs paid to the providers, and the optional care plan from year two.
+  function costs() {
+    const m = +$('members').value;
+    const base = m > 2000 ? 2900 : 1900;
+    const setup = base + ($('optApps').checked ? 1000 : 0) + ($('optSite').checked ? 800 : 0);
     // Hosting and email: about £30 up to 2,000 active members, then about 60p a month per extra 100 (bulk email).
-    const running = 30 + Math.max(0, m - 2000) / 100 * 0.6;
-    const monthly = 30 + running, setup = 900 + (apps ? 900 : 0) + (site ? 400 : 0);
-    const y1 = setup + monthly * 12, later = monthly * 12, save = now - later, save1 = now - y1;
-    $('membersOut').textContent = m.toLocaleString('en-GB');
-    $('nowYr').textContent = gbp(now); $('y1').textContent = gbp(y1); $('later').textContent = gbp(later);
-    const max = Math.max(now, y1, 1);
-    $('barNow').style.width = (now / max * 100) + '%'; $('barY1').style.width = (y1 / max * 100) + '%'; $('barLater').style.width = (later / max * 100) + '%';
+    const running = Math.round(30 + Math.max(0, m - 2000) / 100 * 0.6);
+    const care = $('optCare').checked ? 360 : 0;
+    return { m, base, setup, running, care, y1: setup + running * 12, later: running * 12 + care };
+  }
+  function run() {
+    const c = costs(), now = Math.max(0, +$('current').value || 0) * 12;
+    const save = now - c.later, save1 = now - c.y1;
+    $('nowYr').textContent = gbp(now); $('y1').textContent = gbp(c.y1); $('later').textContent = gbp(c.later);
+    const max = Math.max(now, c.y1, 1);
+    $('barNow').style.width = (now / max * 100) + '%'; $('barY1').style.width = (c.y1 / max * 100) + '%'; $('barLater').style.width = (c.later / max * 100) + '%';
     const big = $('saveBig');
     if (save > 0) {
       big.className = 'big'; big.textContent = gbp(save) + ' a year';
@@ -859,22 +880,21 @@ const CONTACT_EMAIL = 'EMAIL';
       big.className = 'big neg'; big.textContent = 'About the same';
       $('saveSub').textContent = 'Taal costs ' + gbp(-save) + ' more a year than you pay now, with your own brand and data.';
     }
-    const pm = monthly / m * 100;
-    $('perMember').textContent = (pm < 100 ? "That's about " + Math.max(1, Math.round(pm)) + 'p' : "That's about " + gbp(pm / 100)) + ' per member a month, or about ' + gbp(monthly) + ' a month in total.' + (m > 2000 ? ' Includes extra email above 2,000 members.' : '');
+    const pm = c.running / c.m * 100;
+    $('perMember').textContent = 'Running costs are about ' + (pm < 100 ? Math.max(1, Math.round(pm)) + 'p' : gbp(pm / 100)) + ' per member a month, or about ' + gbp(c.running) + ' a month in total.' + (c.m > 2000 ? ' Includes extra email above 2,000 members.' : '');
   }
-  // The pricing switches: setup total, year one and later years (hosting at the 2,000-member rate).
   function price() {
-    const m = +$('members').value;
-    const running = Math.round(30 + Math.max(0, m - 2000) / 100 * 0.6), monthly = 30 + running;
-    const setup = 900 + ($('optApps').checked ? 900 : 0) + ($('optSite').checked ? 400 : 0);
-    $('tSetup').textContent = gbp(setup);
-    $('tMonth').innerHTML = (m > 2000 ? '<small>about</small>' : '') + gbp(monthly);
-    $('tRun').textContent = gbp(running);
-    $('tY1').textContent = gbp(setup + monthly * 12); $('tLater').textContent = gbp(monthly * 12);
+    const c = costs();
+    $('membersOut').textContent = c.m.toLocaleString('en-GB');
+    $('pBase').textContent = gbp(c.base);
+    $('tSetup').textContent = gbp(c.setup);
+    $('tMonth').innerHTML = '<small>about</small>' + gbp(c.running);
+    $('tY1').textContent = gbp(c.y1); $('tLater').textContent = gbp(c.later);
+    $('tCare').textContent = c.care ? ', with the care plan' : '';
   }
   $('current').addEventListener('input', run);
   $('members').addEventListener('input', () => { price(); run(); });
-  ['optApps','optSite'].forEach(id => $(id).addEventListener('change', () => { price(); run(); }));
+  ['optApps','optSite','optCare'].forEach(id => $(id).addEventListener('change', () => { price(); run(); }));
   price(); run();
   // Links to a closed section open it.
   function openFor(hash) { const d = document.querySelector(hash === '#calculator' ? '#calculator' : hash === '#questions' ? '.faq-all' : null); if (d) d.open = true; }
