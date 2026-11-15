@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build your demo: Taal</title>
+<meta name="description" content="Build a working demo of your own booking app, in your studio's brand, in about a minute.">
+<meta name="theme-color" content="#0F5C57">
+<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Crect x='5' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='10.5' y='4' width='3' height='16' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='16' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/funnel-sans.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family:'Funnel Display'; src:url('fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+@font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+:root { --paper:#F2F3EE; --ink:#13201E; --mute:#55625F; --rule:#D3DAD3; --green:#0F5C57; --deep:#0A3F3B; --sage:#A9C2B2; --tint:#E3E9E3; --err:#9B2C1F; --brand:#155E5A; --on-brand:#F4F1EA; }
+* { box-sizing:border-box; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:'Funnel Sans', system-ui, sans-serif; font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+a { color:var(--green); text-underline-offset:3px; }
+a:hover { color:var(--deep); }
+:focus-visible { outline:2px solid var(--green); outline-offset:3px; border-radius:6px; }
+h1, h2, h3, legend, .logo { font-family:'Funnel Display', 'Funnel Sans', system-ui, sans-serif; }
+h1, h2, h3 { margin:0; font-weight:650; line-height:1.04; letter-spacing:-0.02em; }
+p { margin:0; }
+.wrap { max-width:1160px; margin:0 auto; padding:0 28px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+[hidden] { display:none !important; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 24px; border-radius:999px; border:0; background:var(--ink); color:var(--paper); text-decoration:none; font:inherit; font-weight:600; font-size:16px; cursor:pointer; }
+.btn:hover { background:var(--green); color:var(--paper); }
+.btn.line { background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1.5px var(--ink); }
+.btn.line:hover { background:var(--ink); color:var(--paper); }
+.btn[disabled] { opacity:.65; cursor:wait; }
+
+/* nav */
+nav { position:sticky; top:0; z-index:10; background:rgba(242,243,238,.9); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--rule); }
+nav .wrap { display:flex; align-items:center; justify-content:space-between; height:66px; gap:20px; }
+.logo { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink); font-weight:650; font-size:24px; letter-spacing:-0.03em; }
+.logo:hover { color:var(--ink); }
+nav .links { display:flex; gap:24px; font-size:15px; }
+nav .links a { color:var(--ink); text-decoration:none; }
+nav .links a:hover { color:var(--green); }
+
+/* intro */
+.intro { padding:64px 0 36px; max-width:44em; }
+.intro h1 { font-size:clamp(44px, 6vw, 76px); }
+.intro .lede { margin-top:20px; font-size:20px; color:var(--mute); max-width:32em; }
+.intro .haven { margin-top:14px; font-size:16px; color:var(--mute); }
+
+/* the builder */
+.builder { display:grid; grid-template-columns:minmax(0,1fr) 340px; column-gap:64px; row-gap:20px; align-items:start; padding-bottom:110px; }
+.step { grid-column:1; border:0; margin:0; padding:28px 30px 30px; background:#fff; border-radius:28px; display:grid; gap:18px; min-width:0; }
+legend { float:left; width:100%; padding:0; font-size:24px; font-weight:650; letter-spacing:-0.02em; display:flex; align-items:center; gap:12px; }
+legend + * { clear:both; }
+legend .n { width:30px; height:30px; border-radius:50%; background:var(--tint); color:var(--green); display:grid; place-items:center; font-size:15px; font-weight:700; flex:none; }
+legend small { font-family:'Funnel Sans', system-ui, sans-serif; font-weight:400; font-size:15px; color:var(--mute); letter-spacing:0; }
+.field { display:grid; gap:8px; }
+.field > span, .field > label { font-weight:600; font-size:15px; }
+.field small { font-weight:400; color:var(--mute); font-size:14px; }
+input[type=text], input[type=email], textarea { font:inherit; font-size:16px; font-weight:400; padding:12px 14px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); width:100%; }
+input:focus, textarea:focus { border-color:var(--green); outline:none; }
+textarea { min-height:132px; resize:vertical; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.kinds { display:grid; grid-template-columns:repeat(4, 1fr); padding:4px; border-radius:999px; background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--rule); }
+.kinds button { font:inherit; font-size:15px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:10px 4px; cursor:pointer; transition:background .2s, color .2s; }
+.kinds button:hover { color:var(--ink); }
+.kinds button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
+
+.swatches { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+.swatches button { width:32px; height:32px; border-radius:50%; border:0; background:var(--c); cursor:pointer; box-shadow:0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / .08); }
+.swatches button[aria-pressed=true] { box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--ink); }
+.swatches .own { position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; background:conic-gradient(#e0533d, #e8b43a, #5aa85b, #3a86c8, #8b5cc4, #e0533d); cursor:pointer; }
+.swatches .own.on { box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--ink); }
+.swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
+
+.fonts { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+.fonts label { position:relative; display:grid; gap:2px; justify-items:center; padding:14px 8px 12px; border-radius:16px; box-shadow:inset 0 0 0 1.5px var(--rule); cursor:pointer; font-weight:600; font-size:14px; }
+.fonts label:has(input:checked) { box-shadow:inset 0 0 0 2px var(--ink); }
+.fonts label:has(input:focus-visible) { outline:2px solid var(--green); outline-offset:3px; }
+.fonts input { position:absolute; opacity:0; pointer-events:none; }
+.fonts .aa { font-size:30px; line-height:1.1; color:var(--ink); }
+.f-elegant { font-family:Georgia, 'Times New Roman', serif; font-weight:500; }
+.f-modern { font-family:'Hanken Grotesk', system-ui, sans-serif; font-weight:700; }
+.f-bold { font-family:'Arial Narrow', 'Roboto Condensed', system-ui, sans-serif; font-stretch:condensed; font-weight:800; text-transform:uppercase; letter-spacing:.01em; }
+
+.logo-row { display:flex; align-items:center; gap:16px; }
+.logo-prev { width:58px; height:58px; border-radius:16px; border:1.5px dashed var(--rule); display:grid; place-items:center; overflow:hidden; flex:none; color:var(--mute); font-size:12px; background:var(--paper); }
+.logo-prev img { max-width:100%; max-height:100%; }
+input[type=file] { font:inherit; font-size:15px; max-width:100%; }
+.go { display:grid; gap:12px; }
+.go .btn { justify-self:start; font-size:17px; padding:16px 28px; }
+.fine { font-size:14px; color:var(--mute); }
+.msg { font-size:15px; min-height:1.2em; color:var(--green); }
+.msg.err { color:var(--err); }
+.hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+/* the preview */
+.preview { grid-column:2; grid-row:1 / span 4; position:sticky; top:90px; display:grid; justify-items:center; gap:14px; }
+.preview p { font-size:14px; color:var(--mute); text-align:center; max-width:280px; }
+.app-logo-img { height:28px; max-width:64px; object-fit:contain; flex-shrink:0; }
+.app[data-font=elegant] :is(.app-name, .app-hero b, .app-next strong, .app-card h4) { font-family:Georgia, 'Times New Roman', serif; font-weight:600; letter-spacing:0; }
+.app[data-font=bold] :is(.app-name, .app-hero b, .app-next strong) { font-family:'Arial Narrow', 'Roboto Condensed', system-ui, sans-serif; font-stretch:condensed; font-weight:800; text-transform:uppercase; letter-spacing:.01em; }
+.app-tiles, .app-card, .app-next > div { transition:opacity .18s; }
+.app.swap .app-tiles, .app.swap .app-card, .app.swap .app-next > div { opacity:0; }
+
+/* building */
+.building { display:flex; align-items:center; gap:12px; font-weight:600; color:var(--green); }
+.building i { width:18px; height:18px; border-radius:50%; border:2.5px solid var(--tint); border-top-color:var(--green); animation:spin .8s linear infinite; flex:none; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ready */
+.ready { padding:8px 0 110px; display:grid; gap:20px; }
+.ready-card { background:var(--green); color:var(--paper); border-radius:32px; padding:44px 44px 40px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:40px; align-items:center; }
+.ready-card h2 { font-size:clamp(36px, 4.6vw, 56px); }
+.ready-card .lead { margin-top:16px; font-size:19px; color:#D3E3DA; max-width:30em; }
+.ready-card .acts { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+.ready-card .btn { background:var(--paper); color:var(--ink); }
+.ready-card .btn:hover { background:var(--sage); color:var(--ink); }
+.ready-card .btn.line { background:transparent; color:var(--paper); box-shadow:inset 0 0 0 1.5px var(--paper); }
+.ready-card .btn.line:hover { background:var(--paper); color:var(--ink); }
+.ready-card .fine { color:#B9D0C4; margin-top:18px; }
+.qr-box { background:#fff; border-radius:20px; padding:16px 16px 12px; display:grid; justify-items:center; gap:8px; color:var(--ink); }
+.qr-box svg { width:150px; height:150px; display:block; }
+.qr-box p { font-size:13px; color:var(--mute); }
+.call { background:#fff; border-radius:28px; padding:32px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:24px; align-items:center; }
+.call h3 { font-size:26px; }
+.call p { margin-top:8px; color:var(--mute); max-width:36em; }
+.again { font-size:15px; }
+.again button { font:inherit; background:none; border:0; padding:0; color:var(--green); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+
+footer { border-top:1px solid var(--rule); padding:28px 0 40px; font-size:14px; color:var(--mute); }
+footer .wrap { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+footer a { color:var(--mute); }
+.flinks { display:flex; gap:18px; }
+
+@font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-400-normal.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-600-normal.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-700-normal.woff2') format('woff2'); font-weight:700; font-display:swap; }
+.phone { width:300px; border:9px solid #111816; border-radius:48px; overflow:hidden; background:#F2EBE6; box-shadow:0 40px 70px -20px rgba(19,32,30,.38), inset 0 0 0 1px #2a302e; position:relative; }
+.app { --accent:color-mix(in srgb, var(--brand) 40%, #cfe3d4); --ink:var(--brand); --qr-fg:var(--brand); font-family:'Hanken Grotesk', system-ui, sans-serif; color:#2F2B26; font-size:12px; line-height:1.3; height:600px; position:relative; overflow:hidden; background:#F2EBE6; }
+.app * { transition:background-color .4s ease, color .4s ease, border-color .4s ease, fill .4s ease, stroke .4s ease; }
+.app svg { stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.app-top { background:var(--brand); color:var(--on-brand); display:flex; align-items:center; justify-content:space-between; padding:12px 14px 10px; }
+.app-id { display:flex; align-items:center; gap:9px; min-width:0; }
+.app-logo { width:28px; height:30px; flex-shrink:0; }
+.app.light .app-logo { filter:brightness(.45); }
+.app-mono { width:28px; height:28px; flex-shrink:0; border-radius:50%; border:1.5px solid #D8BF8C; color:#D8BF8C; display:grid; place-items:center; font-weight:700; font-size:14px; line-height:1; }
+.app-mono[hidden] { display:none; }
+.app.light .app-mono { border-color:var(--on-brand); color:var(--on-brand); }
+.app-words { display:flex; flex-direction:column; gap:1px; min-width:0; }
+.app-name { font-weight:700; font-size:16px; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; line-height:1.1; }
+.app-sub { font-size:8.5px; letter-spacing:.24em; opacity:.75; }
+.app-chat { width:30px; height:30px; border-radius:50%; border:1px solid color-mix(in srgb, var(--on-brand) 45%, transparent); display:grid; place-items:center; }
+.app-chat svg { width:14px; height:14px; }
+.app-hero { position:relative; color:#fff; padding:16px 14px 16px; overflow:hidden; background:#2c3a33; }
+.app-hero::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgb(0 0 0 / .25), rgb(0 0 0 / .62)), url('img/app/hero.svg') center/cover; }
+.app-hero::after, .app-tile::after { content:''; position:absolute; inset:0; background:var(--brand); mix-blend-mode:color; opacity:.55; pointer-events:none; }
+.app-hero > * { position:relative; z-index:1; }
+.app-hero small { display:block; opacity:.8; font-size:10.5px; font-weight:600; }
+.app-hero b { display:block; font-size:27px; margin:1px 0 12px; letter-spacing:-.01em; }
+.app-next { display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid rgb(255 255 255 / .28); background:rgb(255 255 255 / .1); backdrop-filter:blur(2px); border-radius:14px; padding:10px 11px; }
+.app-next small { font-size:9.5px; font-weight:600; }
+.app-next strong { display:block; font-size:16px; margin-top:2px; }
+.app-next span { opacity:.8; font-size:10.5px; }
+.app-qr { background:rgb(255 255 255 / .85); color:var(--ink); border-radius:999px; padding:7px 11px; font-weight:700; font-size:10.5px; white-space:nowrap; }
+.app-tiles { display:grid; grid-template-columns:1fr 1fr; gap:7px; padding:11px 12px 4px; }
+.app-tile { position:relative; height:62px; border-radius:12px; overflow:hidden; color:#fff; font-weight:700; font-size:12.5px; display:flex; align-items:flex-end; padding:7px 9px; box-shadow:0 1px 2px rgb(0 0 0 / .12); }
+.app-tile::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgb(0 0 0 / .02), rgb(0 0 0 / .55)), var(--img) center/cover; }
+.app-tile span { position:relative; z-index:1; text-shadow:0 1px 6px rgb(0 0 0 / .4); }
+.app-head { display:flex; justify-content:space-between; align-items:baseline; padding:10px 14px 6px; font-size:11px; }
+.app-head b { color:color-mix(in srgb, var(--ink) 70%, #555); font-weight:600; }
+.app-head a { color:var(--ink); font-weight:700; text-decoration:none; }
+.app-card { margin:0 12px; background:#FCFAF8; border-radius:14px; padding:11px 12px; box-shadow:0 1px 3px rgb(0 0 0 / .06); }
+.app-card h4 { margin:0 0 6px; font-size:12.5px; display:flex; justify-content:space-between; gap:8px; }
+.app-card h4 span { font-weight:400; color:#8a8580; font-size:10.5px; white-space:nowrap; }
+.app-row { display:grid; grid-template-columns:1fr 50px 56px; gap:7px; align-items:center; padding:3px 0; font-size:11px; }
+.app-row i { height:5px; border-radius:3px; background:#E7E2DC; overflow:hidden; display:block; }
+.app-row i::before { content:''; display:block; height:100%; width:var(--w); background:var(--ink); border-radius:3px; }
+.app-row b { font-size:11px; text-align:right; }
+.app-row b.ok { color:color-mix(in srgb, var(--ink) 75%, #3a7a4a); }
+.app-nav { position:absolute; left:0; right:0; bottom:0; background:var(--brand); color:color-mix(in srgb, var(--on-brand) 75%, transparent); display:grid; grid-template-columns:repeat(5,1fr); padding:8px 4px 12px; font-size:9.5px; text-align:center; }
+.app-nav span { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.app-nav svg { width:18px; height:18px; }
+.app-nav .on { color:var(--accent); font-weight:700; }
+.app-nav .on svg { background:color-mix(in srgb, var(--on-brand) 12%, transparent); border-radius:10px; padding:3px 10px; box-sizing:content-box; margin-top:-3px; }
+.app-nav .qr { position:relative; }
+.app-nav .qr i { width:42px; height:42px; border-radius:50%; background:var(--accent); color:var(--qr-fg); display:grid; place-items:center; margin-top:-24px; border:3px solid var(--brand); box-shadow:0 0 14px rgb(0 0 0 / .18); }
+.app-nav .qr i svg { width:18px; height:18px; fill:currentColor; stroke:none; }
+
+@media (max-width: 960px) {
+  .builder { grid-template-columns:minmax(0,1fr); }
+  .preview { grid-column:1; grid-row:auto; position:static; margin:12px 0; }
+  .ready-card { grid-template-columns:minmax(0,1fr); }
+  .qr-box { justify-self:start; }
+}
+@media (max-width: 640px) {
+  .wrap { padding:0 20px; }
+  nav .links .hide-sm { display:none; }
+  .intro { padding:40px 0 24px; text-align:center; }
+  .intro .lede { font-size:18px; margin-left:auto; margin-right:auto; }
+  .step { padding:24px 20px 24px; border-radius:24px; }
+  legend { font-size:21px; }
+  .two { grid-template-columns:1fr; }
+  .kinds button { font-size:14px; }
+  .go .btn { justify-self:stretch; }
+  .ready-card { padding:32px 22px; text-align:center; }
+  .ready-card .lead { margin-left:auto; margin-right:auto; }
+  .ready-card .acts { justify-content:center; }
+  .ready-card .acts .btn { flex:1 1 100%; }
+  .qr-box { justify-self:center; }
+  .call { grid-template-columns:minmax(0,1fr); text-align:center; padding:28px 22px; }
+  .call p { margin-left:auto; margin-right:auto; }
+  .call .btn { justify-self:stretch; }
+  .again { text-align:center; }
+}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="./" aria-label="Taal home"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/><rect x="10.5" y="4" width="3" height="16" rx="1.5" fill="#0F5C57"/><rect x="16" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <div class="links"><a class="haven-link hide-sm" href="#" target="_blank" rel="noopener">Look around Haven</a><a href="./#pricing">Pricing</a></div>
+</div></nav>
+
+<main class="wrap">
+  <header class="intro" id="intro">
+    <h1>Build your demo.</h1>
+    <p class="lede">Choose a few options and your own booking app opens in about a minute. It's private to you, with sample classes, members and bookings to try.</p>
+    <p class="haven">Rather see one first? <a class="haven-link" href="#" target="_blank" rel="noopener">Look around Haven, our sample studio</a>.</p>
+  </header>
+
+  <form class="builder" id="build" novalidate>
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">1</span>Your studio</legend>
+      <div class="field">
+        <span id="kindLabel">What kind of studio?</span>
+        <div class="kinds" role="radiogroup" aria-labelledby="kindLabel">
+          <button type="button" role="radio" aria-checked="true" data-k="fitness">Fitness</button>
+          <button type="button" role="radio" aria-checked="false" data-k="wellness" tabindex="-1">Wellness</button>
+          <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
+          <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
+        </div>
+      </div>
+      <div class="field"><label for="studio">Studio name</label><input type="text" id="studio" name="studio" maxlength="40" autocomplete="organization" required></div>
+    </fieldset>
+
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">2</span>Your look</legend>
+      <div class="field">
+        <span id="colLabel">Main colour</span>
+        <div class="swatches" id="mainSw" role="group" aria-labelledby="colLabel">
+          <button type="button" style="--c:#155E5A" data-c="#155E5A" aria-label="Deep teal" aria-pressed="true"></button>
+          <button type="button" style="--c:#24365C" data-c="#24365C" aria-label="Navy" aria-pressed="false"></button>
+          <button type="button" style="--c:#5E2C4E" data-c="#5E2C4E" aria-label="Plum" aria-pressed="false"></button>
+          <button type="button" style="--c:#8A3324" data-c="#8A3324" aria-label="Rust" aria-pressed="false"></button>
+          <button type="button" style="--c:#4D5A2C" data-c="#4D5A2C" aria-label="Olive" aria-pressed="false"></button>
+          <button type="button" style="--c:#2A2A2A" data-c="#2A2A2A" aria-label="Charcoal" aria-pressed="false"></button>
+          <label class="own" title="Pick your own colour"><span class="sr">Pick your own main colour</span><input type="color" id="ownMain" value="#155E5A"></label>
+        </div>
+      </div>
+      <div class="field">
+        <span id="accLabel">Accent colour <small>for buttons and highlights</small></span>
+        <div class="swatches" id="accSw" role="group" aria-labelledby="accLabel">
+          <button type="button" style="--c:#D8BF8C" data-c="#D8BF8C" aria-label="Gold" aria-pressed="true"></button>
+          <button type="button" style="--c:#A9C2B2" data-c="#A9C2B2" aria-label="Sage" aria-pressed="false"></button>
+          <button type="button" style="--c:#E8C4B8" data-c="#E8C4B8" aria-label="Blush" aria-pressed="false"></button>
+          <button type="button" style="--c:#BFD3E6" data-c="#BFD3E6" aria-label="Sky" aria-pressed="false"></button>
+          <button type="button" style="--c:#F2F0EA" data-c="#F2F0EA" aria-label="Chalk" aria-pressed="false"></button>
+          <label class="own" title="Pick your own colour"><span class="sr">Pick your own accent colour</span><input type="color" id="ownAcc" value="#D8BF8C"></label>
+        </div>
+      </div>
+      <div class="field">
+        <span id="fontLabel">Lettering</span>
+        <div class="fonts" role="radiogroup" aria-labelledby="fontLabel">
+          <label><input type="radio" name="font" value="elegant"><span class="aa f-elegant" aria-hidden="true">Aa</span>Elegant</label>
+          <label><input type="radio" name="font" value="modern" checked><span class="aa f-modern" aria-hidden="true">Aa</span>Modern</label>
+          <label><input type="radio" name="font" value="bold"><span class="aa f-bold" aria-hidden="true">Aa</span>Bold</label>
+        </div>
+      </div>
+      <div class="logo-row">
+        <div class="logo-prev" id="logoPrev" aria-hidden="true">Logo</div>
+        <div class="field"><label for="logo">Logo <small>Optional. PNG, JPG, SVG or WebP, up to 1.8 MB.</small></label><input type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp"></div>
+      </div>
+    </fieldset>
+
+    <div class="preview" aria-label="Preview of your app">
+      <div class="phone" aria-hidden="true">
+      <div class="app" id="app">
+        <div class="app-top">
+          <div class="app-id"><img class="app-logo" id="appLogo" src="img/app/taal-mark.svg" alt=""><img class="app-logo-img" id="appLogoImg" alt="" hidden><span class="app-mono" id="appMono" aria-hidden="true" hidden></span><span class="app-words"><span class="app-name" id="appName">Taal</span><span class="app-sub" id="appSub">Fitness</span></span></div>
+          <span class="app-chat" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+        </div>
+        <div class="app-hero">
+          <small id="greet">Good afternoon</small>
+          <b>Alex</b>
+          <div class="app-next">
+            <div><small id="nextWhen">Next up, Mon 16 Nov 07:00</small><strong id="nextName">Strength</strong><span id="nextWith">with Elena</span></div>
+            <span class="app-qr">Entry QR</span>
+          </div>
+        </div>
+        <div class="app-tiles" id="appTiles">
+          <div class="app-tile" style="--img:url('img/app/strength.svg')"><span>Classes</span></div>
+          <div class="app-tile" style="--img:url('img/app/opengym.svg')"><span>Gym floor</span></div>
+          <div class="app-tile" style="--img:url('img/app/pt.svg')"><span>PT</span></div>
+          <div class="app-tile" style="--img:url('img/app/deeptissue.svg')"><span>Massage</span></div>
+        </div>
+        <div class="app-head"><b>Your credits</b><a>Buy more</a></div>
+        <div class="app-card" id="appCard">
+          <h4>Included in your membership <span>Renews 3 Dec</span></h4>
+          <div class="app-row"><span>Gym floor</span><i style="--w:100%"></i><b class="ok">Unlimited</b></div>
+          <div class="app-row"><span>8 classes a month</span><i style="--w:75%"></i><b>6 of 8 left</b></div>
+          <div class="app-row"><span>PT session</span><i style="--w:100%"></i><b>1 of 1 left</b></div>
+        </div>
+        <div class="app-nav" aria-hidden="true">
+          <span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</span>
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</span>
+          <span class="qr"><i><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z"/></svg></i>Sign in</span>
+          <span><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>Buy</span>
+          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Me</span>
+        </div>
+      </div>
+    </div>
+      <p>A preview as you choose. Your demo has every screen, your lettering and sample bookings.</p>
+    </div>
+
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">3</span>Your classes <small>optional</small></legend>
+      <div class="field"><label for="classes">Your class names, one per line <small id="classesHint"></small></label><textarea id="classes" name="classes" maxlength="600" spellcheck="true"></textarea></div>
+    </fieldset>
+
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">4</span>Where to send it</legend>
+      <div class="two">
+        <div class="field"><label for="name">Your name</label><input type="text" id="name" name="name" autocomplete="name" maxlength="80" required></div>
+        <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" maxlength="200" required></div>
+      </div>
+      <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+      <div class="go">
+        <button class="btn" type="submit" id="go">Build my demo</button>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+        <p class="fine">We'll email you the links. Your demo is private to you and is deleted after 30 days. <a href="privacy.html">Privacy</a></p>
+      </div>
+    </fieldset>
+  </form>
+
+  <section class="ready" id="ready" hidden aria-labelledby="readyTitle">
+    <div class="ready-card" tabindex="-1" id="readyCard">
+      <div>
+        <h2 id="readyTitle">Your demo is ready.</h2>
+        <p class="lead" id="readyLead">Try booking a class as a member, then use the bar at the top to switch to a coach or the owner.</p>
+        <div class="acts">
+          <a class="btn" id="openApp" href="#" target="_blank" rel="noopener">Open your app</a>
+          <a class="btn line" id="openAdmin" href="#" target="_blank" rel="noopener">Open the back office</a>
+        </div>
+        <p class="fine" id="readyFine"></p>
+      </div>
+      <div class="qr-box"><div id="qr" role="img" aria-label="QR code to open your app on your phone"></div><p>Open it on your phone</p></div>
+    </div>
+    <div class="call" id="call">
+      <div>
+        <h3>When you've had a look, book a call</h3>
+        <p>A short call to answer your questions and show you how it would work with your real timetable, prices and team.</p>
+      </div>
+      <a class="btn" id="callBtn" href="#" target="_blank" rel="noopener">Book a call</a>
+    </div>
+    <p class="again"><button type="button" id="again">Build another demo</button> or <a class="haven-link" href="#" target="_blank" rel="noopener">look around Haven</a></p>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Taal, studio software for gyms and wellness studios, made in London.</span><span class="flinks"><a href="./">Home</a> <a href="privacy.html">Privacy</a></span></div></footer>
+
+<script src="js/qrcode.min.js" defer></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const HAVEN = 'https://booking.tjallan13.workers.dev/?s=haven';
+  document.querySelectorAll('.haven-link').forEach(a => { a.href = HAVEN; });
+
+  /* What each kind of studio looks like in the preview, and the classes the demo uses unless they give their own. */
+  const T = {
+    fitness: { sub: 'Fitness', next: ['Next up, Mon 07:00', 'Strength', 'with Elena'],
+      tiles: [['Classes', 'strength'], ['Gym floor', 'opengym'], ['PT', 'pt'], ['Massage', 'deeptissue']],
+      rows: [['Gym floor', 100, 'Unlimited', 1], ['8 classes a month', 75, '6 of 8 left'], ['PT session', 100, '1 of 1 left']],
+      classes: 'Strength, Sculpt, Condition, Box fit, Barre, Pilates and yoga' },
+    wellness: { sub: 'Wellness', next: ['Next up, Mon 18:00', 'Sports massage', 'with Maya'],
+      tiles: [['Treatments', 'deeptissue'], ['Sauna', 'sauna'], ['Breathwork', 'pt'], ['Gift cards', 'gift']],
+      rows: [['Sauna sessions', 75, '3 of 4 left'], ['60 min massage', 100, '1 of 1 left'], ['Breathwork', 100, 'Unlimited', 1]],
+      classes: 'Breathwork, Yin, Sound bath and Mobility' },
+    yoga: { sub: 'Yoga', next: ['Next up, Tue 07:15', 'Vinyasa flow', 'with Priya'],
+      tiles: [['Classes', 'yoga'], ['Workshops', 'pt'], ['Online', 'mat'], ['Privates', 'deeptissue']],
+      rows: [['Studio classes', 100, 'Unlimited', 1], ['Online classes', 100, 'Unlimited', 1], ['Workshops', 50, '1 of 2 left']],
+      classes: 'Vinyasa flow, Hatha, Yin, Power yoga, Yoga for beginners and Restorative' },
+    pilates: { sub: 'Pilates', next: ['Next up, Mon 18:30', 'Reformer', 'with Sophie'],
+      tiles: [['Reformer', 'reformer'], ['Mat', 'mat'], ['Privates', 'pt'], ['Intro offer', 'gift']],
+      rows: [['8 reformer classes', 62, '5 of 8 left'], ['Mat classes', 100, 'Unlimited', 1], ['Private session', 100, '1 of 1 left']],
+      classes: 'Reformer, Reformer intermediate, Mat Pilates, Barre and Stretch' },
+  };
+  Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
+
+  const app = $('app'), form = $('build'), msg = $('msg');
+  const state = { kind: 'fitness', colour: '#155E5A', accent: '#D8BF8C', logoUrl: '' };
+  const h = new Date().getHours();
+  $('greet').textContent = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+
+  /* ---------- the preview ---------- */
+  function lum(hex) {
+    const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4));
+    return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+  }
+  function paintColours() {
+    const light = lum(state.colour) > .4;
+    app.style.setProperty('--brand', state.colour);
+    app.classList.toggle('light', light);
+    app.style.setProperty('--on-brand', light ? '#1d2220' : '#F4F1EA');
+    app.style.setProperty('--accent', state.accent);
+    app.style.setProperty('--qr-fg', lum(state.accent) > .4 ? '#1d2220' : '#ffffff');
+    if (light) app.style.setProperty('--ink', 'color-mix(in srgb, ' + state.colour + ' 40%, #1d2220)'); else app.style.removeProperty('--ink');
+  }
+  function paintName() {
+    const v = form.studio.value.trim();
+    $('appName').textContent = v || 'Taal';
+    const mono = $('appMono'), mark = $('appLogo'), img = $('appLogoImg');
+    img.hidden = !state.logoUrl; if (state.logoUrl) img.src = state.logoUrl;
+    mark.hidden = !!(v || state.logoUrl);
+    mono.hidden = !v || !!state.logoUrl; mono.textContent = v ? v[0].toUpperCase() : '';
+  }
+  function paintKind(animate) {
+    const k = T[state.kind];
+    document.querySelectorAll('.kinds [role=radio]').forEach(b => { const on = b.dataset.k === state.kind; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+    $('classesHint').textContent = 'Leave it empty to use: ' + k.classes + '.';
+    form.classes.placeholder = k.classes.replace(/, | and /g, '\n');
+    const paint = () => {
+      $('appSub').textContent = k.sub;
+      [$('nextWhen').textContent, $('nextName').textContent, $('nextWith').textContent] = k.next;
+      $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<div class="app-tile" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></div>`).join('');
+      $('appCard').innerHTML = '<h4>Included in your membership <span>Renews 3 Dec</span></h4>' +
+        k.rows.map(([label, w, val, ok]) => `<div class="app-row"><span>${esc(label)}</span><i style="--w:${w}%"></i><b${ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`).join('');
+      app.classList.remove('swap');
+    };
+    if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) { app.classList.add('swap'); setTimeout(paint, 180); } else paint();
+  }
+
+  /* ---------- the options ---------- */
+  const kindBtns = [...document.querySelectorAll('.kinds [role=radio]')];
+  kindBtns.forEach((b, i) => {
+    b.addEventListener('click', () => { state.kind = b.dataset.k; paintKind(true); try { localStorage.setItem('taalKind', state.kind); } catch (e) {} });
+    b.addEventListener('keydown', e => {
+      const d = /Right|Down/.test(e.key) ? 1 : /Left|Up/.test(e.key) ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      const n = kindBtns[(i + d + kindBtns.length) % kindBtns.length]; n.click(); n.focus();
+    });
+  });
+  function swatches(groupId, ownId, key) {
+    const btns = [...document.querySelectorAll('#' + groupId + ' button')], own = $(ownId), ownWrap = own.parentElement;
+    const pick = (hex, from) => {
+      state[key] = hex.toUpperCase();
+      btns.forEach(b => b.setAttribute('aria-pressed', b === from));
+      ownWrap.classList.toggle('on', !from);
+      paintColours();
+    };
+    btns.forEach(b => b.addEventListener('click', () => { own.value = b.dataset.c; pick(b.dataset.c, b); }));
+    own.addEventListener('input', () => pick(own.value, null));
+    return hex => { const b = btns.find(x => x.dataset.c.toLowerCase() === hex.toLowerCase()); own.value = hex; pick(hex, b || null); };
+  }
+  const setMain = swatches('mainSw', 'ownMain', 'colour');
+  swatches('accSw', 'ownAcc', 'accent');
+  form.addEventListener('change', e => { if (e.target.name === 'font') app.dataset.font = e.target.value; });
+  form.studio.addEventListener('input', paintName);
+  $('logo').addEventListener('change', () => {
+    const f = $('logo').files[0], prev = $('logoPrev');
+    msg.textContent = ''; msg.classList.remove('err');
+    if (state.logoUrl) URL.revokeObjectURL(state.logoUrl);
+    state.logoUrl = '';
+    if (f && f.size > 1.8 * 1024 * 1024) { msg.classList.add('err'); msg.textContent = 'That logo is over 1.8 MB. Try a smaller file.'; $('logo').value = ''; }
+    else if (f) state.logoUrl = URL.createObjectURL(f);
+    prev.innerHTML = state.logoUrl ? '<img alt="" src="' + state.logoUrl + '">' : 'Logo';
+    paintName();
+  });
+
+  /* Coming from the home page: carry over the type, name and colour they tried there. */
+  const q = new URLSearchParams(location.search);
+  let kind = q.get('type');
+  if (!T[kind]) { try { kind = localStorage.getItem('taalKind'); } catch (e) { kind = null; } }
+  if (T[kind]) state.kind = kind;
+  if (q.get('name')) form.studio.value = q.get('name').slice(0, 40);
+  if (/^#[0-9a-f]{6}$/i.test(q.get('colour') || '')) setMain(q.get('colour'));
+  paintColours(); paintName(); paintKind(false);
+
+  /* ---------- building ---------- */
+  const steps = ['Copying the sample studio', 'Adding your name and colours', 'Setting up your timetable', 'Booking a couple of classes for you', 'Nearly there'];
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    msg.classList.remove('err');
+    const missing = !form.studio.value.trim() ? 'Add your studio name.' : !form.name.value.trim() ? 'Add your name.' : !/^\S+@\S+\.\S{2,}$/.test(form.email.value.trim()) ? 'Check your email address.' : '';
+    if (missing) { msg.classList.add('err'); msg.textContent = missing; return; }
+    const d = new FormData(form);
+    d.set('kind', state.kind); d.set('colour', state.colour); d.set('accent', state.accent);
+    const go = $('go'); go.disabled = true;
+    let n = 0;
+    const tick = () => { msg.innerHTML = '<span class="building"><i></i>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
+    tick(); const timer = setInterval(tick, 2200);
+    try {
+      const res = await fetch('/api/build', { method: 'POST', body: d });
+      const r = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(r.error || 'That didn\'t work. Please try again.');
+      const saved = { name: r.name, member_url: r.member_url, admin_url: r.admin_url, expires_at: r.expires_at, call_url: r.call_url, contact: r.contact || '' };
+      try { localStorage.setItem('taalDemo', JSON.stringify(saved)); } catch (e) {}
+      showReady(saved);
+    } catch (err) {
+      msg.classList.add('err'); msg.textContent = err.message; go.disabled = false;
+    } finally { clearInterval(timer); }
+  });
+
+  /* ---------- ready ---------- */
+  function showReady(s) {
+    form.hidden = true; $('intro').hidden = true; $('ready').hidden = false;
+    $('readyTitle').textContent = s.name + ' is ready.';
+    $('openApp').href = s.member_url; $('openAdmin').href = s.admin_url;
+    const until = new Date(s.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+    $('readyFine').textContent = "We've emailed you these links. It's private to you and stays up until " + until + '.';
+    const qr = $('qr');
+    const drawQr = () => { if (!window.qrcode) return setTimeout(drawQr, 100); const c = qrcode(0, 'M'); c.addData(s.member_url); c.make(); qr.innerHTML = c.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); };
+    drawQr();
+    const call = $('callBtn');
+    if (s.call_url) { call.href = s.call_url; call.textContent = 'Book a call'; }
+    else { call.href = s.contact ? 'mailto:' + s.contact + '?subject=' + encodeURIComponent('A call about ' + s.name) : '#'; call.textContent = s.contact ? 'Email to book a call' : 'Reply to our email'; if (!s.contact) call.removeAttribute('href'); call.removeAttribute('target'); }
+    window.scrollTo({ top: 0 });
+    $('readyCard').focus({ preventScroll: true });
+    if (location.hash === '#call') $('call').scrollIntoView({ block: 'center' });
+  }
+  $('again').addEventListener('click', () => {
+    try { localStorage.removeItem('taalDemo'); } catch (e) {}
+    $('ready').hidden = true; form.hidden = false; $('intro').hidden = false;
+    $('go').disabled = false; msg.textContent = '';
+    form.studio.focus();
+  });
+  /* Back again: their demo, if it's still there. */
+  try {
+    const s = JSON.parse(localStorage.getItem('taalDemo') || 'null');
+    if (s && new Date(s.expires_at) > new Date() && !q.get('new')) showReady(s);
+  } catch (e) {}
+})();
+
+</script>
+</body>
+</html>

@@ -290,6 +290,9 @@ details p { margin-top:12px; color:var(--mute); max-width:38em; }
 .demo { background:var(--green); color:var(--paper); padding:110px 0; }
 .demo .wrap { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:64px; align-items:start; }
 .demo h2 { font-size:clamp(40px, 5.4vw, 68px); line-height:.98; }
+.demo-cta { display:grid; gap:16px; align-content:start; color:#D3E3DA; font-size:17px; max-width:30em; }
+.demo-cta .btn { justify-self:start; font-size:17px; padding:16px 28px; }
+.demo-cta a:not(.btn) { color:var(--paper); }
 .demo .lead { margin-top:22px; font-size:19px; color:#D3E3DA; max-width:26em; }
 form { display:grid; gap:16px; background:var(--paper); color:var(--ink); border-radius:28px; padding:32px; }
 form .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
@@ -353,6 +356,8 @@ footer .links { display:flex; gap:20px; }
   .allin { text-align:center; }
   form .btn { justify-self:stretch; }
   .demo .wrap > div:first-child { text-align:center; }
+  .demo-cta { text-align:center; justify-items:center; margin:0 auto; }
+  .demo-cta .btn { justify-self:stretch; }
   .demo .lead { margin-left:auto; margin-right:auto; }
   .m-br { display:inline; }
   .hero h1 .h1-tag { font-size:7.7vw; white-space:nowrap; margin-top:4px; }
@@ -380,13 +385,13 @@ footer .links { display:flex; gap:20px; }
     <li><a href="#how">How it works</a></li>
     <li><a href="#questions">Questions</a></li>
   </ul>
-  <a class="btn" href="#demo">Book a demo</a>
+  <a class="btn to-demo" href="demo.html">Build your demo</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">Try it before you switch.</span></h1>
-    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month. See a working demo in your brand before you pay anything.</p>
+    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month. Build a working demo in your brand in a minute, before you pay anything.</p>
   </div>
 
   <div class="try">
@@ -446,7 +451,7 @@ footer .links { display:flex; gap:20px; }
         <label class="own" title="Pick your own colour"><span class="sr">Pick your own colour</span><input type="color" id="ownColour" value="#155E5A"></label>
       </div>
       <p class="note">A sample screen. Your real app also uses your logo, fonts and wording.</p>
-      <a class="demo-link" href="#demo" id="demoLink">See a demo in your brand</a>
+      <a class="demo-link to-demo" href="demo.html" id="demoLink">Build a demo in your brand</a>
     </div>
   </div>
 </div></header>
@@ -554,7 +559,7 @@ footer .links { display:flex; gap:20px; }
       <div class="t-row"><span class="t-label">Once, to set up</span><div class="t-price" id="tSetup">£2,200</div><span class="t-note">Half when you sign, half when you go live</span></div>
       <div class="t-row"><span class="t-label">Then each month, 12-month minimum</span><div class="t-price" id="tMonth">£60</div><span class="t-note">£30 to us, about <span id="tRun">£30</span> for hosting and email, paid to the providers directly</span></div>
       <div class="t-years"><span class="t-label">What that adds up to</span><span><b id="tY1">£2,920</b> in year one</span><span><b id="tLater">£720</b> a year after that</span></div>
-      <a class="btn light" href="#demo">Book a demo in your brand</a>
+      <a class="btn light to-demo" href="demo.html">Build your demo</a>
     </div>
   </div>
   <p class="allin">The £60 is paid monthly. After the first 12 months you can stop it with 30 days' notice. Prices exclude VAT.</p>
@@ -589,7 +594,7 @@ footer .links { display:flex; gap:20px; }
 <section class="how" id="how"><div class="wrap">
   <h2>How it works</h2>
   <ol class="steps">
-    <li><span class="when">See it</span><h3>A demo within 7 days</h3><p>Book a call to talk it through, or send a short brief with £5 and get a working demo in your brand.</p></li>
+    <li><span class="when">See it</span><h3>Your demo in a minute</h3><p>Build a working demo in your brand yourself, then book a short call to talk it through.</p></li>
     <li><span class="when">Try it</span><h3>Your system in four weeks</h3><p>Your timetable, prices and team, set up for you. Then two weeks to test it with your staff.</p></li>
     <li><span class="when">Switch</span><h3>Live when you're ready</h3><p>We move your members across when your current contract allows. Your own apps follow a few weeks later.</p></li>
   </ol>
@@ -601,7 +606,7 @@ footer .links { display:flex; gap:20px; }
   <div class="faq-list">
     <details><summary>What does the £60 a month include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to the hosting and email providers. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
     <details><summary>Why do I pay for hosting and email directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that we move your email to a bulk service built for high volumes, which adds about 60p a month per extra 100 members: about £66 a month all in at 3,000 members, £78 at 5,000 and £108 at 10,000.</p></details>
-    <details><summary>How long until we switch?</summary><p>You get a working demo within a week and your full system to test within four weeks. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
+    <details><summary>How long until we switch?</summary><p>You can build a working demo yourself in about a minute, and your full system is ready to test within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. And you can export or delete a member's data when they ask, as UK GDPR requires.</p></details>
     <details><summary>What if we stop the monthly plan?</summary><p>The plan runs for at least 12 months from when you go live, then month to month with 30 days' notice. The software is licensed while the plan runs. If it stops, you get 30 days' grace, then the system becomes read-only: bookings and payments pause, but you can still sign in and export all your data.</p></details>
@@ -615,40 +620,19 @@ footer .links { display:flex; gap:20px; }
 <section class="demo" id="demo"><div class="wrap">
   <div>
     <h2>See your studio in it first.</h2>
-    <p class="lead">Tell us a little about your <span data-t="kindName">gym</span>. We'll email you two ways to start: a short Zoom call to ask anything, or a brief with a £5 fee for a working demo in your brand within 7 days.</p>
+    <p class="lead">Build a working demo of your own booking app, in your <span data-t="kindName">gym</span>'s colours and name. It takes about a minute, and it's yours to try for 30 days.</p>
   </div>
-  <form id="demoForm" novalidate>
-    <div class="two">
-      <label>Your name<input name="name" autocomplete="name" required></label>
-      <label>Studio name<input name="studio" autocomplete="organization" required></label>
-    </div>
-    <div class="two">
-      <label>Email<input name="email" type="email" autocomplete="email" required></label>
-      <label>Active <span data-t="people">members</span>
-        <select name="members"><option>Under 100</option><option selected>100 to 300</option><option>300 to 1,000</option><option>Over 1,000</option></select>
-      </label>
-    </div>
-    <label>What do you use now, and what would you change? <textarea name="note"></textarea></label>
-    <input type="hidden" name="colour" id="formColour">
-    <input type="hidden" name="kind" id="formKind" value="fitness">
-    <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
-    <button class="btn" type="submit">Send</button>
-    <p class="msg" id="formMsg" role="status"></p>
-  </form>
-  <div class="next" id="nextSteps" hidden tabindex="-1">
-    <h3 id="nextTitle">Thanks. Check your inbox.</h3>
-    <p>We've emailed you the same two options, so you can come back to them later.</p>
-    <div class="choices">
-      <div><b>Talk it through first</b><p>A short Zoom call at a time that suits you. Ask anything, no preparation needed.</p><a class="btn line" id="callBtn" href="#">Book a call</a></div>
-      <div><b>See it straight away</b><p>A short brief about your studio and a £5 fee, so we know you're serious. Your demo arrives within 7 days.</p><a class="btn" id="briefBtn" href="brief.html">Send your brief</a></div>
-    </div>
+  <div class="demo-cta">
+    <a class="btn light to-demo" href="demo.html">Build your demo</a>
+    <p>Then book a short call and we'll show you how it would work with your real timetable, prices and team.</p>
+    <p><a class="haven-link" href="https://booking.tjallan13.workers.dev/?s=haven" target="_blank" rel="noopener">Or look around Haven, our sample studio</a></p>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/><rect x="10.5" y="4" width="3" height="16" rx="1.5" fill="#0F5C57"/><rect x="16" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <p>Studio software for gyms and wellness studios, made in London. Prices exclude VAT. Card fees go to Stripe at their standard rates.</p>
-  <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="#demo">Contact</a></div>
+  <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="demo.html">Contact</a></div>
 </div></footer>
 
 <script>
@@ -809,7 +793,6 @@ const CONTACT_EMAIL = 'EMAIL';
     };
     if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) { app.classList.add('swap'); setTimeout(paint, 180); } else paint();
     document.querySelectorAll('[data-t]').forEach(el => { const v = k.copy[el.dataset.t]; if (v != null) el.textContent = v; });
-    $('formKind').value = kind;
     try { localStorage.setItem('taalKind', kind); } catch (e) {}
   }
 
@@ -899,39 +882,19 @@ const CONTACT_EMAIL = 'EMAIL';
   openFor(location.hash);
 })();
 
-/* demo form: saved by the site, which emails a thank-you with the two ways to start */
+/* "Build your demo" links carry the type, name and colour tried on the phone */
 (function () {
-  const f = document.getElementById('demoForm'), msg = document.getElementById('formMsg'), next = document.getElementById('nextSteps');
-  document.getElementById('footMail').href = CONTACT_EMAIL.includes('@') ? 'mailto:' + CONTACT_EMAIL : '#demo';
-  // "See a demo in your brand" carries the name and colour tried on the phone into the form.
-  document.getElementById('demoLink').addEventListener('click', () => {
+  document.getElementById('footMail').href = CONTACT_EMAIL.includes('@') ? 'mailto:' + CONTACT_EMAIL : 'demo.html';
+  document.querySelectorAll('a.to-demo').forEach(a => a.addEventListener('click', () => {
+    const q = new URLSearchParams();
+    const on = document.querySelector('.kinds [aria-checked="true"]');
+    if (on) q.set('type', on.dataset.k);
     const name = document.getElementById('studioName').value.trim();
-    if (name && !f.studio.value) f.studio.value = name;
-    setTimeout(() => f.name.focus({ preventScroll: true }), 500);
-  });
-  f.addEventListener('submit', async e => {
-    e.preventDefault();
-    msg.classList.remove('err');
-    const d = new FormData(f);
-    if (!d.get('name') || !d.get('studio') || !d.get('email')) { msg.classList.add('err'); msg.textContent = 'Add your name, studio name and email so we can reply.'; return; }
+    if (name) q.set('name', name);
     const sw = document.querySelector('.swatches [aria-pressed="true"]');
-    d.set('colour', sw ? sw.dataset.c : document.getElementById('ownColour').value);
-    const btn = f.querySelector('button[type=submit]');
-    btn.disabled = true; msg.textContent = 'Sending…';
-    try {
-      const res = await fetch('/api/enquiry', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.fromEntries(d)) });
-      const r = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(r.error || 'That didn\'t send. Please try again.');
-      document.getElementById('nextTitle').textContent = 'Thanks, ' + String(d.get('name')).trim().split(' ')[0] + '. Check your inbox.';
-      document.getElementById('briefBtn').href = r.brief_url;
-      const call = document.getElementById('callBtn');
-      if (r.call_url) call.href = r.call_url;
-      else { call.textContent = 'Reply to our email'; call.removeAttribute('href'); call.parentElement.querySelector('p').textContent = 'Reply to the email we just sent with a few times that suit you, and we\'ll set up a short Zoom call.'; call.hidden = true; }
-      f.hidden = true; next.hidden = false; next.focus();
-    } catch (err) {
-      msg.classList.add('err'); msg.textContent = err.message; btn.disabled = false;
-    }
-  });
+    q.set('colour', sw ? sw.dataset.c : document.getElementById('ownColour').value);
+    a.href = 'demo.html?' + q.toString();
+  }));
 })();
 </script>
 </body>

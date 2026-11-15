@@ -9,17 +9,17 @@
  *   key:   the studio's licence key (a long random string, e.g. `openssl rand -hex 24`)
  *   value: {"studio":"SQ Fitness","status":"active"}
  * When a plan ends, change the value to {"studio":"SQ Fitness","status":"ended","ended_at":"YYYY-MM-DD"}.
- * Demo enquiries, briefs and the £5 demo fee: see src/enquiries.js.
+ * The demo builder (studios build their own demo): see src/demos.js.
  * Everything else is the static site in ./public.
  */
-import { enquiries } from './enquiries.js';
+import { demos } from './demos.js';
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === '/api/licence') return licence(request, env);
     if (url.pathname.startsWith('/api/')) {
-      const res = await enquiries(request, env, url);
+      const res = await demos(request, env, url);
       if (res) return res;
     }
     if (url.pathname.startsWith('/api/')) return json({ error: 'Not found' }, 404);

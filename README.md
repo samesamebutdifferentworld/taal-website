@@ -10,24 +10,26 @@ Static marketing site for Taal. Files live in `public/`; deployed to Cloudflare 
 `{"studio":"Name","status":"active"}`, or `{"studio":"Name","status":"ended","ended_at":"YYYY-MM-DD"}`
 when a plan ends. Edit them in the Cloudflare dashboard under Storage & databases → KV.
 
-## Demo enquiries and the £5 brief
+## The demo builder
 
-1. The form at the bottom of the site posts to `/api/enquiry`. The enquiry is saved and the
-   studio gets a thank-you email with two ways to start: book a call (`CALL_URL`) or send a
-   brief (`/brief.html?e=<id>`). You get a copy at `CONTACT_EMAIL`.
-2. The brief page takes their logo, colours, classes and prices, then sends them to Stripe
-   Checkout for £5. When Stripe confirms, they get a "demo by <date>" email (7 days) and you
-   get the whole brief by email.
-3. `/admin.html` lists every enquiry and brief, with logos to download. Sign in with `ADMIN_KEY`.
+`/demo.html` lets a studio build its own demo: type of studio, name, colours, lettering, logo and
+class names. `/api/build` asks the booking app to build it through the `BOOKING` service binding
+(the booking Worker's `DemoBuilder` entrypoint, which can't be reached from the internet), then:
 
-Everything is kept in the `ENQUIRIES` KV namespace (taal-enquiries) and deleted after a year.
+- saves the studio as a lead in the `ENQUIRIES` KV namespace (deleted after a year),
+- emails them the links to their app and back office, with a prompt to book a call,
+- emails you at `CONTACT_EMAIL`.
+
+Each demo has a private web address with a random ending, shows "Book a call" in its demo bar
+(to `CALL_URL`, or back to the call section of `/demo.html`) and is deleted by the booking app
+after 30 days. Limits: three demos an hour per connection and three a day per email address.
+
+`/admin.html` lists everyone who built a demo, with links while it lasts. Sign in with `ADMIN_KEY`.
 
 Setup, in Cloudflare (Worker > Settings > Variables and secrets):
-- Secrets: `RESEND_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `ADMIN_KEY`.
+- Secrets: `RESEND_API_KEY`, `ADMIN_KEY`.
 - In `wrangler.jsonc`: `CONTACT_EMAIL`, `EMAIL_FROM` (a domain verified in Resend), `CALL_URL`.
-- Stripe webhook: endpoint `https://<site>/api/stripe/webhook`, event `checkout.session.completed`.
 
-Without an email key, enquiries are still saved (see the admin page) and the site shows both
-options on screen. Without a Stripe key, briefs are saved and you send a payment link by hand.
+Without an email key, demos still build and the page shows the links on screen.
 
 Tests: `node --test test/*.test.mjs`
