@@ -6,7 +6,7 @@
 <title>Build your demo: taal</title>
 <meta name="description" content="Build a working demo of your own booking app, in your studio's brand, in about a minute.">
 <meta name="theme-color" content="#F2F3EE">
-<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Crect x='5' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='10.5' y='4' width='3' height='16' rx='1.5' fill='%23E59A8C'/%3E%3Crect x='16' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Cg transform='translate(3.5 3.5) scale(0.7083)'%3E%3Crect x='2.5' y='4' width='3' height='16' rx='1.5' fill='%23E59A8C'/%3E%3Crect x='8.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3Ccircle cx='15.5' cy='12' r='2.1' fill='none' stroke='%23F2F3EE' stroke-width='1.8'/%3E%3Crect x='19.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/funnel-sans.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -131,7 +131,34 @@ input[type=file] { font:inherit; font-size:15px; max-width:100%; }
 
 /* building */
 .building { display:flex; align-items:center; gap:12px; font-weight:600; color:var(--green); }
-.building i { width:18px; height:18px; border-radius:50%; border:2.5px solid var(--tint); border-top-color:var(--green); animation:spin .8s linear infinite; flex:none; }
+/* the tāla mark: teentaal's four sections, X 2 0 3. Sam (red) is the first beat; the ring is the wave (khali).
+   It plays once when the page opens, again on hover, and loops slowly where it is the subject. */
+@keyframes tClap { 0%,100% { transform:scaleY(1); } 35% { transform:scaleY(1.32); } }
+@keyframes tSam { 0%,100% { transform:scaleY(1); } 35% { transform:scaleY(1.16); } }
+@keyframes tWave { 0%,100% { transform:scale(1); opacity:1; } 35% { transform:scale(1.45); opacity:.3; } }
+@keyframes tClapH { 0%,100% { transform:scaleY(1); } 35% { transform:scaleY(1.32); } }
+@keyframes tSamH { 0%,100% { transform:scaleY(1); } 35% { transform:scaleY(1.16); } }
+@keyframes tWaveH { 0%,100% { transform:scale(1); opacity:1; } 35% { transform:scale(1.45); opacity:.3; } }
+/* once on load: sam, clap, wave, clap, then back to sam */
+.beat .ts { animation:tSam .45s ease-out .35s both, tSamH .45s ease-out 1.75s both; }
+.beat .t2 { animation:tClap .45s ease-out .7s both; }
+.beat .tk { animation:tWave .5s ease-out 1.05s both; }
+.beat .t3 { animation:tClap .45s ease-out 1.4s both; }
+/* again on hover (different names so it restarts) */
+.logo:hover .ts { animation:tSamH .45s ease-out 0s both, tSam .45s ease-out 1.4s both; }
+.logo:hover .t2 { animation:tClapH .45s ease-out .35s both; }
+.logo:hover .tk { animation:tWaveH .5s ease-out .7s both; }
+.logo:hover .t3 { animation:tClapH .45s ease-out 1.05s both; }
+.building svg { flex:none; overflow:visible; }
+svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:center; }
+@keyframes lClap { 0%,100% { transform:scaleY(1); } 8% { transform:scaleY(1.35); } 20% { transform:scaleY(1); } }
+@keyframes lSam { 0%,100% { transform:scaleY(1); } 8% { transform:scaleY(1.18); } 20% { transform:scaleY(1); } }
+@keyframes lWave { 0%,100% { transform:scale(1); opacity:1; } 8% { transform:scale(1.5); opacity:.3; } 22% { transform:scale(1); opacity:1; } }
+.tala-loop { --cycle:1.6s; }
+.tala-loop .ts { animation:lSam var(--cycle) ease-out infinite; }
+.tala-loop .t2 { animation:lClap var(--cycle) ease-out calc(var(--cycle) / 4) infinite; }
+.tala-loop .tk { animation:lWave var(--cycle) ease-out calc(var(--cycle) / 2) infinite; }
+.tala-loop .t3 { animation:lClap var(--cycle) ease-out calc(var(--cycle) * .75) infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 
 /* ready */
@@ -246,7 +273,7 @@ footer a { color:var(--mute); }
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo" href="./" aria-label="taal home"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/><rect x="10.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="16" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <a class="logo" href="./" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <div class="links"><a class="haven-link hide-sm" href="#" target="_blank" rel="noopener">Look around Haven</a><a href="./#pricing">Pricing</a></div>
 </div></nav>
 
@@ -581,7 +608,7 @@ footer a { color:var(--mute); }
     if (state.books === 'appointments') d.delete('classes');
     const go = $('go'); go.disabled = true;
     let n = 0;
-    const tick = () => { msg.innerHTML = '<span class="building"><i></i>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
+    const tick = () => { msg.innerHTML = '<span class="building"><svg class="tala-loop" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
     tick(); const timer = setInterval(tick, 2200);
     try {
       const res = await fetch('/api/build', { method: 'POST', body: d });
