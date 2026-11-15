@@ -504,7 +504,7 @@ footer a { color:var(--mute); }
       const res = await fetch('/api/build', { method: 'POST', body: d });
       const r = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(r.error || 'That didn\'t work. Please try again.');
-      const saved = { name: r.name, member_url: r.member_url, admin_url: r.admin_url, expires_at: r.expires_at, call_url: r.call_url, contact: r.contact || '' };
+      const saved = { name: r.name, emailed: !!r.emailed, member_url: r.member_url, admin_url: r.admin_url, expires_at: r.expires_at, call_url: r.call_url, contact: r.contact || '' };
       try { localStorage.setItem('taalDemo', JSON.stringify(saved)); } catch (e) {}
       showReady(saved);
     } catch (err) {
@@ -518,13 +518,15 @@ footer a { color:var(--mute); }
     $('readyTitle').textContent = s.name + ' is ready.';
     $('openApp').href = s.member_url; $('openAdmin').href = s.admin_url;
     const until = new Date(s.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
-    $('readyFine').textContent = "We've emailed you these links. It's private to you and stays up until " + until + '.';
+    $('readyFine').textContent = (s.emailed ? "We've emailed you these links. " : 'Bookmark this page to come back to it. ') + "It's private to you and stays up until " + until + '.';
     const qr = $('qr');
     const drawQr = () => { if (!window.qrcode) return setTimeout(drawQr, 100); const c = qrcode(0, 'M'); c.addData(s.member_url); c.make(); qr.innerHTML = c.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); };
     drawQr();
     const call = $('callBtn');
     if (s.call_url) { call.href = s.call_url; call.textContent = 'Book a call'; }
-    else { call.href = s.contact ? 'mailto:' + s.contact + '?subject=' + encodeURIComponent('A call about ' + s.name) : '#'; call.textContent = s.contact ? 'Email to book a call' : 'Reply to our email'; if (!s.contact) call.removeAttribute('href'); call.removeAttribute('target'); }
+    else if (s.contact) { call.href = 'mailto:' + s.contact + '?subject=' + encodeURIComponent('A call about ' + s.name); call.textContent = 'Email to book a call'; call.removeAttribute('target'); }
+    else if (s.emailed) { call.hidden = true; $('call').querySelector('p').textContent = 'Reply to the email we just sent you with a few times that suit you, and we will set up a short call.'; }
+    else $('call').hidden = true;
     window.scrollTo({ top: 0 });
     $('readyCard').focus({ preventScroll: true });
     if (location.hash === '#call') $('call').scrollIntoView({ block: 'center' });

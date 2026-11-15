@@ -95,7 +95,7 @@ async function build(request, env, url) {
   });
 
   const until = longDate(new Date(made.expires_at));
-  await sendEmail(env, {
+  const emailed = await sendEmail(env, {
     to: lead.email,
     subject: `Your ${made.name} demo is ready`,
     replyTo: env.CONTACT_EMAIL,
@@ -105,7 +105,7 @@ async function build(request, env, url) {
     ['Name', lead.name], ['Email', lead.email], ['Studio', made.name], ['Type', KINDS[lead.kind]],
     ['Their app', links.member_url], ['Back office', links.admin_url], ['Deleted on', until],
   ]);
-  return json({ ok: true, name: made.name, ...links, contact: env.CONTACT_EMAIL && env.CONTACT_EMAIL.includes('@') ? env.CONTACT_EMAIL : '' });
+  return json({ ok: true, name: made.name, emailed, ...links, contact: env.CONTACT_EMAIL && env.CONTACT_EMAIL.includes('@') ? env.CONTACT_EMAIL : '' });
 }
 
 async function leads(request, env) {
