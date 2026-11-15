@@ -564,11 +564,10 @@ footer .links { display:flex; gap:20px; }
   </div>
   <div class="builder">
     <div class="opts">
-      <p class="opt-head" id="pkgHead">Choose your package</p>
-      <div class="opt-set" role="radiogroup" aria-labelledby="pkgHead">
-        <label class="opt pick"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, your members moved across, training and 12 months of updates.</span></span><span class="opt-price">£1,900</span><input type="radio" name="pkg" value="booking"></label>
-        <label class="opt pick"><span class="opt-text"><b>Everything</b><span>The booking system, your own app on the App Store and Google Play in your studio's name, and a full studio website in your brand.</span></span><span class="opt-price">£3,700</span><input type="radio" name="pkg" value="all" checked></label>
-      </div>
+      <p class="opt-head">Choose what you need</p>
+      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, your members moved across, training and 12 months of updates.</span></span><span class="opt-price">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play in your studio's name, with push alerts. Released a few weeks after you go live.</span></span><span class="opt-price">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Full studio website</b><span>Your whole public website in your brand, not just the booking pages: home, about, team, hours and FAQs, with your live timetable and prices built in.</span></span><span class="opt-price">+£800</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-head" id="payHead">Choose how to pay</p>
       <div class="opt-set two" role="radiogroup" aria-labelledby="payHead">
         <label class="opt pick"><span class="opt-text"><b>Pay once</b><span>The lowest price, paid in three parts as we build.</span></span><input type="radio" name="pay" value="once" checked></label>
@@ -584,7 +583,7 @@ footer .links { display:flex; gap:20px; }
       <a class="btn light to-demo" href="demo.html">Build your demo</a>
     </div>
   </div>
-  <p class="allin">Both packages include 12 months of updates and support. After that the care plan is optional, and the system is yours either way. Prices include VAT, so there's nothing to add.</p>
+  <p class="allin">Setup includes 12 months of updates and support. After that the care plan is optional, and the system is yours either way. Prices include VAT, so there's nothing to add.</p>
   <details class="incl"><summary>What's included in setup?</summary>
     <ul class="incl-list">
       <li>Your hosting, email and app store accounts, set up in your studio's name and on your own billing</li>
@@ -601,7 +600,7 @@ footer .links { display:flex; gap:20px; }
         <label for="current">What you pay for software now, each month</label>
         <div class="money"><span>£</span><input type="number" id="current" inputmode="decimal" min="0" step="5" value="200"></div>
       </div>
-      <p class="fine">Uses the package, way of paying and care plan you picked above.</p>
+      <p class="fine">Uses the options, way of paying and care plan you picked above.</p>
     </div>
     <div class="result" aria-live="polite">
       <div>
@@ -633,7 +632,7 @@ footer .links { display:flex; gap:20px; }
   <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across, data and apps</small></summary>
   <div class="faq-list">
     <details><summary>What do we pay after setup?</summary><p>Only the running costs: about £30 a month for hosting and email, paid to the providers from your own accounts. That's about £1 a day. With your own apps, Apple also charges about £79 a year and Google $25 once. There's no monthly fee to us.</p></details>
-    <details><summary>How do we pay for setup?</summary><p>Pay once, in three parts: a third when you sign, a third when we hand over your test version and the rest when you go live. Or spread it over 12 months: £400 to start then £150 a month for the booking system (£2,200 in total), or £800 then £300 a month for everything (£4,400). Our first three studios get 30% off setup, in return for a short case study.</p></details>
+    <details><summary>How do we pay for setup?</summary><p>Pay once, in three parts: a third when you sign, a third when we hand over your test version and the rest when you go live. Or spread it over 12 months: £400 to start then £150 a month for the booking system (£2,200 in total). Your own apps add £200 then £85 a month, and the website £200 then £65 a month, so all three come to £800 then £300 a month (£4,400). Our first three studios get 30% off setup, in return for a short case study.</p></details>
     <details><summary>Who sets up the accounts?</summary><p>We do, in your studio's name and on your own billing: hosting, email, payments and your Apple and Google developer accounts. Apple asks businesses for a D-U-N-S number, which is free, and we'll help you get one.</p></details>
     <details><summary>Why do I pay for hosting and email directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. About £30 a month covers studios with up to roughly 2,000 active members. Email is what grows beyond that, so for bigger studios we use a bulk email service and quote for your size.</p></details>
     <details><summary>How long until we switch?</summary><p>You can build a working demo yourself in about a minute, and your full system is ready to test within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
@@ -872,11 +871,18 @@ const CONTACT_EMAIL = 'EMAIL';
   const $ = id => document.getElementById(id);
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
   // Two packages, two ways to pay, running costs paid to the providers, and the optional care plan from year two.
-  const PRICES = { booking: { once: 1900, start: 400, monthly: 150 }, all: { once: 3700, start: 800, monthly: 300 } };
+  // The booking system, plus apps and a website as add-ons. Spreading over 12 months: a starting payment, then 12 monthly ones.
+  const ITEMS = {
+    base: { once: 1900, start: 400, monthly: 150 },
+    apps: { once: 1000, start: 200, monthly: 85 },
+    site: { once: 800, start: 200, monthly: 65 },
+  };
   const RUNNING = 30, CARE = 600;
   const picked = name => document.querySelector('input[name=' + name + ']:checked').value;
   function costs() {
-    const p = PRICES[picked('pkg')], spread = picked('pay') === 'spread';
+    const on = ['base', ...($('optApps').checked ? ['apps'] : []), ...($('optSite').checked ? ['site'] : [])];
+    const p = on.reduce((t, k) => ({ once: t.once + ITEMS[k].once, start: t.start + ITEMS[k].start, monthly: t.monthly + ITEMS[k].monthly }), { once: 0, start: 0, monthly: 0 });
+    const spread = picked('pay') === 'spread';
     const setup = spread ? p.start + p.monthly * 12 : p.once;
     const care = $('optCare').checked ? CARE : 0;
     return { p, spread, setup, care, y1: setup + RUNNING * 12, later: RUNNING * 12 + care };
@@ -909,7 +915,7 @@ const CONTACT_EMAIL = 'EMAIL';
     $('tCare').textContent = c.care ? ', with the care plan' : '';
   }
   $('current').addEventListener('input', run);
-  document.querySelectorAll('input[name=pkg], input[name=pay], #optCare').forEach(el => el.addEventListener('change', () => { price(); run(); }));
+  document.querySelectorAll('input[name=pay], #optApps, #optSite, #optCare').forEach(el => el.addEventListener('change', () => { price(); run(); }));
   price(); run();
   // Links to a closed section open it.
   function openFor(hash) { const d = document.querySelector(hash === '#calculator' ? '#calculator' : hash === '#questions' ? '.faq-all' : null); if (d) d.open = true; }
