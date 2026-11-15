@@ -341,8 +341,11 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .founding { font:inherit; font-size:14px; font-weight:600; color:var(--green); background:#fff; border:0; border-radius:999px; padding:8px 16px; cursor:pointer; box-shadow:inset 0 0 0 1.5px transparent; transition:background .35s var(--curve), color .35s var(--curve), box-shadow .35s; }
 .founding:hover { box-shadow:inset 0 0 0 1.5px var(--green); }
 .founding[aria-pressed=true] { background:var(--green); color:var(--paper); }
-.founding .f-on, .founding[aria-pressed=true] .f-off { display:none; }
-.founding[aria-pressed=true] .f-on { display:inline; }
+/* both labels share one cell, so the button keeps the width of the longer one */
+.founding { display:inline-grid; justify-items:center; }
+.founding .f-on, .founding .f-off { grid-area:1 / 1; transition:opacity .3s; }
+.founding .f-on, .founding[aria-pressed=true] .f-off { visibility:hidden; opacity:0; }
+.founding[aria-pressed=true] .f-on { visibility:visible; opacity:1; }
 .founding[aria-pressed=true] .f-on::before { content:''; display:inline-block; width:8px; height:4px; border:solid currentColor; border-width:0 0 2px 2px; transform:translateY(-3px) rotate(-45deg); margin-right:9px; }
 .builder { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:stretch; }
 .opts { display:flex; flex-direction:column; gap:8px; }
