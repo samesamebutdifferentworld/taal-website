@@ -283,23 +283,18 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .cbar b { text-align:right; font-size:17px; }
 .calc .fine { font-size:13px; color:var(--mute); }
 
-/* how */
+/* how: three cards of equal size, the first is a link to the demo */
 .how { padding:120px 0; border-top:1px solid var(--rule); }
 .how h2 { margin-bottom:64px; }
-.steps { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:20px; }
+.steps { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); grid-auto-rows:1fr; gap:20px; }
 .steps li { display:grid; }
-.steps li > *, .step-link { display:grid; align-content:start; gap:14px; border-radius:24px; padding:28px; }
-.steps li { background:var(--tint); border-radius:24px; }
-.steps .when { font-size:clamp(40px, 4.6vw, 64px); font-weight:650; letter-spacing:-0.04em; color:var(--ink); line-height:1; }
-.steps .step-text { color:var(--mute); max-width:24ch; }
-.steps li > .when, .steps li > .step-text { padding:0; border-radius:0; }
-.steps li:not(:has(a)) { padding:28px; gap:14px; align-content:start; }
-.steps li:has(a) { background:var(--green); }
-.step-link { text-decoration:none; color:var(--paper); height:100%; transition:background .3s; }
-.step-link:hover { background:var(--deep); color:var(--paper); }
-.step-link .when { color:var(--paper); }
-.step-link .step-text { color:#D3E3DA; }
-.step-go { margin-top:auto; padding-top:18px; font-weight:600; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1.5px; }
+.step-card { display:flex; flex-direction:column; gap:14px; padding:28px; border-radius:24px; background:var(--tint); color:var(--ink); text-decoration:none; }
+.steps .when { font-size:clamp(40px, 4.6vw, 64px); font-weight:650; letter-spacing:-0.04em; line-height:1; }
+.steps .step-text { color:var(--mute); max-width:26ch; }
+a.step-card { background:var(--green); color:var(--paper); transition:background .3s; }
+a.step-card:hover { background:var(--deep); color:var(--paper); }
+a.step-card .step-text { color:#D3E3DA; }
+.step-go { margin-top:auto; padding-top:10px; font-weight:600; text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1.5px; }
 
 /* faq */
 .faq { padding:72px 0; }
@@ -386,7 +381,7 @@ footer .links { display:flex; gap:20px; }
   .how h2 { margin-bottom:36px; }
   .faq-all > summary small { display:none; }
   .reel-stage { padding:28px 0; }
-  .steps li:not(:has(a)), .step-link { padding:22px; }
+  .step-card { padding:24px; }
   .demo { padding:96px 0; }
   .demo-cta .btn { justify-self:stretch; }
 }
@@ -633,9 +628,9 @@ footer .links { display:flex; gap:20px; }
 <section class="how" id="how"><div class="wrap">
   <h2>How it works</h2>
   <ol class="steps">
-    <li><a class="step-link to-demo" href="demo.html"><span class="when">See it</span><span class="step-text">Build your own demo in about a minute, then book a call.</span><span class="step-go">Build your demo</span></a></li>
-    <li><span class="when">Try it</span><span class="step-text">We build your real system, customised however you want it: timetable, prices, team and branding. In four weeks it's ready for you and your staff to try.</span></li>
-    <li><span class="when">Switch</span><span class="step-text">Go live when your current contract ends. Your apps follow a few weeks later.</span></li>
+    <li><a class="step-card to-demo" href="demo.html"><span class="when">See it</span><span class="step-text">Build your own demo in about a minute, then book a call.</span><span class="step-go">Build your demo</span></a></li>
+    <li><div class="step-card"><span class="when">Try it</span><span class="step-text">We build your real system, customised however you want it: timetable, prices, team and branding. In four weeks it's ready for you and your staff to try.</span></div></li>
+    <li><div class="step-card"><span class="when">Switch</span><span class="step-text">Go live when your current contract ends. Your apps follow a few weeks later.</span></div></li>
   </ol>
 </div></section>
 
