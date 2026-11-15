@@ -65,8 +65,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app * { transition:background-color .35s ease, color .35s ease, border-color .35s ease; }
 .app-top { background:var(--brand); color:var(--on-brand); display:flex; align-items:center; justify-content:space-between; padding:16px 16px 12px; }
 .app-id { display:flex; align-items:center; gap:9px; min-width:0; }
-.app-mark { width:30px; height:30px; border-radius:50%; border:1.5px solid currentColor; display:grid; place-items:center; font-weight:700; font-size:14px; flex-shrink:0; text-transform:lowercase; }
-.app-name { font-weight:700; font-size:17px; letter-spacing:.06em; text-transform:lowercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; }
+.app-mark { width:30px; height:30px; border-radius:50%; border:1.5px solid currentColor; display:grid; place-items:center; font-weight:700; font-size:14px; flex-shrink:0; }
+.app-name { font-weight:700; font-size:17px; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; }
 .app-chat { width:28px; height:28px; border-radius:50%; border:1.5px solid currentColor; opacity:.8; }
 .app-hero { background:linear-gradient(160deg, color-mix(in srgb, var(--brand) 60%, #000) 0%, color-mix(in srgb, var(--brand) 30%, #000) 100%); color:#fff; padding:20px 16px 18px; }
 .app-hero small { display:block; letter-spacing:.12em; opacity:.7; font-size:11px; }
@@ -301,7 +301,7 @@ footer .links { display:flex; gap:20px; }
     <div class="phone" aria-label="Sample app home screen, shown in the brand you choose">
       <div class="app" id="app">
         <div class="app-top">
-          <div class="app-id"><span class="app-mark" id="appMark">h</span><span class="app-name" id="appName">haven</span></div>
+          <div class="app-id"><span class="app-mark" id="appMark">H</span><span class="app-name" id="appName">Haven</span></div>
           <span class="app-chat" aria-hidden="true"></span>
         </div>
         <div class="app-hero">
@@ -585,8 +585,8 @@ const CONTACT_EMAIL = 'EMAIL';
   }));
   own.addEventListener('input', () => { sw.forEach(b => b.setAttribute('aria-pressed', false)); setColour(own.value); });
   nameIn.addEventListener('input', () => {
-    const v = nameIn.value.trim() || 'haven';
-    appName.textContent = v; appMark.textContent = v.charAt(0);
+    const v = nameIn.value.trim() || 'Haven';
+    appName.textContent = v; appMark.textContent = v.charAt(0).toUpperCase();
   });
 })();
 
