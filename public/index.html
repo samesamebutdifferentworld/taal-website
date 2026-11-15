@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Taal: your own booking app, in your brand</title>
-<meta name="description" content="Bookings, memberships, payments and the back office for gyms and wellness studios, in your own brand. About £60 a month all in, with no per-member fees.">
+<meta name="description" content="Bookings, memberships, payments and the back office for gyms and wellness studios, in your own brand. £900 to set up, then about £60 a month, with no per-member fees.">
 <meta property="og:title" content="Taal: your own booking app, in your brand">
-<meta property="og:description" content="Bookings, memberships, payments and the back office for gyms and wellness studios. About £60 a month all in.">
+<meta property="og:description" content="Bookings, memberships, payments and the back office for gyms and wellness studios. £900 to set up, then about £60 a month.">
 <meta name="theme-color" content="#0F5C57">
 <link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Crect x='5' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='10.5' y='4' width='3' height='16' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='16' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
@@ -193,12 +193,15 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .opt input:checked + .sw::after { transform:translateX(18px); }
 .opt input:disabled + .sw { opacity:.6; }
 .opt input:focus-visible + .sw { outline:2px solid var(--green); outline-offset:3px; }
-.total { background:var(--ink); color:var(--paper); border-radius:28px; padding:32px; display:flex; flex-direction:column; gap:10px; }
-.t-label { font-size:15px; color:#B9C7C1; }
-.t-price { font-family:'Funnel Display', sans-serif; font-size:68px; font-weight:650; letter-spacing:-0.025em; line-height:1; }
+.total { background:var(--ink); color:var(--paper); border-radius:28px; padding:30px 32px; display:flex; flex-direction:column; gap:20px; }
+.t-row { display:flex; flex-direction:column; gap:4px; }
+.t-row + .t-row { padding-top:18px; border-top:1px solid #33433F; }
+.t-note { font-size:14px; color:#B9C7C1; }
+.t-label { font-size:14px; font-weight:600; color:var(--sage); }
+.t-price { font-family:'Funnel Display', sans-serif; font-size:52px; font-weight:650; letter-spacing:-0.025em; line-height:1.05; }
 .t-month { font-size:18px; }
-.t-years { display:flex; gap:28px; margin:10px 0 16px; padding-top:16px; border-top:1px solid #33433F; font-size:15px; color:#B9C7C1; }
-.t-years b { display:block; font-family:'Funnel Display', sans-serif; font-size:24px; color:var(--paper); }
+.t-years { display:flex; flex-direction:column; gap:4px; padding:14px 16px; border-radius:16px; background:#1E2D2A; font-size:15px; color:#B9C7C1; }
+.t-years b { font-family:'Funnel Display', sans-serif; font-size:18px; color:var(--paper); }
 .btn.light { background:var(--paper); color:var(--ink); align-self:flex-start; margin-top:auto; }
 .btn.light:hover { background:var(--sage); color:var(--ink); }
 .extra { margin-top:24px; font-size:17px; }
@@ -298,7 +301,7 @@ footer .links { display:flex; gap:20px; }
   .opt { grid-template-columns:minmax(0,1fr) auto; padding:18px; }
   .opt-price { grid-column:1; grid-row:2; font-size:19px; }
   .opt .sw { grid-column:2; grid-row:1 / span 2; }
-  .t-price { font-size:56px; }
+  .t-price { font-size:46px; }
   .calc-box summary { flex-wrap:wrap; padding:22px 24px; }
   .calc-box summary small { width:100%; order:3; }
   .calc { padding:32px 24px; gap:36px; }
@@ -333,7 +336,7 @@ footer .links { display:flex; gap:20px; }
 <header class="hero" id="top"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span>Live in four weeks.</span></h1>
-    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month all in. See a working demo in your brand before you pay anything.</p>
+    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month. See a working demo in your brand before you pay anything.</p>
     <div class="ctas">
       <a class="btn" href="#demo">Book a demo in your brand</a>
       <a class="btn line" href="#calculator">Work out your saving</a>
@@ -493,15 +496,14 @@ footer .links { display:flex; gap:20px; }
       <label class="opt"><span class="opt-text"><b>Website</b><span>A site in your brand with your live timetable and prices.</span></span><span class="opt-price">+£400</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Website"><i class="sw" aria-hidden="true"></i></label>
     </div>
     <div class="total" aria-live="polite">
-      <span class="t-label">One-off setup</span>
-      <div class="t-price" id="tSetup">£2,200</div>
-      <p class="t-month">Then <b>about £60 a month</b>, all in</p>
-      <div class="t-years"><span><b id="tY1">£2,920</b>Year one</span><span><b id="tLater">£720</b>Each year after</span></div>
+      <div class="t-row"><span class="t-label">Once, to set up</span><div class="t-price" id="tSetup">£2,200</div><span class="t-note">Half when you sign, half when you go live</span></div>
+      <div class="t-row"><span class="t-label">Then each month</span><div class="t-price">£60</div><span class="t-note">£30 to us, about £30 to Cloudflare and Resend for hosting and email</span></div>
+      <div class="t-years"><span class="t-label">What that adds up to</span><span><b id="tY1">£2,920</b> in year one</span><span><b id="tLater">£720</b> a year after that</span></div>
       <a class="btn light" href="#demo">Book a demo in your brand</a>
     </div>
   </div>
-  <p class="allin">Setup is paid half when you sign and half when you go live. Prices exclude VAT.</p>
-  <details class="incl"><summary>What's in “about £60 a month, all in”?</summary>
+  <p class="allin">The £60 is paid monthly, and you can stop it with 30 days' notice. Prices exclude VAT.</p>
+  <details class="incl"><summary>What's in the £60 a month?</summary>
     <p>£30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members; above that, email adds about £3.50 a month per extra 100 members.</p></details>
 
   <details class="calc-box" id="calculator"><summary><span>Work out your saving</span><small>Compare with what you pay now</small></summary>
@@ -545,7 +547,7 @@ footer .links { display:flex; gap:20px; }
 <section class="faq" id="questions"><div class="wrap">
   <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across, data and apps</small></summary>
   <div class="faq-list">
-    <details><summary>What does “about £60 a month, all in” include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
+    <details><summary>What does the £60 a month include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
     <details><summary>Why do I pay Cloudflare and Resend directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that it adds about £3.50 a month per extra 100 members, so about £95 a month all in at 3,000 and about £165 at 5,000. Switching reminder emails to free app notifications brings that down.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own Cloudflare account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. And you can export or delete a member's data when they ask, as UK GDPR requires.</p></details>
@@ -672,7 +674,7 @@ const CONTACT_EMAIL = 'EMAIL';
       $('saveSub').textContent = 'Taal costs ' + gbp(-save) + ' more a year than you pay now, with your own brand and data.';
     }
     const pm = monthly / m * 100;
-    $('perMember').textContent = (pm < 100 ? "That's about " + Math.max(1, Math.round(pm)) + 'p' : "That's about " + gbp(pm / 100)) + ' per member a month, about ' + gbp(monthly) + ' a month all in.' + (m > 2000 ? ' Includes extra email above 2,000 members.' : '');
+    $('perMember').textContent = (pm < 100 ? "That's about " + Math.max(1, Math.round(pm)) + 'p' : "That's about " + gbp(pm / 100)) + ' per member a month, or about ' + gbp(monthly) + ' a month in total.' + (m > 2000 ? ' Includes extra email above 2,000 members.' : '');
   }
   // The pricing switches: setup total, year one and later years (hosting at the 2,000-member rate).
   function price() {
