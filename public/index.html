@@ -137,15 +137,15 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .promises svg { display:block; margin-bottom:18px; }
 
 /* showcase */
-.show { padding:120px 0 40px; }
-.show-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:72px; align-items:center; margin-bottom:110px; }
-.show-row:nth-child(even) .shot { order:2; }
-.shot { display:flex; justify-content:center; }
-.shot .frame { width:320px; border:9px solid var(--ink); border-radius:50px; overflow:hidden; background:var(--ink); box-shadow:0 40px 70px -24px rgba(19,32,30,.35); }
-.shot img { display:block; width:100%; height:auto; }
-.show-row h2 { font-size:clamp(34px, 4.4vw, 56px); max-width:12ch; }
-.show-row p { margin-top:20px; font-size:19px; color:var(--mute); max-width:30em; }
-.show-note { font-size:13px; color:var(--mute); text-align:center; margin-top:-70px; padding-bottom:40px; }
+.show { padding:100px 0 90px; }
+.show h2 { font-size:clamp(34px, 4.4vw, 56px); max-width:24ch; margin-bottom:48px; }
+.show-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px; }
+.show-grid figure { margin:0; display:flex; flex-direction:column; gap:22px; }
+.show-grid .frame { width:min(100%, 270px); border:9px solid var(--ink); border-radius:44px; overflow:hidden; background:var(--ink); box-shadow:0 30px 60px -24px rgba(19,32,30,.35); }
+.show-grid img { display:block; width:100%; height:auto; }
+.show-grid h3 { font-size:22px; letter-spacing:-0.015em; margin-bottom:8px; }
+.show-grid p { color:var(--mute); font-size:16px; max-width:30ch; }
+.show-note { font-size:13px; color:var(--mute); margin-top:36px; }
 
 /* features */
 .features { background:var(--tint); padding:110px 0; }
@@ -195,6 +195,10 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .plan.b .years b { color:var(--paper); }
 .extra { margin-top:24px; font-size:17px; }
 .allin { margin-top:10px; font-size:15px; color:var(--mute); max-width:60em; }
+.incl, details.incl:first-of-type { margin-top:14px; border:0; padding:0; }
+.incl summary { font-size:15px; font-weight:600; color:var(--green); justify-content:flex-start; gap:10px; }
+.incl summary::after { font-size:18px; }
+.incl p { font-size:15px; margin-top:8px; }
 
 /* calculator */
 .calc { margin-top:72px; background:var(--tint); border-radius:28px; padding:44px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:56px; }
@@ -235,14 +239,6 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .steps h3 { font-size:22px; letter-spacing:-0.02em; margin:14px 0 8px; }
 .steps p { color:var(--mute); }
 
-/* data */
-.data { padding:100px 0; background:#fff; }
-.data h2 { font-size:clamp(30px, 3.6vw, 44px); max-width:16ch; }
-.data .wrap { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:56px; }
-.data ul { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:32px 40px; }
-.data li h3 { font-size:19px; letter-spacing:-0.01em; margin-bottom:6px; }
-.data li p { color:var(--mute); font-size:16px; }
-
 /* faq */
 .faq { padding:110px 0; }
 .faq .wrap { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:56px; }
@@ -277,22 +273,20 @@ footer .links { display:flex; gap:20px; }
 @media (max-width: 960px) {
   nav ul { display:none; }
   .hero { padding-top:48px; }
-  .hero .wrap, .show-row, .data .wrap, .faq .wrap, .demo .wrap, .calc { grid-template-columns:minmax(0,1fr); }
-  .show-row { gap:40px; margin-bottom:80px; }
-  .show-row:nth-child(even) .shot { order:0; }
+  .hero .wrap, .faq .wrap, .demo .wrap, .calc { grid-template-columns:minmax(0,1fr); }
   .promises, .grid6, .steps { grid-template-columns:minmax(0,1fr); gap:32px; }
+  .show-grid { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:78%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; gap:20px; }
+  .show-grid figure { scroll-snap-align:start; }
   .steps::before { display:none; }
   .plans { grid-template-columns:minmax(0,1fr); }
   .calc { padding:32px 24px; gap:36px; }
-  .show-note { margin-top:-40px; }
 }
 @media (max-width: 560px) {
   .wrap { padding:0 20px; }
-  .data ul, form .two { grid-template-columns:1fr; }
+  form .two { grid-template-columns:1fr; }
   .plan { padding:28px 24px; }
   .plan .price { font-size:54px; }
   .cbar { grid-template-columns:110px minmax(0,1fr) 78px; font-size:14px; }
-  .shot .frame { width:280px; }
   nav .btn { padding:9px 14px; font-size:14px; }
 }
 </style>
@@ -315,7 +309,7 @@ footer .links { display:flex; gap:20px; }
 <header class="hero" id="top"><div class="wrap">
   <div>
     <h1><span>Your own booking app.</span><span>In your brand.</span><span>Live in four weeks.</span></h1>
-    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. About £60 a month all in, with no per-member fees.</p>
+    <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month all in. See a working demo in your brand before you pay anything.</p>
     <div class="ctas">
       <a class="btn" href="#demo">Book a demo in your brand</a>
       <a class="btn line" href="#calculator">Work out your saving</a>
@@ -399,26 +393,14 @@ footer .links { display:flex; gap:20px; }
 </div></section>
 
 <section class="show" id="product"><div class="wrap">
-  <div class="show-row">
-    <div class="shot"><div class="frame"><img src="img/book.jpg" width="520" height="1125" alt="Booking screen listing classes, gym floor, appointments and PT by day" loading="lazy"></div></div>
-    <div>
-      <h2>Everything they book, in one place</h2>
-      <p>Classes, gym floor, treatments, PT and online sessions. Members book and pay in a couple of taps, then scan in at the door with their own QR code.</p>
-    </div>
-  </div>
-  <div class="show-row">
-    <div class="shot"><div class="frame"><img src="img/revenue.jpg" width="520" height="1125" alt="Revenue by session screen showing takings, staff splits and attendance" loading="lazy"></div></div>
-    <div>
-      <h2>Know what every class earns</h2>
-      <p>See takings for each session after staff splits, so you know which classes pay their way and which need a rethink.</p>
-    </div>
-  </div>
-  <div class="show-row">
-    <div class="shot"><div class="frame"><img src="img/myappts.jpg" width="520" height="1125" alt="A therapist's appointment diary with upcoming clients" loading="lazy"></div></div>
-    <div>
-      <h2>A diary your team will use</h2>
-      <p>Coaches and therapists see their bookings, client notes and pay in one place, and sort cover without a group chat.</p>
-    </div>
+  <h2>Built for members, coaches and owners</h2>
+  <div class="show-grid">
+    <figure><div class="frame"><img src="img/book.jpg" width="520" height="1125" alt="Booking screen listing classes, gym floor, appointments and PT by day" loading="lazy"></div>
+      <figcaption><h3>Everything they book, in one place</h3><p>Classes, gym floor, treatments, PT and online sessions. Book and pay in a couple of taps, then scan in at the door.</p></figcaption></figure>
+    <figure><div class="frame"><img src="img/revenue.jpg" width="520" height="1125" alt="Revenue by session screen showing takings, staff splits and attendance" loading="lazy"></div>
+      <figcaption><h3>Know what every class earns</h3><p>Takings for each session after staff splits, so you see which classes pay their way.</p></figcaption></figure>
+    <figure><div class="frame"><img src="img/myappts.jpg" width="520" height="1125" alt="A therapist's appointment diary with upcoming clients" loading="lazy"></div>
+      <figcaption><h3>A diary your team will use</h3><p>Bookings, client notes and pay in one place, and cover sorted without a group chat.</p></figcaption></figure>
   </div>
   <p class="show-note">Screens from a sample studio, Haven.</p>
 </div></section>
@@ -483,7 +465,7 @@ footer .links { display:flex; gap:20px; }
   <div class="plans">
     <div class="plan a">
       <h3>Booking system</h3>
-      <div class="price">£900<small>to set up</small></div>
+      <div class="price">£900<small>one-off setup</small></div>
       <p class="monthly">Then <b>about £60 a month</b>, all in</p>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Members book and pay on phone or computer</li>
@@ -494,7 +476,7 @@ footer .links { display:flex; gap:20px; }
     </div>
     <div class="plan b">
       <h3>With your own apps</h3>
-      <div class="price">£1,800<small>to set up</small></div>
+      <div class="price">£1,800<small>one-off setup</small></div>
       <p class="monthly">Then the same <b>about £60 a month</b>, all in</p>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Everything in the booking system</li>
@@ -505,7 +487,9 @@ footer .links { display:flex; gap:20px; }
     </div>
   </div>
   <p class="extra">Want a website too? We'll build one in your brand, with your live timetable and prices, for £400.</p>
-  <p class="allin">“All in” means £30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members; above that, email adds about £3.50 a month per extra 100 members. Prices exclude VAT.</p>
+  <p class="allin">Setup is paid half when you sign and half when you go live. Prices exclude VAT.</p>
+  <details class="incl"><summary>What's in “about £60 a month, all in”?</summary>
+    <p>£30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members; above that, email adds about £3.50 a month per extra 100 members.</p></details>
 
   <div class="calc" id="calculator">
     <div>
@@ -544,22 +528,13 @@ footer .links { display:flex; gap:20px; }
   </ol>
 </div></section>
 
-<section class="data"><div class="wrap">
-  <h2>Looking after your members' data</h2>
-  <ul>
-    <li><h3>Your own accounts</h3><p>Your system runs on your own Cloudflare account, not a database shared with other studios.</p></li>
-    <li><h3>Private notes</h3><p>Health and injury notes are only visible to the staff you choose.</p></li>
-    <li><h3>Secure payments</h3><p>Cards and Direct Debits are handled by Stripe. Card details never touch your system.</p></li>
-    <li><h3>Built for UK GDPR</h3><p>Export or delete a member's data when they ask, and see who has access to what.</p></li>
-  </ul>
-</div></section>
-
 <section class="faq" id="questions"><div class="wrap">
   <h2>Questions</h2>
   <div>
     <details><summary>What does “about £60 a month, all in” include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
     <details><summary>Why do I pay Cloudflare and Resend directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that it adds about £3.50 a month per extra 100 members, so about £95 a month all in at 3,000 and about £165 at 5,000. Switching reminder emails to free app notifications brings that down.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
+    <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own Cloudflare account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. And you can export or delete a member's data when they ask, as UK GDPR requires.</p></details>
     <details><summary>What happens to our data if we leave?</summary><p>It's yours. It lives in your own accounts and you can export it any time. If you ever leave, it leaves with you.</p></details>
     <details><summary>Who owns the apps?</summary><p>You do. They're published under your own Apple and Google developer accounts, in your studio's name. Apple charges about £79 a year and Google $25 once.</p></details>
     <details><summary>What about card fees?</summary><p>Stripe charges its standard rates on each payment. We don't add anything on top.</p></details>
