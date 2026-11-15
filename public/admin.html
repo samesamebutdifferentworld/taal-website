@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enquiries: Taal</title>
+<meta name="robots" content="noindex">
+<style>
+@font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+@font-face { font-family:'Funnel Display'; src:url('fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+:root { --paper:#F2F3EE; --ink:#13201E; --mute:#55625F; --rule:#D3DAD3; --green:#0F5C57; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:'Funnel Sans', system-ui, sans-serif; font-size:16px; line-height:1.5; }
+main { max-width:1100px; margin:0 auto; padding:32px 20px 80px; }
+h1 { font-family:'Funnel Display', sans-serif; font-size:36px; letter-spacing:-0.02em; margin:0 0 20px; }
+input, button { font:inherit; padding:10px 14px; border-radius:10px; border:1.5px solid var(--rule); }
+button { background:var(--ink); color:var(--paper); border:0; font-weight:600; cursor:pointer; }
+table { width:100%; border-collapse:collapse; background:#fff; border-radius:16px; overflow:hidden; }
+th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--rule); vertical-align:top; font-size:15px; }
+th { font-weight:600; color:var(--mute); }
+tr.row { cursor:pointer; }
+tr.row:hover td { background:#F7F8F4; }
+.tag { display:inline-block; padding:2px 10px; border-radius:999px; font-size:13px; font-weight:600; background:var(--paper); }
+.tag.paid { background:var(--green); color:#fff; }
+.tag.unpaid { background:#F3E7C9; }
+.detail td { background:#FAFBF8; }
+.detail dl { display:grid; grid-template-columns:180px 1fr; gap:6px 16px; margin:0; }
+.detail dt { color:var(--mute); }
+.detail dd { margin:0; white-space:pre-wrap; }
+.sw { display:inline-block; width:14px; height:14px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid var(--rule); }
+.msg { color:#9B2C1F; margin-top:12px; }
+@media (max-width:700px) { .hide-sm { display:none; } .detail dl { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Enquiries</h1>
+  <form id="login"><input type="password" id="key" placeholder="Admin key" autocomplete="current-password" aria-label="Admin key"> <button>Sign in</button><p class="msg" id="msg"></p></form>
+  <div id="list" hidden></div>
+</main>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  let key = sessionStorage.getItem('taalAdmin') || '';
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const date = iso => iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  const call = (p, type) => fetch('/api/admin/' + p, { headers: { authorization: 'Bearer ' + key } }).then(async r => {
+    if (r.status === 401) { sessionStorage.removeItem('taalAdmin'); throw new Error('That key didn\'t work.'); }
+    if (!r.ok) throw new Error('Could not load (' + r.status + ').');
+    return type === 'blob' ? r.blob() : r.json();
+  });
+  const label = { none: 'Enquiry', unpaid: 'Brief, not paid', paid: 'Paid' };
+
+  async function load() {
+    const { enquiries } = await call('enquiries');
+    sessionStorage.setItem('taalAdmin', key);
+    $('login').hidden = true; $('list').hidden = false;
+    $('list').innerHTML = enquiries.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Name</th><th class="hide-sm">Email</th><th class="hide-sm">Members</th><th>Stage</th><th>Demo due</th></tr></thead><tbody>${
+      enquiries.map(x => `<tr class="row" data-id="${esc(x.id)}"><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(x.name)}</td><td class="hide-sm"><a href="mailto:${esc(x.email)}">${esc(x.email)}</a></td><td class="hide-sm">${esc(x.members)}</td><td><span class="tag ${esc(x.brief)}">${label[x.brief] || ''}</span></td><td>${x.demo_due ? date(x.demo_due) : ''}</td></tr>`).join('')
+    }</tbody></table>` : '<p>No enquiries yet.</p>';
+  }
+
+  $('list').addEventListener('click', async ev => {
+    const tr = ev.target.closest('tr.row');
+    if (!tr || ev.target.closest('a')) return;
+    if (tr.nextElementSibling && tr.nextElementSibling.classList.contains('detail')) { tr.nextElementSibling.remove(); return; }
+    const { enquiry: q, brief: b } = await call('enquiries/' + tr.dataset.id);
+    const f = (b && b.fields) || {};
+    const sw = c => c ? `<span class="sw" style="background:${esc(c)}"></span>${esc(c)} ` : '';
+    const rows = [
+      ['Email', q.email], ['Active members', q.members], ['Note', q.note], ['Colour tried on site', q.colour],
+      ['Website or Instagram', f.web], ['Classes and services', f.services], ['Memberships and prices', f.prices], ['Timetable', f.timetable], ['Anything else', f.other],
+      ['Paid', q.paid_at ? date(q.paid_at) + (q.payment ? ' (' + q.payment + ')' : '') : ''],
+    ].filter(([, v]) => v);
+    const td = document.createElement('tr'); td.className = 'detail';
+    td.innerHTML = `<td colspan="7"><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}${
+      f.colour ? `<dt>Brief colours</dt><dd>${sw(f.colour)}${sw(f.colour2)}</dd>` : ''}${
+      b && b.logo ? `<dt>Logo</dt><dd><button type="button" data-logo="${esc(q.id)}" data-name="${esc(b.logo.name)}">Download ${esc(b.logo.name)}</button></dd>` : ''}</dl></td>`;
+    tr.after(td);
+  });
+  $('list').addEventListener('click', async ev => {
+    const btn = ev.target.closest('[data-logo]'); if (!btn) return;
+    const blob = await call('enquiries/' + btn.dataset.logo + '/logo', 'blob');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = btn.dataset.name; a.click();
+  });
+  $('login').addEventListener('submit', ev => { ev.preventDefault(); key = $('key').value.trim(); load().catch(err => { $('msg').textContent = err.message; }); });
+  if (key) load().catch(() => {});
+})();
+</script>
+</body>
+</html>

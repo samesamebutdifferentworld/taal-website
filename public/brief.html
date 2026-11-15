@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your demo brief: Taal</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F5C57">
+<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Crect x='5' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='10.5' y='4' width='3' height='16' rx='1.5' fill='%23F2F3EE'/%3E%3Crect x='16' y='9' width='3' height='6' rx='1.5' fill='%23F2F3EE'/%3E%3C/svg%3E">
+<style>
+@font-face { font-family:'Funnel Display'; src:url('fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+@font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+:root { --paper:#F2F3EE; --ink:#13201E; --mute:#55625F; --rule:#D3DAD3; --green:#0F5C57; --deep:#0A3F3B; --sage:#A9C2B2; --err:#9B2C1F; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:'Funnel Sans', system-ui, sans-serif; font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+a { color:var(--green); text-underline-offset:3px; }
+:focus-visible { outline:2px solid var(--green); outline-offset:3px; border-radius:6px; }
+h1, h2, .logo { font-family:'Funnel Display', 'Funnel Sans', system-ui, sans-serif; letter-spacing:-0.02em; margin:0; }
+p { margin:0; }
+header { max-width:760px; margin:0 auto; padding:24px 24px 0; }
+.logo { display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:22px; color:var(--ink); text-decoration:none; }
+main { max-width:760px; margin:0 auto; padding:40px 24px 96px; }
+h1 { font-size:clamp(36px, 6vw, 56px); line-height:1; font-weight:650; }
+.lead { margin-top:16px; font-size:19px; color:var(--mute); max-width:34em; }
+form { margin-top:36px; display:grid; gap:28px; background:#fff; border-radius:28px; padding:32px; }
+fieldset { border:0; padding:0; margin:0; display:grid; gap:16px; }
+legend { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:22px; letter-spacing:-0.02em; margin-bottom:4px; padding:0; }
+label { display:grid; gap:6px; font-weight:600; font-size:15px; }
+label small { font-weight:400; color:var(--mute); font-size:14px; }
+input[type=text], input[type=url], textarea { font:inherit; font-size:16px; font-weight:400; padding:12px 14px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); width:100%; }
+input:focus, textarea:focus { border-color:var(--green); outline:none; }
+textarea { min-height:110px; resize:vertical; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.colours { display:flex; gap:20px; flex-wrap:wrap; }
+.colours label { display:flex; align-items:center; gap:10px; }
+input[type=color] { width:44px; height:44px; border:1.5px solid var(--rule); border-radius:50%; padding:0; background:none; cursor:pointer; }
+input[type=color]::-webkit-color-swatch-wrapper { padding:3px; }
+input[type=color]::-webkit-color-swatch { border:0; border-radius:50%; }
+.logo-row { display:flex; align-items:center; gap:16px; }
+.logo-prev { width:64px; height:64px; border-radius:16px; border:1.5px dashed var(--rule); display:grid; place-items:center; overflow:hidden; flex:none; color:var(--mute); font-size:12px; }
+.logo-prev img { max-width:100%; max-height:100%; }
+input[type=file] { font:inherit; font-size:15px; }
+.pay { display:grid; gap:12px; border-top:1.5px solid var(--rule); padding-top:24px; }
+.pay p { font-size:15px; color:var(--mute); }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 24px; border-radius:999px; border:0; background:var(--ink); color:var(--paper); text-decoration:none; font:inherit; font-weight:600; font-size:16px; cursor:pointer; justify-self:start; }
+.btn:hover { background:var(--green); }
+.btn[disabled] { opacity:.6; cursor:wait; }
+.msg { font-size:15px; min-height:1em; color:var(--green); }
+.msg.err { color:var(--err); }
+.panel { margin-top:36px; background:var(--green); color:var(--paper); border-radius:28px; padding:36px 32px; display:grid; gap:12px; }
+.panel h2 { font-size:32px; font-weight:650; }
+.panel p { color:#D3E3DA; }
+.panel a { color:var(--paper); }
+[hidden] { display:none !important; }
+@media (max-width:640px) {
+  form { padding:24px 20px; }
+  .two { grid-template-columns:1fr; }
+  .btn { justify-self:stretch; }
+  main { padding-top:28px; }
+}
+</style>
+</head>
+<body>
+<header><a class="logo" href="./"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/><rect x="10.5" y="4" width="3" height="16" rx="1.5" fill="#0F5C57"/><rect x="16" y="9" width="3" height="6" rx="1.5" fill="#0F5C57"/></svg>taal</a></header>
+<main>
+  <h1 id="title">Your demo brief</h1>
+  <p class="lead" id="lead">Tell us about your studio and we'll build a working demo of your own booking app within 7 days. Rough notes are fine: we'll fill the gaps.</p>
+
+  <div class="panel" id="notice" hidden role="status" tabindex="-1"><h2 id="noticeTitle"></h2><p id="noticeText"></p></div>
+
+  <form id="brief" novalidate hidden>
+    <input type="hidden" name="e" id="e">
+    <fieldset>
+      <legend>Your brand</legend>
+      <label>Studio name<input type="text" name="studio" id="studio" maxlength="80" required autocomplete="organization"></label>
+      <label>Website or Instagram <small>So we can match your look and wording</small><input type="text" name="web" maxlength="200" placeholder="yourstudio.co.uk or @yourstudio"></label>
+      <div class="logo-row">
+        <div class="logo-prev" id="logoPrev" aria-hidden="true">Logo</div>
+        <label>Logo <small>PNG, JPG, SVG or WebP, up to 2 MB. Optional: without one we use your studio name.</small><input type="file" name="logo" id="logo" accept="image/png,image/jpeg,image/svg+xml,image/webp"></label>
+      </div>
+      <div class="colours">
+        <label><input type="color" name="colour" id="colour" value="#155E5A">Main colour</label>
+        <label><input type="color" name="colour2" id="colour2" value="#F2F3EE">Second colour</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>What you offer</legend>
+      <label>Classes and services <small>Names and how long they last, e.g. Reformer Pilates 50 min, Sports massage 60 min</small><textarea name="services" required maxlength="3000"></textarea></label>
+      <label>Memberships and prices <small>Optional. Monthly plans, class packs, drop-in prices</small><textarea name="prices" maxlength="3000"></textarea></label>
+      <label>Timetable <small>Optional. A link, or a rough outline of your week</small><textarea name="timetable" maxlength="3000"></textarea></label>
+      <label>Anything else <small>Optional. What you'd most like to see in the demo</small><textarea name="other" maxlength="2000"></textarea></label>
+    </fieldset>
+    <div class="pay">
+      <p id="payNote">The £5 fee just tells us you're serious. You pay securely with Stripe and your demo arrives within 7 days.</p>
+      <button class="btn" type="submit" id="submit">Pay £5 and send my brief</button>
+      <p class="msg" id="msg" role="status"></p>
+    </div>
+  </form>
+</main>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const q = new URLSearchParams(location.search);
+  const e = q.get('e') || '';
+  const form = $('brief'), msg = $('msg');
+  let canPay = true;
+
+  function notice(title, text) {
+    $('noticeTitle').textContent = title; $('noticeText').textContent = text;
+    $('notice').hidden = false; $('notice').focus();
+  }
+  function done(due) {
+    form.hidden = true; $('lead').hidden = true; $('title').textContent = 'Your brief is in';
+    notice('Thank you.', 'We have your brief and payment. Your demo will be with you by ' + longDate(due) + '. We\'ve emailed you a confirmation, and Stripe sends your receipt.');
+  }
+  function longDate(iso) {
+    return new Date(iso + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  }
+  async function api(path, opts) {
+    const res = await fetch(path, opts);
+    const r = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(r.error || 'Something went wrong. Please try again.');
+    return r;
+  }
+
+  async function start() {
+    if (!/^[0-9a-f]{32}$/.test(e)) { notice('Use the link in your email', 'This page opens from the link we emailed you after your enquiry. If you can\'t find it, send us an enquiry again from the home page.'); $('lead').hidden = true; return; }
+    let r;
+    try { r = await api('/api/enquiry/' + e); } catch (err) { notice('We couldn\'t open your brief', err.message); $('lead').hidden = true; return; }
+    if (r.brief === 'paid') return done(r.demo_due);
+    if (q.get('session')) {
+      try {
+        const c = await api('/api/brief/confirm', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ e, session: q.get('session') }) });
+        if (c.status === 'paid') return done(c.demo_due);
+      } catch (err) { /* fall through to the form */ }
+      notice('We\'re checking your payment', 'Stripe hasn\'t confirmed it yet. Refresh this page in a minute. If you were charged, we\'ll email you either way.');
+    }
+    canPay = r.can_pay;
+    $('e').value = e;
+    $('title').textContent = 'Your demo brief, ' + r.name;
+    $('studio').value = (r.fields && r.fields.studio) || r.studio;
+    if (r.colour) $('colour').value = r.colour;
+    if (r.fields) {
+      for (const [k, v] of Object.entries(r.fields)) { const el = form.elements[k]; if (el && v && el.type !== 'file') el.value = v; }
+      if (r.has_logo) $('logoPrev').textContent = 'Saved';
+    }
+    if (!canPay) { $('submit').textContent = 'Send my brief'; $('payNote').textContent = 'We\'ll email you a link to pay the £5, which just tells us you\'re serious. Your demo arrives within 7 days of payment.'; }
+    if (q.get('cancelled')) notice('Payment not finished', 'Your brief is saved. Pay the £5 below whenever you\'re ready.');
+    form.hidden = false;
+  }
+
+  $('logo').addEventListener('change', () => {
+    const f = $('logo').files[0], prev = $('logoPrev');
+    msg.textContent = ''; msg.classList.remove('err');
+    if (!f) { prev.textContent = 'Logo'; return; }
+    if (f.size > 2 * 1024 * 1024) { msg.classList.add('err'); msg.textContent = 'That logo is over 2 MB. Try a smaller file.'; $('logo').value = ''; return; }
+    const img = new Image(); img.alt = ''; img.src = URL.createObjectURL(f);
+    prev.textContent = ''; prev.appendChild(img);
+  });
+
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    msg.classList.remove('err');
+    if (!form.studio.value.trim() || !form.services.value.trim()) { msg.classList.add('err'); msg.textContent = 'Add your studio name and your classes and services.'; return; }
+    const btn = $('submit'); btn.disabled = true; msg.textContent = canPay ? 'Taking you to payment…' : 'Sending…';
+    try {
+      const r = await api('/api/brief', { method: 'POST', body: new FormData(form) });
+      if (r.status === 'pay' && r.checkout_url) { location.href = r.checkout_url; return; }
+      if (r.status === 'paid') return done(r.demo_due);
+      form.hidden = true; $('lead').hidden = true; $('title').textContent = 'Your brief is in';
+      notice('Thank you.', 'We\'ll email you a link to pay the £5. Your demo arrives within 7 days of payment.');
+    } catch (err) {
+      msg.classList.add('err'); msg.textContent = err.message; btn.disabled = false;
+    }
+  });
+
+  start();
+})();
+</script>
+</body>
+</html>

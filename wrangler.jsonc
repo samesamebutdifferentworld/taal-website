@@ -3,12 +3,23 @@
   "main": "src/worker.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
-  "assets": {
-    "directory": "./public",
-    "binding": "ASSETS",
-    "run_worker_first": ["/api/*"]
-  },
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
   "kv_namespaces": [
-    { "binding": "LICENCES", "id": "fc1426bc38504f78b52e0bf054e18250" }
-  ]
+    { "binding": "LICENCES", "id": "fc1426bc38504f78b52e0bf054e18250" },
+    // Demo enquiries, briefs and logos (kept for a year).
+    { "binding": "ENQUIRIES", "id": "8420623ed9644cc58548c5131084201f" }
+  ],
+  "vars": {
+    // Where new enquiries and paid briefs are sent, and the reply-to on emails to studios.
+    "CONTACT_EMAIL": "",
+    // The sender, on a domain verified in Resend, e.g. "Tim at Taal <hello@yourdomain.com>".
+    "EMAIL_FROM": "",
+    // Booking link for a Zoom call (Calendly, Cal.com or Zoom Scheduler). Empty: "reply with some times".
+    "CALL_URL": ""
+  }
+  // Secrets, set in Cloudflare (Worker > Settings > Variables and secrets), never in this file:
+  //   RESEND_API_KEY         sends the emails
+  //   STRIPE_SECRET_KEY      takes the £5 demo fee
+  //   STRIPE_WEBHOOK_SECRET  confirms payments if someone closes the tab (endpoint /api/stripe/webhook)
+  //   ADMIN_KEY              a long random string: signs you in to /admin.html
 }

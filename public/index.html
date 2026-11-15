@@ -127,6 +127,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .swatches .own { position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; background:conic-gradient(#e0533d, #e8b43a, #5aa85b, #3a86c8, #8b5cc4, #e0533d); cursor:pointer; }
 .swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
 .switch .note { font-size:13px; color:var(--mute); }
+.demo-link { font-size:14px; font-weight:600; justify-self:start; }
 
 /* rhythm band */
 .rhythm { background:var(--green); color:var(--paper); padding:110px 0 100px; }
@@ -289,6 +290,19 @@ form input:focus, form select:focus, form textarea:focus { border-color:var(--gr
 form textarea { min-height:96px; resize:vertical; }
 form .btn { justify-self:start; }
 form .msg { font-size:15px; color:var(--green); min-height:1em; }
+form .msg.err { color:#9B2C1F; }
+form[hidden] { display:none; }
+form .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+form .btn[disabled] { opacity:.6; cursor:wait; }
+.next { background:var(--paper); color:var(--ink); border-radius:28px; padding:32px; display:grid; gap:12px; }
+.next[hidden], .next [hidden] { display:none; }
+.next:focus { outline:none; }
+.next h3 { font-size:28px; }
+.next > p { color:var(--mute); }
+.next .choices { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px; }
+.next .choices > div { display:grid; gap:8px; align-content:start; border:1.5px solid var(--rule); border-radius:20px; padding:20px; }
+.next .choices p { font-size:15px; color:var(--mute); }
+.next .choices .btn { justify-self:start; margin-top:6px; padding:12px 20px; font-size:15px; }
 
 footer { padding:36px 0 56px; font-size:14px; color:var(--mute); }
 footer .wrap { display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:flex-start; }
@@ -318,6 +332,7 @@ footer .links { display:flex; gap:20px; }
   .ctas { flex-direction:column; align-items:stretch; max-width:320px; margin:0 auto; }
   .switch { justify-items:center; text-align:center; }
   .switch label.name, .switch .note { text-align:center; }
+  .demo-link { justify-self:center; }
   .swatches { justify-content:center; }
   .total { align-items:center; text-align:center; }
   .t-row, .t-years { align-items:center; width:100%; }
@@ -335,7 +350,9 @@ footer .links { display:flex; gap:20px; }
   .tabs { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); width:100%; margin:28px 0 32px; }
   .tabs button { padding:11px 6px; font-size:14.5px; }
   .wrap { padding:0 20px; }
-  form .two { grid-template-columns:1fr; }
+  form .two, .next .choices { grid-template-columns:1fr; }
+  .next { text-align:center; }
+  .next .choices .btn { justify-self:stretch; }
   .cbar { grid-template-columns:110px minmax(0,1fr) 78px; font-size:14px; }
   nav .btn { padding:9px 14px; font-size:14px; }
 }
@@ -413,6 +430,7 @@ footer .links { display:flex; gap:20px; }
         <label class="own" title="Pick your own colour"><span class="sr">Pick your own colour</span><input type="color" id="ownColour" value="#155E5A"></label>
       </div>
       <p class="note">A sample screen. Your real app also uses your logo, fonts and wording.</p>
+      <a class="demo-link" href="#demo" id="demoLink">See a demo in your brand</a>
     </div>
   </div>
 </div></header>
@@ -555,7 +573,7 @@ footer .links { display:flex; gap:20px; }
 <section class="how" id="how"><div class="wrap">
   <h2>How it works</h2>
   <ol class="steps">
-    <li><span class="when">See it</span><h3>A demo within a week</h3><p>A working demo in your brand, free, before you decide anything.</p></li>
+    <li><span class="when">See it</span><h3>A demo within 7 days</h3><p>Book a call to talk it through, or send a short brief with £5 and get a working demo in your brand.</p></li>
     <li><span class="when">Try it</span><h3>Your system in four weeks</h3><p>Your timetable, prices and team, set up for you. Then two weeks to test it with your staff.</p></li>
     <li><span class="when">Switch</span><h3>Live when you're ready</h3><p>We move your members across when your current contract allows. Your own apps follow a few weeks later.</p></li>
   </ol>
@@ -581,7 +599,7 @@ footer .links { display:flex; gap:20px; }
 <section class="demo" id="demo"><div class="wrap">
   <div>
     <h2>See your studio in it first.</h2>
-    <p class="lead">Tell us a little about your studio and we'll build a working demo in your brand within a week, before you decide anything.</p>
+    <p class="lead">Tell us a little about your studio. We'll email you two ways to start: a short Zoom call to ask anything, or a brief with a £5 fee for a working demo in your brand within 7 days.</p>
   </div>
   <form id="demoForm" novalidate>
     <div class="two">
@@ -595,9 +613,19 @@ footer .links { display:flex; gap:20px; }
       </label>
     </div>
     <label>What do you use now, and what would you change? <textarea name="note"></textarea></label>
-    <button class="btn" type="submit">Request my demo</button>
+    <input type="hidden" name="colour" id="formColour">
+    <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+    <button class="btn" type="submit">Send</button>
     <p class="msg" id="formMsg" role="status"></p>
   </form>
+  <div class="next" id="nextSteps" hidden tabindex="-1">
+    <h3 id="nextTitle">Thanks. Check your inbox.</h3>
+    <p>We've emailed you the same two options, so you can come back to them later.</p>
+    <div class="choices">
+      <div><b>Talk it through first</b><p>A short Zoom call at a time that suits you. Ask anything, no preparation needed.</p><a class="btn line" id="callBtn" href="#">Book a call</a></div>
+      <div><b>See it straight away</b><p>A short brief about your studio and a £5 fee, so we know you're serious. Your demo arrives within 7 days.</p><a class="btn" id="briefBtn" href="brief.html">Send your brief</a></div>
+    </div>
+  </div>
 </div></section>
 
 <footer><div class="wrap">
@@ -716,17 +744,38 @@ const CONTACT_EMAIL = 'EMAIL';
   openFor(location.hash);
 })();
 
-/* demo form: opens an email with the details filled in */
+/* demo form: saved by the site, which emails a thank-you with the two ways to start */
 (function () {
-  const f = document.getElementById('demoForm'), msg = document.getElementById('formMsg');
-  document.getElementById('footMail').href = 'mailto:' + CONTACT_EMAIL;
-  f.addEventListener('submit', e => {
+  const f = document.getElementById('demoForm'), msg = document.getElementById('formMsg'), next = document.getElementById('nextSteps');
+  document.getElementById('footMail').href = CONTACT_EMAIL.includes('@') ? 'mailto:' + CONTACT_EMAIL : '#demo';
+  // "See a demo in your brand" carries the name and colour tried on the phone into the form.
+  document.getElementById('demoLink').addEventListener('click', () => {
+    const name = document.getElementById('studioName').value.trim();
+    if (name && !f.studio.value) f.studio.value = name;
+    setTimeout(() => f.name.focus({ preventScroll: true }), 500);
+  });
+  f.addEventListener('submit', async e => {
     e.preventDefault();
+    msg.classList.remove('err');
     const d = new FormData(f);
-    if (!d.get('name') || !d.get('studio') || !d.get('email')) { msg.textContent = 'Add your name, studio name and email so we can reply.'; return; }
-    const body = 'Name: ' + d.get('name') + '\nStudio: ' + d.get('studio') + '\nEmail: ' + d.get('email') + '\nActive members: ' + d.get('members') + '\n\n' + (d.get('note') || '');
-    window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Demo request: ' + d.get('studio')) + '&body=' + encodeURIComponent(body);
-    msg.textContent = 'Your email app should open with this filled in. If it doesn\'t, email ' + CONTACT_EMAIL + '.';
+    if (!d.get('name') || !d.get('studio') || !d.get('email')) { msg.classList.add('err'); msg.textContent = 'Add your name, studio name and email so we can reply.'; return; }
+    const sw = document.querySelector('.swatches [aria-pressed="true"]');
+    d.set('colour', sw ? sw.dataset.c : document.getElementById('ownColour').value);
+    const btn = f.querySelector('button[type=submit]');
+    btn.disabled = true; msg.textContent = 'Sending…';
+    try {
+      const res = await fetch('/api/enquiry', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.fromEntries(d)) });
+      const r = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(r.error || 'That didn\'t send. Please try again.');
+      document.getElementById('nextTitle').textContent = 'Thanks, ' + String(d.get('name')).trim().split(' ')[0] + '. Check your inbox.';
+      document.getElementById('briefBtn').href = r.brief_url;
+      const call = document.getElementById('callBtn');
+      if (r.call_url) call.href = r.call_url;
+      else { call.textContent = 'Reply to our email'; call.removeAttribute('href'); call.parentElement.querySelector('p').textContent = 'Reply to the email we just sent with a few times that suit you, and we\'ll set up a short Zoom call.'; call.hidden = true; }
+      f.hidden = true; next.hidden = false; next.focus();
+    } catch (err) {
+      msg.classList.add('err'); msg.textContent = err.message; btn.disabled = false;
+    }
   });
 })();
 </script>
