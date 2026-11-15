@@ -84,8 +84,11 @@ body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:
 
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
-nav { position:sticky; top:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
-html { background:#F2F3EE; }
+nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
+/* phones draw the page up behind the clock and battery: this paints that strip the same colour as the bar */
+nav::before { content:''; position:absolute; left:0; right:0; bottom:100%; height:200px; background:#F2F3EE; }
+html { background:#F2F3EE; scroll-padding-top:80px; }
+body { padding-top:calc(67px + env(safe-area-inset-top)); }
 nav .wrap { display:flex; align-items:center; justify-content:space-between; height:66px; gap:20px; }
 .logo { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink); font-weight:650; font-size:24px; letter-spacing:-0.03em; }
 .logo:hover { color:var(--ink); }
