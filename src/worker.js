@@ -1,5 +1,5 @@
 /**
- * Taal website, plus the licence service that client studios check in with.
+ * taal website, plus the licence service that client studios check in with.
  *
  * GET /api/licence  with header  Authorization: Licence <key>
  *   -> 200 {"status":"active"} or {"status":"ended","ended_at":"2027-03-01","grace_days":30}

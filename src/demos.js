@@ -144,7 +144,7 @@ function layout(inner) {
 <p style="margin:0 0 24px;font-weight:700;font-size:18px;color:${C.green}">taal</p>
 ${inner}
 </td></tr></table>
-<p style="margin:20px 0 0;font-size:12px;color:${C.mute}">Taal, studio software made in London.</p>
+<p style="margin:20px 0 0;font-size:12px;color:${C.mute}">taal, studio software made in London.</p>
 </td></tr></table></body></html>`;
 }
 
@@ -162,7 +162,7 @@ export function readyEmail({ first, studio, member_url, admin_url, call_url, unt
 <p style="margin:0 0 6px"><b>Next: a quick call</b></p>
 ${call}
 <p style="margin:0;color:${C.mute};font-size:14px">Your demo is private to you and stays up until ${esc(until)}.</p>
-<p style="margin:16px 0 0">Tim<br><span style="color:${C.mute}">Founder, Taal</span></p>`);
+<p style="margin:16px 0 0">Tim<br><span style="color:${C.mute}">Founder, taal</span></p>`);
   const text = `Hi ${first},
 
 Your demo of ${studio} is ready. It has sample classes, members and bookings, so you can try everything: book as a member, then switch to a coach or the owner with the bar at the top.
@@ -177,7 +177,7 @@ We'll show you how it would work with your real timetable, prices and team.
 Your demo is private to you and stays up until ${until}.
 
 Tim
-Founder, Taal`;
+Founder, taal`;
   return { html, text };
 }
 
