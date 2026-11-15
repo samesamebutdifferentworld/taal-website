@@ -323,9 +323,11 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* founder */
 .founder { padding:140px 0; position:relative; isolation:isolate; overflow:hidden; }
 /* yue float, the studio Tim ran: faded right back so the quote reads easily */
-.founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .94) 0%, rgb(242 243 238 / .9) 55%, rgb(242 243 238 / .8) 100%), url('img/yue-float.jpg') center 40%/cover no-repeat; }
-@media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .9), rgb(242 243 238 / .9)), url('img/yue-float-sm.jpg') 0% 30%/auto 125% no-repeat; } }
-.founder .photo-note { margin-top:28px; font-size:12px; color:var(--mute); }
+.founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .86) 0%, rgb(242 243 238 / .8) 55%, rgb(242 243 238 / .64) 100%), url('img/yue-float.jpg') center 40%/cover no-repeat; }
+@media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .82), rgb(242 243 238 / .82)), url('img/yue-float-sm.jpg') 0% 30%/auto 125% no-repeat; } }
+.founder .photo-note { margin-top:28px; font-size:12px; color:var(--green); font-weight:600; }
+.founder blockquote, .founder figcaption, .founder figcaption .mute { color:var(--green); }
+.founder blockquote::before { background:var(--green) !important; }
 .founder .wrap { max-width:980px; }
 .founder blockquote { margin:0; font-size:clamp(28px, 3.8vw, 48px); line-height:1.12; letter-spacing:-0.03em; font-weight:550; }
 .founder figcaption { margin-top:36px; display:flex; align-items:center; gap:14px; font-size:15px; }
