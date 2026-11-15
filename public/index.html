@@ -183,6 +183,11 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .opt:has(input:checked) { box-shadow:inset 0 0 0 1.5px var(--green); }
 .opt:not(:has(input:checked)) .opt-text, .opt:not(:has(input:checked)) .opt-price { opacity:.55; }
 .opt.fixed { cursor:default; }
+.members-opt { cursor:default; grid-template-columns:minmax(0,1fr) auto; box-shadow:none; }
+.members-opt .opt-text, .members-opt .opt-price { opacity:1 !important; }
+.opt.members-opt input[type=range] { position:static; opacity:1; height:auto; grid-column:1 / -1; width:100%; accent-color:var(--green); margin:4px 0 2px; }
+#tMonth small { font-size:.42em; font-weight:500; letter-spacing:0; margin-right:6px; }
+#tMonth { white-space:nowrap; }
 .opt-text b { display:block; font-family:'Funnel Display', sans-serif; font-size:19px; letter-spacing:-0.01em; margin-bottom:3px; }
 .opt-text span { color:var(--mute); font-size:15px; }
 .opt-price { font-family:'Funnel Display', sans-serif; font-size:22px; font-weight:650; white-space:nowrap; }
@@ -508,10 +513,12 @@ footer .links { display:flex; gap:20px; }
       <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, setup, member import and training.</span></span><span class="opt-price">£900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play, with push alerts. Released a few weeks after you go live.</span></span><span class="opt-price">+£900</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Full studio website</b><span>Your whole public website in your brand, not just the booking pages: home, about, team, hours and FAQs, with your live timetable and prices built in.</span></span><span class="opt-price">+£400</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
+      <div class="opt members-opt"><label for="members" class="opt-text"><b>Active members</b><span>The monthly fee stays the same up to 2,000 members, then rises a little for email.</span></label><output id="membersOut" for="members" class="opt-price">150</output>
+        <input type="range" id="members" min="25" max="5000" step="25" value="150" aria-describedby="membersOut"></div>
     </div>
     <div class="total" aria-live="polite">
       <div class="t-row"><span class="t-label">Once, to set up</span><div class="t-price" id="tSetup">£2,200</div><span class="t-note">Half when you sign, half when you go live</span></div>
-      <div class="t-row"><span class="t-label">Then each month, 12-month minimum</span><div class="t-price">£60</div><span class="t-note">£30 to us, about £30 for hosting and email, paid to the providers directly</span></div>
+      <div class="t-row"><span class="t-label">Then each month, 12-month minimum</span><div class="t-price" id="tMonth">£60</div><span class="t-note">£30 to us, about <span id="tRun">£30</span> for hosting and email, paid to the providers directly</span></div>
       <div class="t-years"><span class="t-label">What that adds up to</span><span><b id="tY1">£2,920</b> in year one</span><span><b id="tLater">£720</b> a year after that</span></div>
       <a class="btn light" href="#demo">Book a demo in your brand</a>
     </div>
@@ -524,14 +531,10 @@ footer .links { display:flex; gap:20px; }
   <div class="calc">
     <div>
       <div class="field">
-        <label for="members">Active members <output id="membersOut" for="members">150</output></label>
-        <input type="range" id="members" min="25" max="5000" step="25" value="150">
-      </div>
-      <div class="field">
         <label for="current">What you pay for software now, each month</label>
         <div class="money"><span>£</span><input type="number" id="current" inputmode="decimal" min="0" step="5" value="200"></div>
       </div>
-      <p class="fine">Uses the options you picked above.</p>
+      <p class="fine">Uses the options and member count you picked above.</p>
     </div>
     <div class="result" aria-live="polite">
       <div>
@@ -695,10 +698,16 @@ const CONTACT_EMAIL = 'EMAIL';
   }
   // The pricing switches: setup total, year one and later years (hosting at the 2,000-member rate).
   function price() {
+    const m = +$('members').value;
+    const running = Math.round(30 + Math.max(0, m - 2000) / 100 * 3.5), monthly = 30 + running;
     const setup = 900 + ($('optApps').checked ? 900 : 0) + ($('optSite').checked ? 400 : 0);
-    $('tSetup').textContent = gbp(setup); $('tY1').textContent = gbp(setup + 720); $('tLater').textContent = gbp(720);
+    $('tSetup').textContent = gbp(setup);
+    $('tMonth').innerHTML = (m > 2000 ? '<small>about</small>' : '') + gbp(monthly);
+    $('tRun').textContent = gbp(running);
+    $('tY1').textContent = gbp(setup + monthly * 12); $('tLater').textContent = gbp(monthly * 12);
   }
-  ['members','current'].forEach(id => $(id).addEventListener('input', run));
+  $('current').addEventListener('input', run);
+  $('members').addEventListener('input', () => { price(); run(); });
   ['optApps','optSite'].forEach(id => $(id).addEventListener('change', () => { price(); run(); }));
   price(); run();
   // Links to a closed section open it.
