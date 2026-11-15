@@ -8,35 +8,60 @@
 <style>
 @font-face { font-family:'Funnel Display'; src:url('fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
 @font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
-body { margin:0; background:#F2F3EE; color:#13201E; font-family:'Funnel Sans', system-ui, sans-serif; font-size:17px; line-height:1.6; }
-main { max-width:680px; margin:0 auto; padding:56px 24px 96px; }
-a { color:#0F5C57; }
-h1, h2 { font-family:'Funnel Display', sans-serif; }
-h1 { font-size:48px; line-height:1; letter-spacing:-0.03em; margin:40px 0 24px; }
-h2 { font-size:22px; letter-spacing:-0.02em; margin:36px 0 8px; }
+body { margin:0; background:#F2F3EE; color:#13201E; font-family:'Funnel Sans', system-ui, sans-serif; font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+main { max-width:680px; margin:0 auto; padding:48px 24px 96px; }
+a { color:#0F5C57; text-underline-offset:3px; }
+.logo { display:inline-flex; align-items:center; gap:6px; color:#13201E; text-decoration:none; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:22px; letter-spacing:-0.03em; }
+h1, h2 { font-family:'Funnel Display', sans-serif; font-weight:650; }
+h1 { font-size:clamp(44px, 9vw, 64px); line-height:.95; letter-spacing:-0.04em; margin:56px 0 20px; }
+h2 { font-size:21px; letter-spacing:-0.02em; margin:40px 0 8px; padding-top:18px; border-top:1px solid #D3DAD3; }
 p, li { color:#33403D; }
+ul { padding-left:20px; }
+li { margin:4px 0; }
+.lede { font-size:19px; color:#55625F; }
+.gap { background:#F9E7E3; color:#8A2E22; padding:0 4px; border-radius:3px; }
+.small { font-size:14px; color:#55625F; margin-top:48px; }
 </style>
 </head>
 <body>
 <main>
-  <a href="index.html">Back to taal</a>
+  <a class="logo" href="index.html" aria-label="Back to taal"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <h1>Privacy</h1>
-  <p>This page covers this website. Studios using taal have their own privacy notice for their members.</p>
+  <p class="lede">What this website and the demo builder collect, why, and what you can ask us to do with it. Studios using taal have their own privacy notice for their members.</p>
 
-  <h2>What this site collects</h2>
-  <p>Nothing on its own. There are no cookies, no analytics and no tracking. Our fonts are served from this site, so your visit isn't shared with Google or anyone else.</p>
+  <h2>Who we are</h2>
+  <p>taal is run by Tim Allan, trading as <span class="gap">[trading name]</span>, <span class="gap">[address]</span>. We are responsible for the personal data described here. You can reach us at <a class="mail" href="mailto:EMAIL">EMAIL</a>.</p>
+
+  <h2>Browsing this site</h2>
+  <p>We don't use cookies, analytics or tracking. Our fonts are served from this site, so your visit isn't shared with Google or anyone else. If you pick a kind of studio on the sample app, your browser remembers that choice on your own device so the page opens the same way next time. It isn't sent to us.</p>
 
   <h2>If you build a demo</h2>
-  <p>When you build a demo, we keep your name, email and what you chose for it (your studio's name, type, colours, class names and logo), and email you the links. We use this only to send you your demo and follow up about it. We don't share it or add you to a mailing list.</p>
-  <p>Your demo is private: only people with its link can open it. It is deleted after 30 days. Your details are deleted after a year unless you become a client. Emails are sent through our email provider.</p>
+  <p>To make your demo we need your email address. You can also give us your name and studio name, and choose a type of studio, colours, fonts, class names and a logo. We use these to build your demo, email you the links and follow up about it. We don't add you to a mailing list or sell or share your details.</p>
+  <p>The legal basis is that you asked us to do this before possibly becoming a client, and our legitimate interest in following up about a demo you asked for. You can tell us to stop at any time.</p>
 
-  <h2>Hosting</h2>
-  <p>This site is hosted by our hosting provider, which processes basic technical data such as IP addresses to deliver pages and protect against attacks.</p>
+  <h2>How long we keep it</h2>
+  <ul>
+    <li>Your demo, including any logo you uploaded, is deleted after 30 days.</li>
+    <li>Your contact details are deleted after a year, unless you become a client.</li>
+  </ul>
+
+  <h2>Services we use</h2>
+  <p>These companies process data for us, only to run the site and send emails:</p>
+  <ul>
+    <li><b>Cloudflare</b> hosts this site, the demo builder and the demos. It processes technical data such as IP addresses to deliver pages and protect against attacks.</li>
+    <li><b>Resend</b> sends the emails with your demo links.</li>
+  </ul>
+  <p>Both are US companies, so your data may be processed outside the UK. Where it is, it's protected by the safeguards UK law requires, such as the UK's data bridge with the US or approved contract terms.</p>
 
   <h2>Your rights</h2>
-  <p>You can ask us what we hold about you, or ask us to correct or delete it, by emailing <a class="mail" href="mailto:EMAIL">EMAIL</a>. If you're unhappy with how we handle your data, you can complain to the Information Commissioner's Office at <a href="https://ico.org.uk">ico.org.uk</a>.</p>
+  <p>You can ask us for a copy of what we hold about you, or ask us to correct it, delete it, stop using it or send it to you in a usable format. Email <a class="mail" href="mailto:EMAIL">EMAIL</a> and we'll reply within a month.</p>
+  <p>If you're unhappy with how we handle your data, please tell us first. You can also complain to the Information Commissioner's Office at <a href="https://ico.org.uk">ico.org.uk</a>.</p>
 
-  <p style="margin-top:40px;font-size:14px;color:#55625F">Last updated November 2026.</p>
+  <p class="small">Last updated November 2026.</p>
 </main>
+<script>
+// Fills in the contact address once it's set on the home page.
+(function () { const EMAIL = 'EMAIL'; if (!EMAIL.includes('@')) return; document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; a.textContent = EMAIL; }); })();
+</script>
 </body>
 </html>
