@@ -64,7 +64,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .ctas { display:flex; gap:12px; flex-wrap:wrap; }
 .try { display:grid; justify-items:center; gap:22px; }
 
-/* the live phone: a working copy of the Haven home screen, recoloured live */
+/* the live phone: a working copy of the app's home screen, recoloured live */
 @font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-400-normal.woff2') format('woff2'); font-weight:400; font-display:swap; }
 @font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-600-normal.woff2') format('woff2'); font-weight:600; font-display:swap; }
 @font-face { font-family:'Hanken Grotesk'; src:url('fonts/hanken-grotesk-latin-700-normal.woff2') format('woff2'); font-weight:700; font-display:swap; }
@@ -76,6 +76,9 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app-id { display:flex; align-items:center; gap:9px; min-width:0; }
 .app-logo { width:28px; height:30px; flex-shrink:0; }
 .app.light .app-logo { filter:brightness(.45); }
+.app-mono { width:28px; height:28px; flex-shrink:0; border-radius:50%; border:1.5px solid #D8BF8C; color:#D8BF8C; display:grid; place-items:center; font-weight:700; font-size:14px; line-height:1; }
+.app-mono[hidden] { display:none; }
+.app.light .app-mono { border-color:var(--on-brand); color:var(--on-brand); }
 .app-words { display:flex; flex-direction:column; gap:1px; min-width:0; }
 .app-name { font-weight:700; font-size:16px; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; line-height:1.1; }
 .app-sub { font-size:8.5px; letter-spacing:.24em; opacity:.75; }
@@ -390,7 +393,7 @@ footer .links { display:flex; gap:20px; }
     <div class="phone" aria-label="Sample app home screen, shown in the brand you choose">
       <div class="app" id="app">
         <div class="app-top">
-          <div class="app-id"><img class="app-logo" src="img/app/logo.svg" alt=""><span class="app-words"><span class="app-name" id="appName">Haven</span><span class="app-sub" id="appSub">Fitness</span></span></div>
+          <div class="app-id"><img class="app-logo" id="appLogo" src="img/app/taal-mark.svg" alt=""><span class="app-mono" id="appMono" aria-hidden="true" hidden></span><span class="app-words"><span class="app-name" id="appName">Taal</span><span class="app-sub" id="appSub">Fitness</span></span></div>
           <span class="app-chat" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
         </div>
         <div class="app-hero">
@@ -682,7 +685,11 @@ const CONTACT_EMAIL = 'EMAIL';
   const appSub = document.getElementById('appSub');
   nameIn.addEventListener('input', () => {
     const v = nameIn.value.trim();
-    appName.textContent = v || 'Haven';
+    appName.textContent = v || 'Taal';
+    // Their own name gets a plain initial in place of the Taal mark.
+    document.getElementById('appLogo').hidden = !!v;
+    const mono = document.getElementById('appMono');
+    mono.hidden = !v; mono.textContent = v ? v[0].toUpperCase() : '';
     appSub.hidden = !!v;
   });
 })();
