@@ -27,7 +27,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:'Funnel 
 a { color:var(--green); text-underline-offset:3px; }
 a:hover { color:var(--deep); }
 :focus-visible { outline:2px solid var(--green); outline-offset:3px; border-radius:6px; }
-h1, h2, h3, .logo, .big, .plan .price, .steps .when, .founder blockquote { font-family:'Funnel Display', 'Funnel Sans', system-ui, sans-serif; }
+h1, h2, h3, .logo, .big, .steps .when, .founder blockquote { font-family:'Funnel Display', 'Funnel Sans', system-ui, sans-serif; }
 h1, h2, h3 { margin:0; font-weight:650; line-height:1.04; letter-spacing:-0.02em; }
 p { margin:0; }
 .wrap { max-width:var(--max); margin:0 auto; padding:0 28px; }
@@ -176,23 +176,30 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .pricing .intro { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-bottom:48px; }
 .pricing h2 { font-size:clamp(34px, 4.4vw, 56px); }
 .pricing .intro p { color:var(--mute); max-width:30em; }
-.plans { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px; }
-.plan { border-radius:28px; padding:36px; display:flex; flex-direction:column; gap:18px; }
-.plan.a { background:#fff; }
-.plan.b { background:var(--ink); color:var(--paper); }
-.plan h3 { font-size:26px; letter-spacing:-0.02em; }
-.plan .price { font-size:64px; font-weight:650; letter-spacing:-0.025em; line-height:1; }
-.plan .price small { font-size:17px; font-weight:500; letter-spacing:0; margin-left:6px; font-family:'Funnel Sans', sans-serif; }
-.plan .monthly { font-size:18px; }
-.plan .monthly b { font-weight:700; }
-.plan ul { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:16px; }
-.plan li { display:flex; gap:10px; align-items:flex-start; }
-.plan li svg { flex-shrink:0; margin-top:3px; color:var(--green); }
-.plan.b li svg { color:var(--sage); }
-.plan .years { margin-top:auto; padding-top:18px; border-top:1px solid var(--rule); display:flex; gap:28px; font-size:15px; color:var(--mute); }
-.plan.b .years { border-color:#33433F; color:#B9C7C1; }
-.plan .years b { display:block; font-size:22px; color:var(--ink); letter-spacing:-0.02em; }
-.plan.b .years b { color:var(--paper); }
+.builder { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:20px; align-items:stretch; }
+.opts { display:flex; flex-direction:column; gap:12px; }
+.opt { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:18px; align-items:center; background:#fff; border-radius:20px; padding:20px 22px; cursor:pointer; box-shadow:inset 0 0 0 1.5px transparent; transition:box-shadow .2s, opacity .2s; position:relative; }
+.opt:has(input:checked) { box-shadow:inset 0 0 0 1.5px var(--green); }
+.opt:not(:has(input:checked)) .opt-text, .opt:not(:has(input:checked)) .opt-price { opacity:.55; }
+.opt.fixed { cursor:default; }
+.opt-text b { display:block; font-family:'Funnel Display', sans-serif; font-size:19px; letter-spacing:-0.01em; margin-bottom:3px; }
+.opt-text span { color:var(--mute); font-size:15px; }
+.opt-price { font-family:'Funnel Display', sans-serif; font-size:22px; font-weight:650; white-space:nowrap; }
+.opt input { position:absolute; opacity:0; width:1px; height:1px; }
+.sw { width:46px; height:28px; border-radius:999px; background:#C9D1CA; position:relative; transition:background .2s; flex-shrink:0; }
+.sw::after { content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgb(0 0 0 / .2); transition:transform .2s; }
+.opt input:checked + .sw { background:var(--green); }
+.opt input:checked + .sw::after { transform:translateX(18px); }
+.opt input:disabled + .sw { opacity:.6; }
+.opt input:focus-visible + .sw { outline:2px solid var(--green); outline-offset:3px; }
+.total { background:var(--ink); color:var(--paper); border-radius:28px; padding:32px; display:flex; flex-direction:column; gap:10px; }
+.t-label { font-size:15px; color:#B9C7C1; }
+.t-price { font-family:'Funnel Display', sans-serif; font-size:68px; font-weight:650; letter-spacing:-0.025em; line-height:1; }
+.t-month { font-size:18px; }
+.t-years { display:flex; gap:28px; margin:10px 0 16px; padding-top:16px; border-top:1px solid #33433F; font-size:15px; color:#B9C7C1; }
+.t-years b { display:block; font-family:'Funnel Display', sans-serif; font-size:24px; color:var(--paper); }
+.btn.light { background:var(--paper); color:var(--ink); align-self:flex-start; margin-top:auto; }
+.btn.light:hover { background:var(--sage); color:var(--ink); }
 .extra { margin-top:24px; font-size:17px; }
 .allin { margin-top:10px; font-size:15px; color:var(--mute); max-width:60em; }
 .incl, details.incl:first-of-type { margin-top:14px; border:0; padding:0; }
@@ -201,6 +208,11 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .incl p { font-size:15px; margin-top:8px; }
 
 /* calculator */
+.calc-box { margin-top:56px; background:var(--tint); border-radius:28px; border:0; padding:0; }
+.calc-box summary, details.calc-box:first-of-type summary { padding:26px 32px; display:flex; align-items:baseline; gap:16px; }
+.calc-box summary span { font-family:'Funnel Display', sans-serif; font-size:26px; font-weight:650; letter-spacing:-0.015em; }
+.calc-box summary small { color:var(--mute); font-size:15px; font-weight:400; margin-right:auto; }
+.calc-box .calc { margin-top:0; padding-top:4px; }
 .calc { margin-top:72px; background:var(--tint); border-radius:28px; padding:44px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:56px; }
 .calc h3 { font-size:32px; margin-bottom:28px; }
 .field { display:grid; gap:8px; margin-bottom:24px; }
@@ -212,8 +224,6 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .money span { color:var(--mute); }
 .money input { border:0; background:none; font:inherit; font-size:18px; padding:12px 6px; width:100%; color:var(--ink); }
 .money input:focus { outline:none; }
-.toggle { display:flex; align-items:center; gap:12px; cursor:pointer; font-weight:600; }
-.toggle input { width:20px; height:20px; accent-color:var(--green); }
 .result { display:flex; flex-direction:column; justify-content:center; gap:24px; }
 .big { font-size:clamp(38px, 4.6vw, 60px); font-weight:700; line-height:1; letter-spacing:-0.025em; color:var(--green); }
 .big.neg { color:var(--ink); }
@@ -240,11 +250,16 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .steps p { color:var(--mute); }
 
 /* faq */
-.faq { padding:110px 0; }
-.faq .wrap { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:56px; }
+.faq { padding:72px 0; }
+.faq-all { border:0; padding:0; }
+.faq-all > summary { align-items:baseline; gap:18px; padding:4px 0; }
+.faq-all > summary h2 { display:inline; }
+.faq-all > summary small { color:var(--mute); font-size:16px; font-weight:400; margin-right:auto; }
+.faq-all > summary::after { font-size:34px; }
+.faq-list { margin-top:28px; max-width:820px; }
 .faq h2 { font-size:clamp(34px, 4.4vw, 56px); }
-details { border-bottom:1px solid var(--rule); padding:22px 0; }
-details:first-of-type { border-top:1px solid var(--rule); }
+.faq-list details { border-bottom:1px solid var(--rule); padding:22px 0; }
+.faq-list details:first-of-type { border-top:1px solid var(--rule); }
 summary { cursor:pointer; list-style:none; display:flex; justify-content:space-between; gap:20px; font-weight:600; font-size:20px; letter-spacing:-0.01em; }
 summary::-webkit-details-marker { display:none; }
 summary::after { content:'+'; color:var(--green); font-weight:500; font-size:24px; line-height:1; }
@@ -273,19 +288,23 @@ footer .links { display:flex; gap:20px; }
 @media (max-width: 960px) {
   nav ul { display:none; }
   .hero { padding-top:48px; }
-  .hero .wrap, .faq .wrap, .demo .wrap, .calc { grid-template-columns:minmax(0,1fr); }
+  .hero .wrap, .demo .wrap, .calc { grid-template-columns:minmax(0,1fr); }
   .promises, .grid6, .steps { grid-template-columns:minmax(0,1fr); gap:32px; }
   .show-grid { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:78%; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; gap:20px; }
   .show-grid figure { scroll-snap-align:start; }
   .steps::before { display:none; }
-  .plans { grid-template-columns:minmax(0,1fr); }
+  .builder { grid-template-columns:minmax(0,1fr); }
+  .opt { grid-template-columns:minmax(0,1fr) auto; padding:18px; }
+  .opt-price { grid-column:1; grid-row:2; font-size:19px; }
+  .opt .sw { grid-column:2; grid-row:1 / span 2; }
+  .t-price { font-size:56px; }
+  .calc-box summary { flex-wrap:wrap; padding:22px 24px; }
+  .calc-box summary small { width:100%; order:3; }
   .calc { padding:32px 24px; gap:36px; }
 }
 @media (max-width: 560px) {
   .wrap { padding:0 20px; }
   form .two { grid-template-columns:1fr; }
-  .plan { padding:28px 24px; }
-  .plan .price { font-size:54px; }
   .cbar { grid-template-columns:110px minmax(0,1fr) 78px; font-size:14px; }
   nav .btn { padding:9px 14px; font-size:14px; }
 }
@@ -462,38 +481,27 @@ footer .links { display:flex; gap:20px; }
     <h2>Simple pricing</h2>
     <p>Pay once to set up, then one flat monthly cost, however many members you have. These are launch prices.</p>
   </div>
-  <div class="plans">
-    <div class="plan a">
-      <h3>Booking system</h3>
-      <div class="price">£900<small>one-off setup</small></div>
-      <p class="monthly">Then <b>about £60 a month</b>, all in</p>
-      <ul>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Members book and pay on phone or computer</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Back office and team diaries</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Setup, member import and team training</li>
-      </ul>
-      <div class="years"><span><b>£1,620</b>Year one</span><span><b>£720</b>Each year after</span></div>
+  <div class="builder">
+    <div class="opts" role="group" aria-label="Choose what you need">
+      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, setup, member import and training.</span></span><span class="opt-price">£900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play, with push alerts. Live five to eight weeks after you sign.</span></span><span class="opt-price">+£900</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Website</b><span>A site in your brand with your live timetable and prices.</span></span><span class="opt-price">+£400</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Website"><i class="sw" aria-hidden="true"></i></label>
     </div>
-    <div class="plan b">
-      <h3>With your own apps</h3>
-      <div class="price">£1,800<small>one-off setup</small></div>
-      <p class="monthly">Then the same <b>about £60 a month</b>, all in</p>
-      <ul>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Everything in the booking system</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Your own app on the App Store and Google Play</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Push alerts to your members' phones</li>
-      </ul>
-      <div class="years"><span><b>£2,520</b>Year one</span><span><b>£720</b>Each year after</span></div>
+    <div class="total" aria-live="polite">
+      <span class="t-label">One-off setup</span>
+      <div class="t-price" id="tSetup">£2,200</div>
+      <p class="t-month">Then <b>about £60 a month</b>, all in</p>
+      <div class="t-years"><span><b id="tY1">£2,920</b>Year one</span><span><b id="tLater">£720</b>Each year after</span></div>
+      <a class="btn light" href="#demo">Book a demo in your brand</a>
     </div>
   </div>
-  <p class="extra">Want a website too? We'll build one in your brand, with your live timetable and prices, for £400.</p>
   <p class="allin">Setup is paid half when you sign and half when you go live. Prices exclude VAT.</p>
   <details class="incl"><summary>What's in “about £60 a month, all in”?</summary>
     <p>£30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members; above that, email adds about £3.50 a month per extra 100 members.</p></details>
 
-  <div class="calc" id="calculator">
+  <details class="calc-box" id="calculator"><summary><span>Work out your saving</span><small>Compare with what you pay now</small></summary>
+  <div class="calc">
     <div>
-      <h3>Work out your saving</h3>
       <div class="field">
         <label for="members">Active members <output id="membersOut" for="members">150</output></label>
         <input type="range" id="members" min="25" max="5000" step="25" value="150">
@@ -502,7 +510,7 @@ footer .links { display:flex; gap:20px; }
         <label for="current">What you pay for software now, each month</label>
         <div class="money"><span>£</span><input type="number" id="current" inputmode="decimal" min="0" step="5" value="200"></div>
       </div>
-      <label class="toggle"><input type="checkbox" id="apps"> Include your own apps</label>
+      <p class="fine">Uses the options you picked above.</p>
     </div>
     <div class="result" aria-live="polite">
       <div>
@@ -517,6 +525,7 @@ footer .links { display:flex; gap:20px; }
       <p class="fine" id="perMember">That's about 40p per member a month.</p>
     </div>
   </div>
+  </details>
 </div></section>
 
 <section class="how" id="how"><div class="wrap">
@@ -529,8 +538,8 @@ footer .links { display:flex; gap:20px; }
 </div></section>
 
 <section class="faq" id="questions"><div class="wrap">
-  <h2>Questions</h2>
-  <div>
+  <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across, data and apps</small></summary>
+  <div class="faq-list">
     <details><summary>What does “about £60 a month, all in” include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
     <details><summary>Why do I pay Cloudflare and Resend directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members. Above that it adds about £3.50 a month per extra 100 members, so about £95 a month all in at 3,000 and about £165 at 5,000. Switching reminder emails to free app notifications brings that down.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
@@ -539,6 +548,7 @@ footer .links { display:flex; gap:20px; }
     <details><summary>Who owns the apps?</summary><p>You do. They're published under your own Apple and Google developer accounts, in your studio's name. Apple charges about £79 a year and Google $25 once.</p></details>
     <details><summary>What about card fees?</summary><p>Stripe charges its standard rates on each payment. We don't add anything on top.</p></details>
   </div>
+  </details>
 </div></section>
 
 <section class="demo" id="demo"><div class="wrap">
@@ -639,10 +649,10 @@ const CONTACT_EMAIL = 'EMAIL';
   const $ = id => document.getElementById(id);
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
   function run() {
-    const m = +$('members').value, now = Math.max(0, +$('current').value || 0) * 12, apps = $('apps').checked;
+    const m = +$('members').value, now = Math.max(0, +$('current').value || 0) * 12, apps = $('optApps').checked, site = $('optSite').checked;
     // Hosting and email: about £30 up to 2,000 active members, then about £3.50 a month per extra 100 (email volume).
     const running = 30 + Math.max(0, m - 2000) / 100 * 3.5;
-    const monthly = 30 + running, setup = 900 + (apps ? 900 : 0);
+    const monthly = 30 + running, setup = 900 + (apps ? 900 : 0) + (site ? 400 : 0);
     const y1 = setup + monthly * 12, later = monthly * 12, save = now - later, save1 = now - y1;
     $('membersOut').textContent = m.toLocaleString('en-GB') + (m >= 5000 ? '+' : '');
     $('nowYr').textContent = gbp(now); $('y1').textContent = gbp(y1); $('later').textContent = gbp(later);
@@ -659,8 +669,18 @@ const CONTACT_EMAIL = 'EMAIL';
     const pm = monthly / m * 100;
     $('perMember').textContent = (pm < 100 ? "That's about " + Math.max(1, Math.round(pm)) + 'p' : "That's about " + gbp(pm / 100)) + ' per member a month, about ' + gbp(monthly) + ' a month all in.' + (m > 2000 ? ' Includes extra email above 2,000 members.' : '');
   }
-  ['members','current','apps'].forEach(id => $(id).addEventListener('input', run));
-  run();
+  // The pricing switches: setup total, year one and later years (hosting at the 2,000-member rate).
+  function price() {
+    const setup = 900 + ($('optApps').checked ? 900 : 0) + ($('optSite').checked ? 400 : 0);
+    $('tSetup').textContent = gbp(setup); $('tY1').textContent = gbp(setup + 720); $('tLater').textContent = gbp(720);
+  }
+  ['members','current'].forEach(id => $(id).addEventListener('input', run));
+  ['optApps','optSite'].forEach(id => $(id).addEventListener('change', () => { price(); run(); }));
+  price(); run();
+  // Links to a closed section open it.
+  function openFor(hash) { const d = document.querySelector(hash === '#calculator' ? '#calculator' : hash === '#questions' ? '.faq-all' : null); if (d) d.open = true; }
+  document.querySelectorAll('a[href="#calculator"], a[href="#questions"]').forEach(a => a.addEventListener('click', () => openFor(a.getAttribute('href'))));
+  openFor(location.hash);
 })();
 
 /* demo form: opens an email with the details filled in */
