@@ -56,8 +56,9 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* hero */
 .hero { padding:72px 0 96px; }
 .hero .wrap { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:48px; align-items:center; }
-.hero h1 { font-size:clamp(40px, 4.4vw, 60px); letter-spacing:-0.025em; line-height:1; font-weight:650; }
+.hero h1 { font-size:clamp(40px, 4.3vw, 58px); letter-spacing:-0.025em; line-height:1; font-weight:650; }
 .hero h1 span { display:block; }
+.m-br { display:none; }
 @media (min-width: 961px) { .hero h1 span { white-space:nowrap; } }
 .hero .lede { font-size:20px; max-width:31em; margin:28px 0 36px; color:var(--mute); }
 .ctas { display:flex; gap:12px; flex-wrap:wrap; }
@@ -150,7 +151,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* features */
 .features { background:var(--tint); padding:110px 0; }
 .features h2 { font-size:clamp(34px, 4.4vw, 56px); }
-.tabs { display:inline-flex; gap:4px; margin:36px 0 40px; padding:5px; border-radius:999px; background:var(--paper); flex-wrap:wrap; }
+.tabs { display:inline-flex; gap:4px; margin:36px 0 40px; padding:5px; border-radius:999px; background:var(--paper); }
 .tabs button { font:inherit; font-size:15px; font-weight:600; border:0; border-radius:999px; padding:10px 18px; background:transparent; color:var(--mute); cursor:pointer; }
 .tabs button[aria-selected=true] { background:var(--ink); color:var(--paper); }
 .grid6 { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px 48px; }
@@ -303,6 +304,10 @@ footer .links { display:flex; gap:20px; }
   .calc { padding:32px 24px; gap:36px; }
 }
 @media (max-width: 560px) {
+  .m-br { display:inline; }
+  .hero h1 { font-size:clamp(30px, 9.6vw, 40px); }
+  .tabs { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); width:100%; margin:28px 0 32px; }
+  .tabs button { padding:11px 6px; font-size:14.5px; }
   .wrap { padding:0 20px; }
   form .two { grid-template-columns:1fr; }
   .cbar { grid-template-columns:110px minmax(0,1fr) 78px; font-size:14px; }
@@ -327,7 +332,7 @@ footer .links { display:flex; gap:20px; }
 
 <header class="hero" id="top"><div class="wrap">
   <div>
-    <h1><span>Your own booking app.</span><span>In your brand.</span><span>Live in four weeks.</span></h1>
+    <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span>Live in four weeks.</span></h1>
     <p class="lede">Bookings, memberships, payments and the back office for gyms and wellness studios. £900 once to set up, then about £60 a month all in. See a working demo in your brand before you pay anything.</p>
     <div class="ctas">
       <a class="btn" href="#demo">Book a demo in your brand</a>
@@ -427,9 +432,9 @@ footer .links { display:flex; gap:20px; }
 <section class="features" id="features"><div class="wrap">
   <h2>Everything else, included</h2>
   <div class="tabs" role="tablist" aria-label="Features by who uses them">
-    <button role="tab" id="t-members" aria-controls="p-members" aria-selected="true">For members</button>
-    <button role="tab" id="t-team" aria-controls="p-team" aria-selected="false" tabindex="-1">For your team</button>
-    <button role="tab" id="t-studio" aria-controls="p-studio" aria-selected="false" tabindex="-1">For running the studio</button>
+    <button role="tab" id="t-members" aria-controls="p-members" aria-selected="true">Members</button>
+    <button role="tab" id="t-team" aria-controls="p-team" aria-selected="false" tabindex="-1">Your team</button>
+    <button role="tab" id="t-studio" aria-controls="p-studio" aria-selected="false" tabindex="-1">The studio</button>
   </div>
 
   <div role="tabpanel" id="p-members" aria-labelledby="t-members">
