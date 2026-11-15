@@ -462,17 +462,17 @@ footer .links { display:flex; gap:20px; }
     <div class="plan b">
       <h3>With your own apps</h3>
       <div class="price">£1,800<small>to set up</small></div>
-      <p class="monthly">Then <b>about £70 a month</b>, all in</p>
+      <p class="monthly">Then the same <b>about £60 a month</b>, all in</p>
       <ul>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Everything in the booking system</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Your own app on the App Store and Google Play</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Push alerts to your members' phones</li>
       </ul>
-      <div class="years"><span><b>£2,640</b>Year one</span><span><b>£840</b>Each year after</span></div>
+      <div class="years"><span><b>£2,520</b>Year one</span><span><b>£720</b>Each year after</span></div>
     </div>
   </div>
   <p class="extra">Want a website too? We'll build one in your brand, with your live timetable and prices, for £400.</p>
-  <p class="allin">“All in” means £30 a month to us for updates, fixes and support (£40 with apps), plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members. Prices exclude VAT.</p>
+  <p class="allin">“All in” means £30 a month to us for updates, fixes and support, store apps included, plus about £30 for hosting and email, paid directly to Cloudflare and Resend from your own accounts. That covers up to about 2,000 active members. Prices exclude VAT.</p>
 
   <div class="calc" id="calculator">
     <div>
@@ -524,7 +524,7 @@ footer .links { display:flex; gap:20px; }
 <section class="faq" id="questions"><div class="wrap">
   <h2>Questions</h2>
   <div>
-    <details><summary>What does “about £60 a month, all in” include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day (£40 with store apps, as Apple and Google need regular updates). The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
+    <details><summary>What does “about £60 a month, all in” include?</summary><p>£30 a month to us for updates, fixes and email support, usually answered within a working day. It also covers keeping store apps up to date when Apple and Google require it. The other £30 or so is hosting and email, paid directly to Cloudflare and Resend. New features or custom work are quoted separately, so you only pay for what you ask for.</p></details>
     <details><summary>Why do I pay Cloudflare and Resend directly?</summary><p>Your system runs on your own accounts, so you can see exactly what it costs and nobody adds a mark-up. Hosting stays the same even for very large studios. Email is what grows: about £30 covers up to roughly 2,000 active members, and larger studios pay a little more as they send more booking emails.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>What happens to our data if we leave?</summary><p>It's yours. It lives in your own accounts and you can export it any time. If you ever leave, it leaves with you.</p></details>
@@ -626,7 +626,7 @@ const CONTACT_EMAIL = 'EMAIL';
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
   function run() {
     const m = +$('members').value, now = Math.max(0, +$('current').value || 0) * 12, apps = $('apps').checked;
-    const monthly = 30 + (apps ? 10 : 0) + 30, setup = 900 + (apps ? 900 : 0);
+    const monthly = 30 + 30, setup = 900 + (apps ? 900 : 0);
     const y1 = setup + monthly * 12, later = monthly * 12, save = now - later, save1 = now - y1;
     $('membersOut').textContent = m.toLocaleString('en-GB') + (m >= 3000 ? '+' : '');
     $('nowYr').textContent = gbp(now); $('y1').textContent = gbp(y1); $('later').textContent = gbp(later);
