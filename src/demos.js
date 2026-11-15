@@ -45,6 +45,14 @@ async function build(request, env, url) {
     accent: hex(get('accent')) || '#D8BF8C',
     font: FONTS.includes(get('font')) ? get('font') : 'modern',
     classes: get('classes').split('\n').map((l) => l.trim().slice(0, 40)).filter(Boolean).slice(0, 12),
+    books: ['classes', 'appointments', 'both'].includes(get('books')) ? get('books') : 'both',
+    gift_cards: get('gift_cards') !== 'off',
+    offpeak: get('offpeak') === 'on' ? {
+      open: time(get('op_open'), '10:00'),
+      close: time(get('op_close'), '16:00'),
+      weekends: get('op_weekends') === 'on',
+      price: Math.round(Math.min(Math.max(Number(get('op_price')) || 45, 5), 500) * 100),
+    } : null,
   };
 
   let logo = null;
@@ -69,6 +77,9 @@ async function build(request, env, url) {
     accent_color: lead.accent,
     font: lead.font,
     classes: lead.classes,
+    books: lead.books,
+    offpeak: lead.offpeak,
+    gift_cards: lead.gift_cards,
     logo,
     cta_url: callUrl || `${base}/demo.html#call`,
     days: DEMO_DAYS,
@@ -221,6 +232,7 @@ function email(v) {
 }
 
 const hex = (v) => (/^#[0-9a-f]{6}$/i.test(v) ? v : '');
+const time = (v, d) => (/^([01]\d|2[0-3]):[0-5]\d$/.test(v) ? v : d);
 
 /** Three demos an hour from one connection, and three a day for one email address. */
 async function limit(request, env, address) {

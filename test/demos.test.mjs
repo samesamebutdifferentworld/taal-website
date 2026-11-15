@@ -54,6 +54,9 @@ test('a demo is built, the studio gets its links and you are told', async () => 
   assert.deepEqual(req.classes, ['Vinyasa', 'Yin']);
   assert.equal(req.cta_url, 'https://cal.test/tim');
   assert.equal(req.days, 30);
+  assert.equal(req.books, 'both');
+  assert.equal(req.gift_cards, true);
+  assert.equal(req.offpeak, null);
   assert.equal(req.logo.type, 'image/png');
   assert.equal(req.logo.data.byteLength, 4);
   assert.equal(sent.length, 2);
@@ -118,4 +121,15 @@ test('the old enquiry and brief addresses are gone, and the licence check still 
   assert.equal((await call('/api/brief', { method: 'POST' })).status, 404);
   assert.equal((await call('/api/licence')).status, 401);
   assert.equal(await (await call('/demo.html')).text(), 'asset');
+});
+
+test('what they offer goes through to the demo', async () => {
+  await build({ books: 'classes', gift_cards: 'off', offpeak: 'on', op_open: '09:30', op_close: '15:00', op_weekends: 'on', op_price: '55' });
+  const req = built[0];
+  assert.equal(req.books, 'classes');
+  assert.equal(req.gift_cards, false);
+  assert.deepEqual(req.offpeak, { open: '09:30', close: '15:00', weekends: true, price: 5500 });
+  await build({ books: 'nonsense', offpeak: 'on', op_open: 'later', op_price: 'x' });
+  assert.equal(built[1].books, 'both');
+  assert.deepEqual(built[1].offpeak, { open: '10:00', close: '16:00', weekends: false, price: 4500 });
 });

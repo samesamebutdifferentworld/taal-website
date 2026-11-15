@@ -53,7 +53,7 @@ legend { float:left; width:100%; padding:0; font-size:24px; font-weight:650; let
 legend + * { clear:both; }
 legend .n { width:30px; height:30px; border-radius:50%; background:var(--tint); color:var(--green); display:grid; place-items:center; font-size:15px; font-weight:700; flex:none; }
 legend small { font-family:'Funnel Sans', system-ui, sans-serif; font-weight:400; font-size:15px; color:var(--mute); letter-spacing:0; }
-.field { display:grid; gap:8px; }
+.field { display:grid; grid-template-columns:minmax(0, 1fr); gap:8px; min-width:0; }
 .field > span, .field > label { font-weight:600; font-size:15px; }
 .field small { font-weight:400; color:var(--mute); font-size:14px; }
 input[type=text], input[type=email], textarea { font:inherit; font-size:16px; font-weight:400; padding:12px 14px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); width:100%; }
@@ -61,10 +61,30 @@ input:focus, textarea:focus { border-color:var(--green); outline:none; }
 textarea { min-height:132px; resize:vertical; }
 .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 
-.kinds { display:grid; grid-template-columns:repeat(4, 1fr); padding:4px; border-radius:999px; background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--rule); }
-.kinds button { font:inherit; font-size:15px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:10px 4px; cursor:pointer; transition:background .2s, color .2s; }
-.kinds button:hover { color:var(--ink); }
-.kinds button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
+.seg { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+.kinds, .seg { display:grid; padding:4px; border-radius:999px; background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--rule); }
+.kinds { grid-template-columns:repeat(4, minmax(0, 1fr)); }
+.kinds button, .seg button { font:inherit; font-size:15px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:10px 4px; cursor:pointer; transition:background .2s, color .2s; }
+.kinds button:hover, .seg button:hover { color:var(--ink); }
+.kinds button[aria-checked="true"], .seg button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
+.switch-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:16px; border-top:1px solid var(--rule); cursor:pointer; }
+.switch-row span { display:grid; gap:2px; }
+.switch-row b { font-size:16px; }
+.switch-row small { color:var(--mute); font-size:14px; }
+.toggle { appearance:none; -webkit-appearance:none; flex:none; width:48px; height:28px; border-radius:999px; background:var(--rule); position:relative; cursor:pointer; margin:0; transition:background .2s; }
+.toggle::after { content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgb(0 0 0 / .2); transition:transform .2s; }
+.toggle:checked { background:var(--green); }
+.toggle:checked::after { transform:translateX(20px); }
+.op { display:grid; gap:12px; background:var(--paper); border-radius:16px; padding:16px; margin-top:-4px; }
+.op-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; }
+.op-grid label { display:grid; gap:6px; font-weight:600; font-size:14px; min-width:0; }
+.op input[type=time], .op input[type=number] { font:inherit; font-size:16px; padding:10px 12px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); width:100%; min-width:0; }
+.op input:focus { border-color:var(--green); outline:none; }
+.money { position:relative; display:block; }
+.money span { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--mute); }
+.money input { padding-left:26px !important; }
+.check { display:flex; align-items:center; gap:10px; font-size:15px; cursor:pointer; }
+.check input { width:18px; height:18px; accent-color:var(--green); margin:0; }
 
 .swatches { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
 .swatches button { width:32px; height:32px; border-radius:50%; border:0; background:var(--c); cursor:pointer; box-shadow:0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / .08); }
@@ -73,12 +93,13 @@ textarea { min-height:132px; resize:vertical; }
 .swatches .own.on { box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--ink); }
 .swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
 
-.fonts { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+.fonts { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; }
 .fonts label { position:relative; display:grid; gap:2px; justify-items:center; padding:14px 8px 12px; border-radius:16px; box-shadow:inset 0 0 0 1.5px var(--rule); cursor:pointer; font-weight:600; font-size:14px; }
 .fonts label:has(input:checked) { box-shadow:inset 0 0 0 2px var(--ink); }
 .fonts label:has(input:focus-visible) { outline:2px solid var(--green); outline-offset:3px; }
 .fonts input { position:absolute; opacity:0; pointer-events:none; }
 .fonts .aa { font-size:30px; line-height:1.1; color:var(--ink); }
+@media (max-width: 640px) { .fonts { gap:8px; } .fonts label { padding:12px 4px 10px; font-size:13px; } .fonts .aa { font-size:26px; } }
 .f-elegant { font-family:Georgia, 'Times New Roman', serif; font-weight:500; }
 .f-modern { font-family:'Hanken Grotesk', system-ui, sans-serif; font-weight:700; }
 .f-bold { font-family:'Arial Narrow', 'Roboto Condensed', system-ui, sans-serif; font-stretch:condensed; font-weight:800; text-transform:uppercase; letter-spacing:.01em; }
@@ -95,7 +116,7 @@ input[type=file] { font:inherit; font-size:15px; max-width:100%; }
 .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 
 /* the preview */
-.preview { grid-column:2; grid-row:1 / span 4; position:sticky; top:90px; display:grid; justify-items:center; gap:14px; }
+.preview { grid-column:2; grid-row:1 / span 5; position:sticky; top:90px; display:grid; justify-items:center; gap:14px; }
 .preview p { font-size:14px; color:var(--mute); text-align:center; max-width:280px; }
 .app-logo-img { height:28px; max-width:64px; object-fit:contain; flex-shrink:0; }
 .app[data-font=elegant] :is(.app-name, .app-hero b, .app-next strong, .app-card h4) { font-family:Georgia, 'Times New Roman', serif; font-weight:600; letter-spacing:0; }
@@ -201,7 +222,10 @@ footer a { color:var(--mute); }
   .step { padding:24px 20px 24px; border-radius:24px; }
   legend { font-size:21px; }
   .two { grid-template-columns:1fr; }
-  .kinds button { font-size:14px; }
+  .kinds button, .seg button { font-size:14px; }
+  .seg button { padding:10px 2px; font-size:13.5px; }
+  .op-grid { grid-template-columns:1fr 1fr; }
+  .op-grid label:last-child { grid-column:1 / -1; }
   .go .btn { justify-self:stretch; }
   .ready-card { padding:32px 22px; text-align:center; }
   .ready-card .lead { margin-left:auto; margin-right:auto; }
@@ -244,7 +268,30 @@ footer a { color:var(--mute); }
     </fieldset>
 
     <fieldset class="step">
-      <legend><span class="n" aria-hidden="true">2</span>Your look</legend>
+      <legend><span class="n" aria-hidden="true">2</span>What you offer</legend>
+      <div class="field">
+        <span id="booksLabel">Members book</span>
+        <div class="seg" role="radiogroup" aria-labelledby="booksLabel" aria-describedby="booksHint">
+          <button type="button" role="radio" aria-checked="false" data-b="classes" tabindex="-1">Classes</button>
+          <button type="button" role="radio" aria-checked="false" data-b="appointments" tabindex="-1">Appointments</button>
+          <button type="button" role="radio" aria-checked="true" data-b="both">Both</button>
+        </div>
+        <small id="booksHint"></small>
+      </div>
+      <label class="switch-row"><span><b>Peak and off-peak</b><small>A cheaper membership for quieter times</small></span><input type="checkbox" class="toggle" name="offpeak" id="offpeak"></label>
+      <div class="op" id="opBox" hidden>
+        <div class="op-grid">
+          <label>Off-peak from<input type="time" name="op_open" id="opOpen" value="10:00" step="900"></label>
+          <label>until<input type="time" name="op_close" id="opClose" value="16:00" step="900"></label>
+          <label>Price a month<span class="money"><span aria-hidden="true">£</span><input type="number" name="op_price" id="opPrice" value="45" min="5" max="500" inputmode="numeric"></span></label>
+        </div>
+        <label class="check"><input type="checkbox" name="op_weekends" id="opWeekends" checked>Weekends are off-peak too</label>
+      </div>
+      <label class="switch-row"><span><b>Gift cards</b><small>Sold in the app, for set or custom amounts</small></span><input type="checkbox" class="toggle" id="gift" checked></label>
+    </fieldset>
+
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">3</span>Your look</legend>
       <div class="field">
         <span id="colLabel">Main colour</span>
         <div class="swatches" id="mainSw" role="group" aria-labelledby="colLabel">
@@ -322,13 +369,13 @@ footer a { color:var(--mute); }
       <p>A preview as you choose. Your demo has every screen, your lettering and sample bookings.</p>
     </div>
 
-    <fieldset class="step">
-      <legend><span class="n" aria-hidden="true">3</span>Your classes <small>optional</small></legend>
+    <fieldset class="step" id="classStep">
+      <legend><span class="n" aria-hidden="true">4</span>Your classes <small>optional</small></legend>
       <div class="field"><label for="classes">Your class names, one per line <small id="classesHint"></small></label><textarea id="classes" name="classes" maxlength="600" spellcheck="true"></textarea></div>
     </fieldset>
 
     <fieldset class="step">
-      <legend><span class="n" aria-hidden="true">4</span>Where to send it</legend>
+      <legend><span class="n" aria-hidden="true">5</span>Where to send it</legend>
       <div class="two">
         <div class="field"><label for="name">Your name</label><input type="text" id="name" name="name" autocomplete="name" maxlength="80" required></div>
         <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" maxlength="200" required></div>
@@ -376,29 +423,39 @@ footer a { color:var(--mute); }
   const HAVEN = 'https://booking.tjallan13.workers.dev/?s=haven';
   document.querySelectorAll('.haven-link').forEach(a => { a.href = HAVEN; });
 
-  /* What each kind of studio looks like in the preview, and the classes the demo uses unless they give their own. */
+  /* What each kind of studio looks like in the preview. Tiles and credits are tagged:
+     c = classes, p = appointments, g = gift cards, a = always. */
   const T = {
-    fitness: { sub: 'Fitness', next: ['Next up, Mon 07:00', 'Strength', 'with Elena'],
-      tiles: [['Classes', 'strength'], ['Gym floor', 'opengym'], ['PT', 'pt'], ['Massage', 'deeptissue']],
-      rows: [['Gym floor', 100, 'Unlimited', 1], ['8 classes a month', 75, '6 of 8 left'], ['PT session', 100, '1 of 1 left']],
+    fitness: { sub: 'Fitness',
+      next: { c: ['Next up, Mon 07:00', 'Strength', 'with Elena'], p: ['Next up, Mon 12:30', 'PT session', 'with Marcus'] },
+      tiles: [['Classes', 'strength', 'c'], ['Gym floor', 'opengym', 'a'], ['PT', 'pt', 'p'], ['Massage', 'deeptissue', 'p'], ['Gift cards', 'gift', 'g'], ['Passes', 'mat', 'a'], ['Timetable', 'yoga', 'a']],
+      rows: [['Gym floor', 100, 'Unlimited', 1, 'a'], ['8 classes a month', 75, '6 of 8 left', 0, 'c'], ['PT session', 100, '1 of 1 left', 0, 'p'], ['60 min massage', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Classes and the gym floor.', appointments: 'PT and massage, plus the gym floor.', both: 'Classes, the gym floor, PT and massage.' },
       classes: 'Strength, Sculpt, Condition, Box fit, Barre, Pilates and yoga' },
-    wellness: { sub: 'Wellness', next: ['Next up, Mon 18:00', 'Sports massage', 'with Maya'],
-      tiles: [['Treatments', 'deeptissue'], ['Sauna', 'sauna'], ['Breathwork', 'pt'], ['Gift cards', 'gift']],
-      rows: [['Sauna sessions', 75, '3 of 4 left'], ['60 min massage', 100, '1 of 1 left'], ['Breathwork', 100, 'Unlimited', 1]],
+    wellness: { sub: 'Wellness',
+      next: { c: ['Next up, Mon 18:00', 'Breathwork', 'with Maya'], p: ['Next up, Mon 18:00', 'Sports massage', 'with Maya'] },
+      tiles: [['Treatments', 'deeptissue', 'p'], ['Sauna', 'sauna', 'p'], ['Breathwork', 'pt', 'c'], ['Workshops', 'yoga', 'c'], ['Gift cards', 'gift', 'g'], ['Packages', 'mat', 'a'], ['Timetable', 'opengym', 'a']],
+      rows: [['Sauna sessions', 75, '3 of 4 left', 0, 'p'], ['60 min massage', 100, '1 of 1 left', 0, 'p'], ['Breathwork', 100, 'Unlimited', 1, 'c'], ['Workshops', 50, '1 of 2 left', 0, 'c'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Classes like breathwork and yin, and workshops.', appointments: 'Treatments and sauna sessions.', both: 'Treatments, sauna sessions, classes and workshops.' },
       classes: 'Breathwork, Yin, Sound bath and Mobility' },
-    yoga: { sub: 'Yoga', next: ['Next up, Tue 07:15', 'Vinyasa flow', 'with Priya'],
-      tiles: [['Classes', 'yoga'], ['Workshops', 'pt'], ['Online', 'mat'], ['Privates', 'deeptissue']],
-      rows: [['Studio classes', 100, 'Unlimited', 1], ['Online classes', 100, 'Unlimited', 1], ['Workshops', 50, '1 of 2 left']],
+    yoga: { sub: 'Yoga',
+      next: { c: ['Next up, Tue 07:15', 'Vinyasa flow', 'with Priya'], p: ['Next up, Tue 13:00', 'Private session', 'with Priya'] },
+      tiles: [['Classes', 'yoga', 'c'], ['Workshops', 'pt', 'c'], ['Online', 'mat', 'c'], ['Privates', 'deeptissue', 'p'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Intro offer', 'yoga', 'a'], ['Timetable', 'strength', 'a']],
+      rows: [['Studio classes', 100, 'Unlimited', 1, 'c'], ['Online classes', 100, 'Unlimited', 1, 'c'], ['Workshops', 50, '1 of 2 left', 0, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
+      books: { classes: 'Classes, workshops and online classes.', appointments: 'Private sessions.', both: 'Classes, workshops, online classes and private sessions.' },
       classes: 'Vinyasa flow, Hatha, Yin, Power yoga, Yoga for beginners and Restorative' },
-    pilates: { sub: 'Pilates', next: ['Next up, Mon 18:30', 'Reformer', 'with Sophie'],
-      tiles: [['Reformer', 'reformer'], ['Mat', 'mat'], ['Privates', 'pt'], ['Intro offer', 'gift']],
-      rows: [['8 reformer classes', 62, '5 of 8 left'], ['Mat classes', 100, 'Unlimited', 1], ['Private session', 100, '1 of 1 left']],
+    pilates: { sub: 'Pilates',
+      next: { c: ['Next up, Mon 18:30', 'Reformer', 'with Sophie'], p: ['Next up, Mon 12:00', 'Private session', 'with Sophie'] },
+      tiles: [['Reformer', 'reformer', 'c'], ['Mat', 'mat', 'c'], ['Privates', 'pt', 'p'], ['Intro offer', 'deeptissue', 'a'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Timetable', 'yoga', 'a']],
+      rows: [['8 reformer classes', 62, '5 of 8 left', 0, 'c'], ['Mat classes', 100, 'Unlimited', 1, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
+      books: { classes: 'Reformer, mat and online classes.', appointments: 'Private sessions.', both: 'Reformer, mat and online classes, and private sessions.' },
       classes: 'Reformer, Reformer intermediate, Mat Pilates, Barre and Stretch' },
   };
   Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
+  const fit = (tag) => tag === 'a' || (tag === 'g' ? $('gift').checked : state.books === 'both' || (tag === 'c') === (state.books === 'classes'));
 
   const app = $('app'), form = $('build'), msg = $('msg');
-  const state = { kind: 'fitness', colour: '#155E5A', accent: '#D8BF8C', logoUrl: '' };
+  const state = { kind: 'fitness', books: 'both', colour: '#155E5A', accent: '#D8BF8C', logoUrl: '' };
   const h = new Date().getHours();
   $('greet').textContent = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
 
@@ -427,14 +484,20 @@ footer a { color:var(--mute); }
   function paintKind(animate) {
     const k = T[state.kind];
     document.querySelectorAll('.kinds [role=radio]').forEach(b => { const on = b.dataset.k === state.kind; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+    document.querySelectorAll('.seg [role=radio]').forEach(b => { const on = b.dataset.b === state.books; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+    $('booksHint').textContent = k.books[state.books];
     $('classesHint').textContent = 'Leave it empty to use: ' + k.classes + '.';
     form.classes.placeholder = k.classes.replace(/, | and /g, '\n');
+    $('classStep').hidden = state.books === 'appointments';
+    const op = $('offpeak').checked;
+    $('opBox').hidden = !op;
     const paint = () => {
       $('appSub').textContent = k.sub;
-      [$('nextWhen').textContent, $('nextName').textContent, $('nextWith').textContent] = k.next;
-      $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<div class="app-tile" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></div>`).join('');
-      $('appCard').innerHTML = '<h4>Included in your membership <span>Renews 3 Dec</span></h4>' +
-        k.rows.map(([label, w, val, ok]) => `<div class="app-row"><span>${esc(label)}</span><i style="--w:${w}%"></i><b${ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`).join('');
+      [$('nextWhen').textContent, $('nextName').textContent, $('nextWith').textContent] = k.next[state.books === 'appointments' ? 'p' : 'c'];
+      $('appTiles').innerHTML = k.tiles.filter(t => fit(t[2])).slice(0, 4).map(([label, img]) => `<div class="app-tile" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></div>`).join('');
+      const when = $('opOpen').value + ' to ' + $('opClose').value;
+      $('appCard').innerHTML = (op ? `<h4>Off-peak membership <span>${esc(when)}</span></h4>` : '<h4>Included in your membership <span>Renews 3 Dec</span></h4>') +
+        k.rows.filter(r => fit(r[4])).slice(0, 3).map(([label, w, val, ok]) => `<div class="app-row"><span>${esc(label)}</span><i style="--w:${w}%"></i><b${ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`).join('');
       app.classList.remove('swap');
     };
     if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) { app.classList.add('swap'); setTimeout(paint, 180); } else paint();
@@ -451,6 +514,19 @@ footer a { color:var(--mute); }
       const n = kindBtns[(i + d + kindBtns.length) % kindBtns.length]; n.click(); n.focus();
     });
   });
+  const bookBtns = [...document.querySelectorAll('.seg [role=radio]')];
+  bookBtns.forEach((b, i) => {
+    b.addEventListener('click', () => { state.books = b.dataset.b; paintKind(true); });
+    b.addEventListener('keydown', e => {
+      const d = /Right|Down/.test(e.key) ? 1 : /Left|Up/.test(e.key) ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      const n = bookBtns[(i + d + bookBtns.length) % bookBtns.length]; n.click(); n.focus();
+    });
+  });
+  ['offpeak', 'gift'].forEach(id => $(id).addEventListener('change', () => paintKind(true)));
+  ['opOpen', 'opClose'].forEach(id => $(id).addEventListener('change', () => paintKind(false)));
+
   function swatches(groupId, ownId, key) {
     const btns = [...document.querySelectorAll('#' + groupId + ' button')], own = $(ownId), ownWrap = own.parentElement;
     const pick = (hex, from) => {
@@ -492,10 +568,12 @@ footer a { color:var(--mute); }
   form.addEventListener('submit', async ev => {
     ev.preventDefault();
     msg.classList.remove('err');
-    const missing = !form.studio.value.trim() ? 'Add your studio name.' : !form.name.value.trim() ? 'Add your name.' : !/^\S+@\S+\.\S{2,}$/.test(form.email.value.trim()) ? 'Check your email address.' : '';
+    const missing = !form.studio.value.trim() ? 'Add your studio name.' : $('offpeak').checked && $('opOpen').value >= $('opClose').value ? 'Off-peak needs to start before it ends.' : !form.name.value.trim() ? 'Add your name.' : !/^\S+@\S+\.\S{2,}$/.test(form.email.value.trim()) ? 'Check your email address.' : '';
     if (missing) { msg.classList.add('err'); msg.textContent = missing; return; }
     const d = new FormData(form);
     d.set('kind', state.kind); d.set('colour', state.colour); d.set('accent', state.accent);
+    d.set('books', state.books); d.set('gift_cards', $('gift').checked ? 'on' : 'off');
+    if (state.books === 'appointments') d.delete('classes');
     const go = $('go'); go.disabled = true;
     let n = 0;
     const tick = () => { msg.innerHTML = '<span class="building"><i></i>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
