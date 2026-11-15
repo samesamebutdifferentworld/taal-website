@@ -49,19 +49,11 @@ p { margin:0; }
 body { position:relative; }
 body::after { content:''; position:absolute; inset:0; pointer-events:none; z-index:100; opacity:.07; mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .12  0 0 0 0 .1  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-/* vertical marks in the margin, like a note down the side of a scroll */
-[data-mark] { position:relative; }
-@media (min-width: 1280px) {
-  [data-mark]::before { content:attr(data-mark); position:absolute; top:var(--mark-top, 126px); left:max(16px, calc((100vw - var(--max)) / 2 - 34px)); writing-mode:vertical-rl; font-size:12px; letter-spacing:.08em; color:var(--mark, var(--mute)); opacity:.8; }
-  [data-mark]::after { content:''; position:absolute; top:calc(var(--mark-top, 126px) - 26px); left:calc(max(16px, calc((100vw - var(--max)) / 2 - 34px)) + 5px); width:1px; height:16px; background:var(--mark, var(--mute)); opacity:.5; }
-}
 /* the seal red, kept to small beats: the mark's middle bar, ticks, progress and selection */
 ::selection { background:rgb(168 56 43 / .16); }
 .hero-sign .rule { background:var(--seal) !important; opacity:.9 !important; }
 .grid6 > div::before { background:var(--seal) !important; opacity:.7; }
 .reel-tabs .bar i { background:var(--seal) !important; }
-.pulse i:nth-child(9n+4) { background:#E59A8C; }
-@media (min-width: 1280px) { [data-mark]::after { background:var(--seal) !important; opacity:.8 !important; } }
 /* the seal: a small cinnabar stamp, used twice */
 .seal { display:inline-grid; place-items:center; width:46px; height:46px; background:var(--seal); color:#F6EDE6; border-radius:5px; font-family:'Funnel Display', sans-serif; font-weight:700; font-size:13px; line-height:.95; letter-spacing:.02em; text-align:center; transform:rotate(-4deg); box-shadow:inset 0 0 0 2px var(--seal), inset 0 0 0 3.5px #F6EDE6; flex-shrink:0; }
 .seal.sm { width:30px; height:30px; font-size:9.5px; border-radius:4px; box-shadow:inset 0 0 0 1.5px var(--seal), inset 0 0 0 2.5px #F6EDE6; }
@@ -115,6 +107,52 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 .tala-note b { color:var(--paper); font-weight:600; }
 .rhythm .wrap { position:relative; }
 @media (max-width: 960px) { .tala-note { position:static; justify-items:start; text-align:left; margin-bottom:28px; max-width:none; } .tala-note svg { width:72px; height:72px; } }
+
+
+/* ---------- the page keeps time ----------
+   The site is set out as one cycle of teentaal: sam (X), clap (2), wave (0), clap (3), then back to sam.
+   Down the left margin the mark fills in beat by beat as you scroll, and lands on sam again at the end. */
+.cycle { display:none; }
+@media (min-width: 1280px) {
+  .cycle { display:flex; flex-direction:column; align-items:center; gap:20px; position:fixed; z-index:9; top:50%; transform:translateY(-50%); left:max(18px, calc((100vw - var(--max)) / 2 - 46px)); padding:14px 0; }
+  .cycle::before { content:''; position:absolute; top:0; bottom:0; left:50%; width:1px; background:var(--hair); opacity:.6; transform:translateX(-50%); }
+  .cycle::after { content:''; position:absolute; top:0; left:50%; width:1px; height:calc(var(--p, 0) * 100%); background:var(--ink); opacity:.35; transform:translateX(-50%); transition:height .25s linear; }
+  .cycle button { all:unset; position:relative; z-index:1; cursor:pointer; display:grid; place-items:center; width:22px; padding:3px 0; }
+  .cycle button:focus-visible { outline:2px solid var(--green); outline-offset:4px; border-radius:4px; }
+  .cycle i { display:block; width:3px; border-radius:2px; background:var(--green); opacity:.2; transition:opacity .5s, background .5s; transform-origin:center; }
+  .cycle .b-sam i { height:46px; background:var(--seal); }
+  .cycle .b-clap i { height:26px; }
+  .cycle .b-wave i { width:9px; height:9px; border-radius:50%; background:none; box-shadow:inset 0 0 0 1.6px var(--green); }
+  .cycle .on i { opacity:1; }
+  .cycle .now.b-sam i { animation:cySam .7s var(--curve); }
+  .cycle .now.b-clap i { animation:cyClap .6s var(--curve); }
+  .cycle .now.b-wave i { animation:cyWave .9s var(--curve); }
+  @keyframes cySam { 35% { transform:scaleY(1.18); } }
+  @keyframes cyClap { 35% { transform:scaleY(1.4); } }
+  @keyframes cyWave { 40% { transform:scale(1.8); opacity:.35; } }
+  /* the notation, and the part's name on hover */
+  .cycle b { position:absolute; left:calc(100% + 8px); font:600 11px/1 'Funnel Sans', sans-serif; color:var(--mute); opacity:0; transition:opacity .4s; white-space:nowrap; letter-spacing:.02em; }
+  .cycle .now b, .cycle button:hover b, .cycle button:focus-visible b { opacity:1; }
+  .cycle b span { font-weight:400; margin-left:6px; opacity:0; transition:opacity .3s; }
+  .cycle button:hover b, .cycle button:focus-visible b { background:var(--paper); padding:4px 8px; margin-left:-8px; border-radius:999px; box-shadow:0 0 0 1px var(--hair); }
+  .cycle.on-dark button:hover b, .cycle.on-dark button:focus-visible b { background:var(--deep); box-shadow:none; }
+  .cycle button:hover b span, .cycle button:focus-visible b span { opacity:1; }
+  /* on the green bands the column reads in paper colours */
+  .cycle.on-dark::before { background:#3E7A73; }
+  .cycle.on-dark::after { background:var(--paper); }
+  .cycle.on-dark i { background:var(--paper); }
+  .cycle.on-dark .b-sam i { background:#E59A8C; }
+  .cycle.on-dark .b-wave i { background:none; box-shadow:inset 0 0 0 1.6px var(--paper); }
+  .cycle.on-dark b { color:#CFE0D7; }
+}
+@media (prefers-reduced-motion: reduce) { .cycle i { animation:none !important; } }
+
+/* ---------- one outsized moment: taal across the closing band ---------- */
+.giant { position:absolute; left:max(20px, calc((100vw - var(--max)) / 2 + 28px)); bottom:-0.22em; display:flex; align-items:flex-end; gap:.06em; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:min(47vw, 780px); line-height:.8; letter-spacing:-0.055em; color:rgb(169 194 178 / .2); white-space:nowrap; pointer-events:none; user-select:none; }
+.giant .g-sam { display:block; width:.075em; height:.7em; border-radius:.04em; background:#B4483A; opacity:.95; margin-bottom:.02em; transform-origin:bottom; }
+.demo.seen .giant .g-sam { animation:giantSam 1.4s var(--curve) .3s both; }
+@keyframes giantSam { 0% { transform:scaleY(.2); opacity:0; } 60% { transform:scaleY(1.08); } 100% { transform:scaleY(1); opacity:.95; } }
+.demo { padding-bottom:calc(110px + min(47vw, 780px) * .48) !important; }
 
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
@@ -231,17 +269,13 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app.swap .app-tiles, .app.swap .app-card, .app.swap .app-next > div { opacity:0; }
 
 /* rhythm band */
-.rhythm { background:var(--green); color:var(--paper); padding:120px 0 150px; position:relative; overflow:hidden; }
+.rhythm { background:var(--green); color:var(--paper); padding:120px 0 130px; position:relative; overflow:hidden; }
 .rhythm h2 { max-width:12ch; }
 .rhythm h2 span { display:block; color:var(--sage); }
 .promises { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px; margin-top:88px; position:relative; z-index:1; }
 .promises > div { border-top:1px solid rgb(169 194 178 / .35); padding-top:18px; }
 .promises h3 { font-size:15px; font-weight:600; letter-spacing:0; color:var(--sage); margin-bottom:8px; font-family:'Funnel Sans', sans-serif; }
 .promises p { font-family:'Funnel Display', sans-serif; font-size:24px; line-height:1.2; letter-spacing:-0.015em; max-width:16ch; }
-/* a slow row of bars along the bottom, the taal mark stretched into a rhythm */
-.pulse { position:absolute; left:0; right:0; bottom:0; height:120px; display:flex; align-items:flex-end; justify-content:space-between; padding:0 10px; opacity:.28; pointer-events:none; }
-.pulse i { width:2px; background:var(--sage); border-radius:2px 2px 0 0; height:var(--h); transform-origin:bottom; animation:breathe 4.8s ease-in-out var(--d) infinite; }
-@keyframes breathe { 0%,100% { transform:scaleY(.55); } 50% { transform:scaleY(1); } }
 
 /* showcase reel: one phone, three screens, captions that double as tabs */
 .show { padding:120px 0; }
@@ -385,7 +419,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .calc .fine { font-size:13px; color:var(--mute); }
 
 /* how: three cards of equal size, the first is a link to the demo */
-.how { padding:72px 0; border-top:1px solid var(--rule); --mark-top:80px; }
+.how { padding:72px 0; border-top:1px solid var(--rule);  }
 .how h2 { font-size:clamp(34px, 4.4vw, 56px); }
 .how-all .steps { margin-top:36px; }
 .steps { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); grid-auto-rows:1fr; gap:20px; }
@@ -514,7 +548,14 @@ footer .made { display:flex; align-items:center; gap:12px; }
   <a class="btn to-demo" href="demo.html">Build your demo</a>
 </div></nav>
 
-<header class="hero" id="top" data-mark="taal means rhythm" style="--mark-top:150px"><div class="wrap">
+<div class="cycle" role="navigation" aria-label="Page sections, set out as one cycle of teentaal">
+  <button type="button" class="b-sam" data-go="0" aria-label="Sam: your own app"><i></i><b>X<span>sam, your app</span></b></button>
+  <button type="button" class="b-clap" data-go="1" aria-label="Clap: inside the app"><i></i><b>2<span>clap, inside</span></b></button>
+  <button type="button" class="b-wave" data-go="2" aria-label="Wave: why taal"><i></i><b>0<span>wave, why taal</span></b></button>
+  <button type="button" class="b-clap" data-go="3" aria-label="Clap: price and how it works"><i></i><b>3<span>clap, one price</span></b></button>
+</div>
+
+<header class="hero" id="top" data-beat="0"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">Try it before you switch.</span></h1>
     <p class="lede">Bookings, memberships and payments for gyms and wellness studios, under your own name. Pay once from £1,900, with no monthly fee to us.</p>
@@ -584,7 +625,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 </div></header>
 
-<section class="rhythm" data-mark="rhythm" style="--mark:#A9C2B2"><div class="wrap">
+<section class="rhythm" data-beat="0"><div class="wrap">
   <div class="tala-note"><svg class="tala-loop" width="132" height="132" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#A9C2B2" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/></svg><p><b>Teentaal:</b> clap, clap, wave, clap. The red beat is sam, where every cycle comes back to.</p></div>
   <h2>taal means rhythm. <span>Keep your studio in it.</span></h2>
   <div class="promises">
@@ -593,10 +634,9 @@ footer .made { display:flex; align-items:center; gap:12px; }
     <div><h3>No monthly fee</h3><p>Pay once. Hosting runs about £1 a day, paid to the host, not us.</p></div>
   </div>
 </div>
-<div class="pulse" aria-hidden="true"></div>
 </section>
 
-<section class="show" id="product" data-mark="inside the app"><div class="wrap reel">
+<section class="show" id="product" data-beat="1"><div class="wrap reel">
   <div class="reel-copy">
     <h2 class="sr">Inside the app</h2>
     <div class="reel-tabs" role="tablist" aria-label="Screens from the app">
@@ -607,7 +647,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
     <p class="show-note">Screens from Haven, a sample studio.</p>
   </div>
   <div class="reel-stage" id="reelStage" role="tabpanel" aria-live="polite">
-    <svg class="enso" viewBox="0 0 200 200" aria-hidden="true"><path class="e1" pathLength="1000" d="M150 38 C 118 14, 62 16, 36 52 C 12 86, 20 140, 60 166 C 100 190, 158 176, 178 132 C 192 100, 186 70, 166 50"/><path class="e2" pathLength="1000" d="M146 33 C 112 12, 60 18, 34 56 C 14 90, 24 138, 62 162 C 98 184, 152 172, 172 130 C 184 104, 182 80, 170 60"/></svg>
     <div class="reel-phone">
       <img class="on" src="img/book.jpg" width="520" height="1125" alt="Booking screen listing classes, gym floor, appointments and PT by day">
       <img src="img/revenue.jpg" width="520" height="1125" alt="Revenue by session screen showing takings, staff splits and attendance" loading="lazy">
@@ -616,7 +655,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 </div></section>
 
-<section class="features" id="features" data-mark="all included"><div class="wrap">
+<section class="features" id="features" data-beat="1"><div class="wrap">
   <h2>Everything else is included</h2>
   <div class="tabs" role="tablist" aria-label="Features by who uses them">
     <button role="tab" id="t-members" aria-controls="p-members" aria-selected="true" data-t="People">Members</button>
@@ -667,7 +706,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 </div></section>
 
-<section class="founder" data-mark="why taal"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
+<section class="founder" data-beat="2"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
   <figure style="margin:0">
     <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
     <figcaption><span class="seal" aria-hidden="true">TA</span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span></figcaption>
@@ -675,7 +714,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   <p class="photo-note">yue float</p>
 </div></section>
 
-<section class="pricing" id="pricing" data-mark="one price"><div class="wrap">
+<section class="pricing" id="pricing" data-beat="3"><div class="wrap">
   <div class="intro">
     <h2>Pay once, own it</h2>
     <div class="copy">
@@ -696,7 +735,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
       <p class="opt-foot">Up to 2,000 <span data-t="people">members</span>. Bigger than that? We'll quote.</p>
     </div>
     <div class="total" aria-live="polite">
-      <svg class="enso" viewBox="0 0 200 200" aria-hidden="true"><path class="e1" pathLength="1000" d="M150 38 C 118 14, 62 16, 36 52 C 12 86, 20 140, 60 166 C 100 190, 158 176, 178 132 C 192 100, 186 70, 166 50"/><path class="e2" pathLength="1000" d="M146 33 C 112 12, 60 18, 34 56 C 14 90, 24 138, 62 162 C 98 184, 152 172, 172 130 C 184 104, 182 80, 170 60"/></svg>
       <span class="t-label" id="tSetupLabel">Once, to set up</span>
       <div class="t-price" id="tSetup">£3,700</div>
       <span class="t-note" id="tSetupNote">In three parts as we build</span>
@@ -743,7 +781,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </details>
 </div></section>
 
-<section class="how" id="how" data-mark="three steps"><div class="wrap">
+<section class="how" id="how" data-beat="3"><div class="wrap">
   <details class="faq-all how-all"><summary><h2>How it works</h2><small>See it, try it, then switch</small></summary>
   <ol class="steps">
     <li><a class="step-card to-demo" href="demo.html"><svg class="beat-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2 off" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#F2F3EE"/><circle class="tk off" cx="15.5" cy="12" r="2.1" fill="none" stroke="#F2F3EE" stroke-width="1.6"/><rect class="t3 off" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#F2F3EE"/></svg><span class="when">See it</span><span class="step-text">Build your own demo in about a minute, then book a call.</span><span class="step-go">Build your demo</span></a></li>
@@ -753,7 +791,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </details>
 </div></section>
 
-<section class="faq" id="questions"><div class="wrap">
+<section class="faq" id="questions" data-beat="3"><div class="wrap">
   <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across and your data</small></summary>
   <div class="faq-list">
     <details><summary>What do we pay after setup?</summary><p>Only the running costs: about £30 a month for hosting and email, paid directly to the hosting and email companies from your own accounts, not to us. That's about £1 a day. With your own apps, Apple also charges about £79 a year and Google $25 once. There's no monthly fee to us.</p></details>
@@ -771,7 +809,8 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </details>
 </div></section>
 
-<section class="demo" id="demo">
+<section class="demo" id="demo" data-beat="4">
+  <div class="giant" aria-hidden="true"><span class="g-sam"></span><span>taal</span></div>
   <svg class="enso" viewBox="0 0 200 200" aria-hidden="true"><path class="e1" pathLength="1000" d="M150 38 C 118 14, 62 16, 36 52 C 12 86, 20 140, 60 166 C 100 190, 158 176, 178 132 C 192 100, 186 70, 166 50"/><path class="e2" pathLength="1000" d="M146 33 C 112 12, 60 18, 34 56 C 14 90, 24 138, 62 162 C 98 184, 152 172, 172 130 C 184 104, 182 80, 170 60"/></svg>
   <div class="wrap">
   <h2>See your studio in it first.</h2>
@@ -1005,14 +1044,42 @@ const CONTACT_EMAIL = 'EMAIL';
   pause(false);
 })();
 
-/* the slow bars along the bottom of the rhythm band */
+/* the page keeps time: which beat of the cycle you are on as you scroll */
 (function () {
-  const row = document.querySelector('.pulse'); if (!row) return;
-  const n = Math.round(innerWidth / 22);
-  row.innerHTML = Array.from({ length: n }, (_, k) => {
-    const h = 30 + 70 * Math.abs(Math.sin(k * 0.37) * Math.cos(k * 0.11));
-    return `<i style="--h:${h.toFixed(0)}%;--d:${(-k * 0.12).toFixed(2)}s"></i>`;
-  }).join('');
+  const cyc = document.querySelector('.cycle'); if (!cyc) return;
+  const btns = [...cyc.querySelectorAll('button')];
+  const parts = [...document.querySelectorAll('[data-beat]')];
+  const dark = [...document.querySelectorAll('.rhythm, .demo')];
+  let beat = -1;
+  function update() {
+    const mid = innerHeight * 0.45;
+    let b = 0;
+    parts.forEach(el => { if (el.getBoundingClientRect().top <= mid) b = +el.dataset.beat; });
+    const doc = document.documentElement;
+    cyc.style.setProperty('--p', Math.min(1, scrollY / Math.max(1, doc.scrollHeight - innerHeight)).toFixed(3));
+    const r = cyc.getBoundingClientRect(), y = r.top + r.height / 2;
+    cyc.classList.toggle('on-dark', dark.some(d => { const q = d.getBoundingClientRect(); return q.top < y && q.bottom > y; }));
+    if (b === beat) return;
+    beat = b;
+    // after the last clap the cycle comes back round to sam
+    const now = b === 4 ? 0 : b;
+    btns.forEach((btn, k) => {
+      btn.classList.toggle('on', b === 4 || k <= b);
+      btn.classList.remove('now');
+      if (k === now) { void btn.offsetWidth; btn.classList.add('now'); btn.setAttribute('aria-current', 'step'); } else btn.removeAttribute('aria-current');
+    });
+  }
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
+  addEventListener('resize', update);
+  btns.forEach(btn => btn.addEventListener('click', () => {
+    const target = parts.find(el => el.dataset.beat === btn.dataset.go);
+    if (target) target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }));
+  update();
+  // the big sam bar in the closing band rises once when it comes into view
+  const demo = document.querySelector('.demo');
+  if (demo) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { demo.classList.add('seen'); o.disconnect(); } }, { threshold: .4 }).observe(demo);
 })();
 
 /* the ensō circles draw once each as they come into view, and hairlines draw across */
