@@ -50,13 +50,14 @@ tr.row:hover td { background:#F7F8F4; }
     return type === 'blob' ? r.blob() : r.json();
   });
   const label = { none: 'Enquiry', unpaid: 'Brief, not paid', paid: 'Paid' };
+  const kinds = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga', pilates: 'Pilates' };
 
   async function load() {
     const { enquiries } = await call('enquiries');
     sessionStorage.setItem('taalAdmin', key);
     $('login').hidden = true; $('list').hidden = false;
-    $('list').innerHTML = enquiries.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Name</th><th class="hide-sm">Email</th><th class="hide-sm">Members</th><th>Stage</th><th>Demo due</th></tr></thead><tbody>${
-      enquiries.map(x => `<tr class="row" data-id="${esc(x.id)}"><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(x.name)}</td><td class="hide-sm"><a href="mailto:${esc(x.email)}">${esc(x.email)}</a></td><td class="hide-sm">${esc(x.members)}</td><td><span class="tag ${esc(x.brief)}">${label[x.brief] || ''}</span></td><td>${x.demo_due ? date(x.demo_due) : ''}</td></tr>`).join('')
+    $('list').innerHTML = enquiries.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Type</th><th class="hide-sm">Name</th><th class="hide-sm">Email</th><th class="hide-sm">Members</th><th>Stage</th><th>Demo due</th></tr></thead><tbody>${
+      enquiries.map(x => `<tr class="row" data-id="${esc(x.id)}"><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(kinds[x.kind] || '')}</td><td class="hide-sm">${esc(x.name)}</td><td class="hide-sm"><a href="mailto:${esc(x.email)}">${esc(x.email)}</a></td><td class="hide-sm">${esc(x.members)}</td><td><span class="tag ${esc(x.brief)}">${label[x.brief] || ''}</span></td><td>${x.demo_due ? date(x.demo_due) : ''}</td></tr>`).join('')
     }</tbody></table>` : '<p>No enquiries yet.</p>';
   }
 
@@ -73,7 +74,7 @@ tr.row:hover td { background:#F7F8F4; }
       ['Paid', q.paid_at ? date(q.paid_at) + (q.payment ? ' (' + q.payment + ')' : '') : ''],
     ].filter(([, v]) => v);
     const td = document.createElement('tr'); td.className = 'detail';
-    td.innerHTML = `<td colspan="7"><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}${
+    td.innerHTML = `<td colspan="8"><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}${
       f.colour ? `<dt>Brief colours</dt><dd>${sw(f.colour)}${sw(f.colour2)}</dd>` : ''}${
       b && b.logo ? `<dt>Logo</dt><dd><button type="button" data-logo="${esc(q.id)}" data-name="${esc(b.logo.name)}">Download ${esc(b.logo.name)}</button></dd>` : ''}</dl></td>`;
     tr.after(td);

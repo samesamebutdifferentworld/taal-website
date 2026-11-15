@@ -85,7 +85,7 @@ input[type=file] { font:inherit; font-size:15px; }
     </fieldset>
     <fieldset>
       <legend>What you offer</legend>
-      <label>Classes and services <small>Names and how long they last, e.g. Reformer Pilates 50 min, Sports massage 60 min</small><textarea name="services" required maxlength="3000"></textarea></label>
+      <label>Classes and services <small id="egServices">Names and how long they last, e.g. Strength 45 min, Sports massage 60 min</small><textarea name="services" required maxlength="3000"></textarea></label>
       <label>Memberships and prices <small>Optional. Monthly plans, class packs, drop-in prices</small><textarea name="prices" maxlength="3000"></textarea></label>
       <label>Timetable <small>Optional. A link, or a rough outline of your week</small><textarea name="timetable" maxlength="3000"></textarea></label>
       <label>Anything else <small>Optional. What you'd most like to see in the demo</small><textarea name="other" maxlength="2000"></textarea></label>
@@ -140,6 +140,8 @@ input[type=file] { font:inherit; font-size:15px; }
     $('title').textContent = 'Your demo brief, ' + r.name;
     $('studio').value = (r.fields && r.fields.studio) || r.studio;
     if (r.colour) $('colour').value = r.colour;
+    const eg = { wellness: 'e.g. Sports massage 60 min, Infrared sauna 45 min', yoga: 'e.g. Vinyasa flow 60 min, Yin 75 min', pilates: 'e.g. Reformer 50 min, Mat Pilates 45 min' }[r.kind];
+    if (eg) $('egServices').textContent = 'Names and how long they last, ' + eg;
     if (r.fields) {
       for (const [k, v] of Object.entries(r.fields)) { const el = form.elements[k]; if (el && v && el.type !== 'file') el.value = v; }
       if (r.has_logo) $('logoPrev').textContent = 'Saved';

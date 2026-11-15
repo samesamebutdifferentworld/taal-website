@@ -128,6 +128,12 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
 .switch .note { font-size:13px; color:var(--mute); }
 .demo-link { font-size:14px; font-weight:600; justify-self:start; }
+.kinds { display:grid; grid-template-columns:repeat(4, 1fr); padding:4px; border-radius:999px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--rule); margin-bottom:6px; }
+.kinds button { font:inherit; font-size:14px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:9px 4px; cursor:pointer; transition:background .2s, color .2s; }
+.kinds button:hover { color:var(--ink); }
+.kinds button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
+.app-tiles, .app-card, .app-next > div { transition:opacity .18s; }
+.app.swap .app-tiles, .app.swap .app-card, .app.swap .app-next > div { opacity:0; }
 
 /* rhythm band */
 .rhythm { background:var(--green); color:var(--paper); padding:110px 0 100px; }
@@ -333,6 +339,7 @@ footer .links { display:flex; gap:20px; }
   .switch { justify-items:center; text-align:center; }
   .switch label.name, .switch .note { text-align:center; }
   .demo-link { justify-self:center; }
+  .kinds { width:100%; }
   .swatches { justify-content:center; }
   .total { align-items:center; text-align:center; }
   .t-row, .t-years { align-items:center; width:100%; }
@@ -383,29 +390,29 @@ footer .links { display:flex; gap:20px; }
     <div class="phone" aria-label="Sample app home screen, shown in the brand you choose">
       <div class="app" id="app">
         <div class="app-top">
-          <div class="app-id"><img class="app-logo" src="img/app/logo.svg" alt=""><span class="app-words"><span class="app-name" id="appName">Haven</span><span class="app-sub" id="appSub">Wellness</span></span></div>
+          <div class="app-id"><img class="app-logo" src="img/app/logo.svg" alt=""><span class="app-words"><span class="app-name" id="appName">Haven</span><span class="app-sub" id="appSub">Fitness</span></span></div>
           <span class="app-chat" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
         </div>
         <div class="app-hero">
           <small id="greet">Good afternoon</small>
           <b>Alex</b>
           <div class="app-next">
-            <div><small>Next up, Mon 16 Nov 07:00</small><strong>Strength</strong><span>with Elena</span></div>
+            <div><small id="nextWhen">Next up, Mon 16 Nov 07:00</small><strong id="nextName">Strength</strong><span id="nextWith">with Elena</span></div>
             <span class="app-qr">Entry QR</span>
           </div>
         </div>
-        <div class="app-tiles">
+        <div class="app-tiles" id="appTiles">
           <div class="app-tile" style="--img:url('img/app/strength.svg')"><span>Classes</span></div>
           <div class="app-tile" style="--img:url('img/app/opengym.svg')"><span>Gym floor</span></div>
-          <div class="app-tile" style="--img:url('img/app/deeptissue.svg')"><span>Appointments</span></div>
           <div class="app-tile" style="--img:url('img/app/pt.svg')"><span>PT</span></div>
+          <div class="app-tile" style="--img:url('img/app/deeptissue.svg')"><span>Massage</span></div>
         </div>
         <div class="app-head"><b>Your credits</b><a>Buy more</a></div>
-        <div class="app-card">
+        <div class="app-card" id="appCard">
           <h4>Included in your membership <span>Renews 3 Dec</span></h4>
           <div class="app-row"><span>Gym floor</span><i style="--w:100%"></i><b class="ok">Unlimited</b></div>
           <div class="app-row"><span>8 classes a month</span><i style="--w:75%"></i><b>6 of 8 left</b></div>
-          <div class="app-row"><span>60 min massage</span><i style="--w:100%"></i><b>1 of 1 left</b></div>
+          <div class="app-row"><span>PT session</span><i style="--w:100%"></i><b>1 of 1 left</b></div>
         </div>
         <div class="app-nav" aria-hidden="true">
           <span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</span>
@@ -418,6 +425,12 @@ footer .links { display:flex; gap:20px; }
     </div>
 
     <div class="switch">
+      <div class="kinds" role="radiogroup" aria-label="Your kind of studio">
+        <button type="button" role="radio" aria-checked="true" data-k="fitness">Fitness</button>
+        <button type="button" role="radio" aria-checked="false" data-k="wellness" tabindex="-1">Wellness</button>
+        <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
+        <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
+      </div>
       <label class="name" for="studioName">Try it with your studio</label>
       <input type="text" id="studioName" placeholder="Your studio's name" maxlength="22" autocomplete="organization">
       <div class="swatches" role="group" aria-label="Brand colour">
@@ -451,7 +464,7 @@ footer .links { display:flex; gap:20px; }
     <div>
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#A9C2B2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/><circle cx="9" cy="7" r="4"/></svg>
       <h3>No per-member fees</h3>
-      <p>Grow from 50 members to 2,000 and your monthly cost stays the same.</p>
+      <p>Grow from 50 <span data-t="people">members</span> to 2,000 and your monthly cost stays the same.</p>
     </div>
   </div>
 </div></section>
@@ -460,11 +473,11 @@ footer .links { display:flex; gap:20px; }
   <h2>Built for members, coaches and owners</h2>
   <div class="show-grid">
     <figure><div class="frame"><img src="img/book.jpg" width="520" height="1125" alt="Booking screen listing classes, gym floor, appointments and PT by day" loading="lazy"></div>
-      <figcaption><h3>Everything they book, in one place</h3><p>Classes, gym floor, treatments, PT and online sessions. Book and pay in a couple of taps, then scan in at the door.</p></figcaption></figure>
+      <figcaption><h3>Everything they book, in one place</h3><p data-t="show1">Classes, gym floor, PT and recovery. Book and pay in a couple of taps, then scan in at the door.</p></figcaption></figure>
     <figure><div class="frame"><img src="img/revenue.jpg" width="520" height="1125" alt="Revenue by session screen showing takings, staff splits and attendance" loading="lazy"></div>
-      <figcaption><h3>Know what every class earns</h3><p>Takings for each session after staff splits, so you see which classes pay their way.</p></figcaption></figure>
+      <figcaption><h3 data-t="show2h">Know what every class earns</h3><p data-t="show2">Takings for each session after coach splits, so you see which classes pay their way.</p></figcaption></figure>
     <figure><div class="frame"><img src="img/myappts.jpg" width="520" height="1125" alt="A therapist's appointment diary with upcoming clients" loading="lazy"></div>
-      <figcaption><h3>A diary your team will use</h3><p>Bookings, client notes and pay in one place, and cover sorted without a group chat.</p></figcaption></figure>
+      <figcaption><h3>A diary your team will use</h3><p data-t="show3">Coaches see their classes, member notes and pay in one place, and cover is sorted without a group chat.</p></figcaption></figure>
   </div>
   <p class="show-note">Screens from a sample studio, Haven.</p>
 </div></section>
@@ -472,17 +485,17 @@ footer .links { display:flex; gap:20px; }
 <section class="features" id="features"><div class="wrap">
   <h2>Everything else, included</h2>
   <div class="tabs" role="tablist" aria-label="Features by who uses them">
-    <button role="tab" id="t-members" aria-controls="p-members" aria-selected="true">Members</button>
+    <button role="tab" id="t-members" aria-controls="p-members" aria-selected="true" data-t="People">Members</button>
     <button role="tab" id="t-team" aria-controls="p-team" aria-selected="false" tabindex="-1">Your team</button>
     <button role="tab" id="t-studio" aria-controls="p-studio" aria-selected="false" tabindex="-1">The studio</button>
   </div>
 
   <div role="tabpanel" id="p-members" aria-labelledby="t-members">
     <div class="grid6">
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Book anything</h3><p>Classes, gym time, treatments, PT and online classes, from one app.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Memberships and packs</h3><p>Monthly plans, class packs and passes, with credits counted for them.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4M20 17v3"/></svg>Door entry by QR</h3><p>They scan in with their phone. No fobs or cards to hand out.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6"/></svg>Workouts and personal bests</h3><p>A log of every session and the lifts they're proudest of.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-t="f1h">Book anything</span></h3><p data-t="f1">Classes, gym time, treatments, PT and online classes, from one app.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span data-t="f2h">Memberships and packs</span></h3><p data-t="f2">Monthly plans, class packs and passes, with credits counted for them.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4M20 17v3"/></svg><span data-t="f3h">Door entry by QR</span></h3><p data-t="f3">They scan in with their phone. No fobs or cards to hand out.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17M16 7h6v6"/></svg><span data-t="f4h">Workouts and personal bests</span></h3><p data-t="f4">A log of every session and the lifts they're proudest of.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Message your team</h3><p>Questions answered in the app, not in your personal messages.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-12 6 2 2 4-4"/></svg>Calendar sync</h3><p>Bookings appear in their own phone calendar automatically.</p></div>
     </div>
@@ -493,8 +506,8 @@ footer .links { display:flex; gap:20px; }
     <div class="grid6">
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Their own diary</h3><p>Classes and appointments together in one view.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Check people in</h3><p>Tick off who arrived, so no-shows are easy to spot.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Client notes</h3><p>Health and injury notes, seen only by the staff you allow.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Class plans</h3><p>Attach the workout to each class so every coach runs it the same way.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-t="t3h">Client notes</span></h3><p data-t="t3">Health and injury notes, seen only by the staff you allow.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span data-t="t4h">Class plans</span></h3><p data-t="t4">Attach the workout to each class so every coach runs it the same way.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/></svg>Rota and cover</h3><p>Swap shifts, ask for cover and book time off.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1ZM8 8h8M8 12h8M8 16h5"/></svg>Pay and invoices</h3><p>Sessions taught and pay owed, worked out for them.</p></div>
     </div>
@@ -503,12 +516,12 @@ footer .links { display:flex; gap:20px; }
 
   <div role="tabpanel" id="p-studio" aria-labelledby="t-studio" hidden>
     <div class="grid6">
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>Timetable and rooms</h3><p>Plan classes, rooms and opening hours in one place.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><span data-t="s1h">Timetable and rooms</span></h3><p data-t="s1">Plan classes, rooms and opening hours in one place.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Card and Direct Debit</h3><p>Payments through Stripe, straight into your own account.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Sell at reception</h3><p>Take payment for passes, drinks and products at the front desk.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.2 15.9A10 10 0 1 1 8 2.8M22 12A10 10 0 0 0 12 2v10z"/></svg>Revenue by session</h3><p>What each class earns after staff splits.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-t="s3h">Sell at reception</span></h3><p data-t="s3">Take payment for passes, drinks and products at the front desk.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.2 15.9A10 10 0 1 1 8 2.8M22 12A10 10 0 0 0 12 2v10z"/></svg>Revenue by session</h3><p data-t="s4">What each class earns after coach splits.</p></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></svg>Reports and exports</h3><p>Download any report or list, whenever you need it.</p></div>
-      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>We move your members</h3><p>Members, memberships and credits brought across from your current system.</p></div>
+      <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>We move your members</h3><p data-t="s6">Members, memberships and credits brought across from your current system.</p></div>
     </div>
     <div class="more"><button type="button" aria-expanded="false">Show 4 more</button><ul hidden><li>Staff roles and permissions</li><li>Enquiries and leads</li><li>Emails and push alerts</li><li>Shared team inbox</li></ul></div>
   </div>
@@ -531,7 +544,7 @@ footer .links { display:flex; gap:20px; }
       <label class="opt fixed"><span class="opt-text"><b>Booking system</b><span>Members book and pay on phone or computer. Back office, team diaries, setup, member import and training.</span></span><span class="opt-price">£900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Your own apps</b><span>Your app on the App Store and Google Play, with push alerts. Released a few weeks after you go live.</span></span><span class="opt-price">+£900</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Full studio website</b><span>Your whole public website in your brand, not just the booking pages: home, about, team, hours and FAQs, with your live timetable and prices built in.</span></span><span class="opt-price">+£400</span><input type="checkbox" role="switch" id="optSite" checked aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
-      <div class="opt members-opt"><label for="members" class="opt-text"><b>Active members</b><span>The monthly fee stays the same up to 2,000 members, then rises a little for email.</span></label><output id="membersOut" for="members" class="opt-price">150</output>
+      <div class="opt members-opt"><label for="members" class="opt-text"><b>Active <span data-t="people">members</span></b><span>The monthly fee stays the same up to 2,000 <span data-t="people">members</span>, then rises a little for email.</span></label><output id="membersOut" for="members" class="opt-price">150</output>
         <input type="range" id="members" min="25" max="10000" step="25" value="150" aria-describedby="membersOut"></div>
     </div>
     <div class="total" aria-live="polite">
@@ -599,7 +612,7 @@ footer .links { display:flex; gap:20px; }
 <section class="demo" id="demo"><div class="wrap">
   <div>
     <h2>See your studio in it first.</h2>
-    <p class="lead">Tell us a little about your studio. We'll email you two ways to start: a short Zoom call to ask anything, or a brief with a £5 fee for a working demo in your brand within 7 days.</p>
+    <p class="lead">Tell us a little about your <span data-t="kindName">gym</span>. We'll email you two ways to start: a short Zoom call to ask anything, or a brief with a £5 fee for a working demo in your brand within 7 days.</p>
   </div>
   <form id="demoForm" novalidate>
     <div class="two">
@@ -608,12 +621,13 @@ footer .links { display:flex; gap:20px; }
     </div>
     <div class="two">
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
-      <label>Active members
+      <label>Active <span data-t="people">members</span>
         <select name="members"><option>Under 100</option><option selected>100 to 300</option><option>300 to 1,000</option><option>Over 1,000</option></select>
       </label>
     </div>
     <label>What do you use now, and what would you change? <textarea name="note"></textarea></label>
     <input type="hidden" name="colour" id="formColour">
+    <input type="hidden" name="kind" id="formKind" value="fitness">
     <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
     <button class="btn" type="submit">Send</button>
     <p class="msg" id="formMsg" role="status"></p>
@@ -671,6 +685,140 @@ const CONTACT_EMAIL = 'EMAIL';
     appName.textContent = v || 'Haven';
     appSub.hidden = !!v;
   });
+})();
+
+/* studio type: tailors the phone and the page below to fitness, wellness, yoga or Pilates */
+(function () {
+  const T = {
+    fitness: {
+      sub: 'Fitness', next: ['Next up, Mon 16 Nov 07:00', 'Strength', 'with Elena'],
+      tiles: [['Classes', 'strength'], ['Gym floor', 'opengym'], ['PT', 'pt'], ['Massage', 'deeptissue']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Gym floor', 100, 'Unlimited', 1], ['8 classes a month', 75, '6 of 8 left'], ['PT session', 100, '1 of 1 left']],
+      copy: {
+        people: 'members', People: 'Members', kindName: 'gym',
+        show1: 'Classes, gym floor, PT and recovery. Book and pay in a couple of taps, then scan in at the door.',
+        show2h: 'Know what every class earns',
+        show2: 'Takings for each session after coach splits, so you see which classes pay their way.',
+        show3: 'Coaches see their classes, member notes and pay in one place, and cover is sorted without a group chat.',
+        f1h: 'Book anything', f1: 'Classes, gym time, PT, treatments and online classes, from one app.',
+        f2h: 'Memberships and packs', f2: 'Monthly plans, class packs and passes, with credits counted for them.',
+        f3h: 'Door entry by QR', f3: 'They scan in with their phone. No fobs or cards to hand out.',
+        f4h: 'Workouts and personal bests', f4: "A log of every session and the lifts they're proudest of.",
+        t3h: 'Member notes', t3: 'Health and injury notes, seen only by the coaches you allow.',
+        t4h: 'Class plans', t4: 'Attach the workout to each class so every coach runs it the same way.',
+        s1h: 'Timetable and rooms', s1: 'Plan classes, the gym floor and opening hours in one place.',
+        s3h: 'Sell at reception', s3: 'Take payment for passes, drinks and supplements at the front desk.',
+        s4: 'What each class earns after coach splits.',
+        s6: 'Members, memberships and credits brought across from your current system.',
+      },
+    },
+    wellness: {
+      sub: 'Wellness', next: ['Next up, Mon 16 Nov 18:00', 'Sports massage', 'with Maya'],
+      tiles: [['Treatments', 'deeptissue'], ['Sauna', 'sauna'], ['Breathwork', 'pt'], ['Gift cards', 'gift']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Sauna sessions', 75, '3 of 4 left'], ['60 min massage', 100, '1 of 1 left'], ['Breathwork', 100, 'Unlimited', 1]],
+      copy: {
+        people: 'clients', People: 'Clients', kindName: 'wellness studio',
+        show1: "Treatments, sauna sessions and classes, with live times and rooms that can't be double-booked. Book and pay in a couple of taps.",
+        show2h: 'Know what everything earns',
+        show2: 'Takings for every treatment and class after therapist splits, so you see what pays its way.',
+        show3: 'Therapists see their bookings, treatment notes and pay in one place, and cover is sorted without a group chat.',
+        f1h: 'Book anything', f1: 'Treatments, sauna sessions and classes, from one app.',
+        f2h: 'Packages and memberships', f2: 'Treatment packages, recovery memberships and passes, with credits counted for them.',
+        f3h: 'Check in by QR', f3: 'They show a QR code at the desk, or scan in at the door.',
+        f4h: 'Their visits and stats', f4: "Every treatment and session they've booked, with monthly and yearly stats.",
+        t3h: 'Treatment notes', t3: 'Health forms and treatment notes, seen only by the therapists you allow.',
+        t4h: 'Session notes', t4: "Add notes to each class or treatment so the whole team knows what's planned.",
+        s1h: 'Rooms and timetable', s1: 'Treatment rooms, sauna slots and classes, with turnaround time and no double-bookings.',
+        s3h: 'Sell at reception', s3: 'Sell packages, gift cards and products at the front desk.',
+        s4: 'What each treatment and class earns after therapist splits.',
+        s6: 'Clients, packages and credits brought across from your current system.',
+      },
+    },
+    yoga: {
+      sub: 'Yoga', next: ['Next up, Tue 17 Nov 07:15', 'Vinyasa flow', 'with Priya'],
+      tiles: [['Classes', 'yoga'], ['Workshops', 'pt'], ['Online', 'mat'], ['Privates', 'deeptissue']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Studio classes', 100, 'Unlimited', 1], ['Online classes', 100, 'Unlimited', 1], ['Workshops', 50, '1 of 2 left']],
+      copy: {
+        people: 'students', People: 'Students', kindName: 'yoga studio',
+        show1: 'Classes, workshops, online classes and private sessions. Book and pay in a couple of taps, with a waitlist when a class is full.',
+        show2h: 'Know what every class earns',
+        show2: 'Takings for each class after teacher splits, so you see which classes pay their way.',
+        show3: "Teachers see their classes, who's booked and their pay, and cover is sorted without a group chat.",
+        f1h: 'Book anything', f1: 'Classes, workshops, private sessions and online classes, from one app.',
+        f2h: 'Memberships and passes', f2: 'Unlimited memberships, class passes and intro offers, with credits counted for them.',
+        f3h: 'Check in by QR', f3: 'They show a QR code at the desk, or scan in at the door.',
+        f4h: 'Practice stats', f4: "Every class they've taken, with monthly and yearly stats to keep them coming back.",
+        t3h: 'Student notes', t3: 'Injuries and health notes, seen only by the teachers you allow.',
+        t4h: 'Class plans', t4: 'Attach the sequence or theme to each class for teachers to see.',
+        s1h: 'Timetable and rooms', s1: 'Plan classes, workshops and rooms in one place.',
+        s3h: 'Sell at reception', s3: 'Sell passes, mats and props at the front desk.',
+        s4: 'What each class earns after teacher splits.',
+        s6: 'Students, memberships and credits brought across from your current system.',
+      },
+    },
+    pilates: {
+      sub: 'Pilates', next: ['Next up, Mon 16 Nov 18:30', 'Reformer', 'with Sophie'],
+      tiles: [['Reformer', 'reformer'], ['Mat', 'mat'], ['Privates', 'pt'], ['Intro offer', 'gift']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['8 reformer classes', 62, '5 of 8 left'], ['Mat classes', 100, 'Unlimited', 1], ['Private session', 100, '1 of 1 left']],
+      copy: {
+        people: 'clients', People: 'Clients', kindName: 'Pilates studio',
+        show1: 'Reformer, mat and private sessions, with a waitlist for full classes. Book and pay in a couple of taps, then scan in at the door.',
+        show2h: 'Know what every class earns',
+        show2: 'Takings for each class after instructor splits, so you see which slots fill and pay their way.',
+        show3: 'Instructors see their classes, client notes and pay in one place, and cover is sorted without a group chat.',
+        f1h: 'Book anything', f1: 'Reformer, mat, private sessions and online classes, from one app.',
+        f2h: 'Memberships and packs', f2: 'Reformer memberships, class packs and intro offers, with credits counted for them.',
+        f3h: 'Check in by QR', f3: 'They show a QR code at the desk, or scan in at the door.',
+        f4h: 'Progress and stats', f4: "Every class they've done, with monthly and yearly stats to keep them coming back.",
+        t3h: 'Client notes', t3: 'Injuries and health notes, seen only by the instructors you allow.',
+        t4h: 'Class plans', t4: 'Attach the class plan to each session so every instructor runs it the same way.',
+        s1h: 'Timetable and rooms', s1: 'Plan classes, rooms and how many reformers each class has.',
+        s3h: 'Sell at reception', s3: 'Sell passes, grip socks and drinks at the front desk.',
+        s4: 'What each class earns after instructor splits.',
+        s6: 'Clients, memberships and credits brought across from your current system.',
+      },
+    },
+  };
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const app = $('app'), btns = [...document.querySelectorAll('.kinds [role=radio]')];
+  // Load the tile art up front so switching is instant.
+  Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
+
+  function apply(kind, animate) {
+    const k = T[kind] || T.fitness;
+    btns.forEach(b => { const on = b.dataset.k === kind; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+    const paint = () => {
+      $('appSub').textContent = k.sub;
+      [$('nextWhen').textContent, $('nextName').textContent, $('nextWith').textContent] = k.next;
+      $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<div class="app-tile" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></div>`).join('');
+      $('appCard').innerHTML = `<h4>${esc(k.card[0])} <span>${esc(k.card[1])}</span></h4>` +
+        k.rows.map(([label, w, val, ok]) => `<div class="app-row"><span>${esc(label)}</span><i style="--w:${w}%"></i><b${ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`).join('');
+      app.classList.remove('swap');
+    };
+    if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) { app.classList.add('swap'); setTimeout(paint, 180); } else paint();
+    document.querySelectorAll('[data-t]').forEach(el => { const v = k.copy[el.dataset.t]; if (v != null) el.textContent = v; });
+    $('formKind').value = kind;
+    try { localStorage.setItem('taalKind', kind); } catch (e) {}
+  }
+
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => apply(b.dataset.k, true));
+    b.addEventListener('keydown', e => {
+      const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      const n = btns[(i + d + btns.length) % btns.length]; apply(n.dataset.k, true); n.focus();
+    });
+  });
+  // ?type=yoga in a link opens the page for that kind of studio; otherwise the last choice is remembered.
+  let start = new URLSearchParams(location.search).get('type');
+  if (!T[start]) { try { start = localStorage.getItem('taalKind'); } catch (e) { start = null; } }
+  apply(T[start] ? start : 'fitness', false);
 })();
 
 /* feature tabs */

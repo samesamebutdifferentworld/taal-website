@@ -20,6 +20,7 @@ const FEE_PENCE = 500;
 const DEMO_DAYS = 7;
 const MAX_LOGO = 2 * 1024 * 1024;
 const MEMBERS = ['Under 100', '100 to 300', '300 to 1,000', 'Over 1,000'];
+const KINDS = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga', pilates: 'Pilates' };
 
 export async function enquiries(request, env, url) {
   const p = url.pathname;
@@ -52,6 +53,7 @@ async function createEnquiry(request, env, url) {
     members: MEMBERS.includes(b.members) ? b.members : '',
     note: String(b.note || '').trim().slice(0, 2000),
     colour: /^#[0-9a-f]{6}$/i.test(b.colour || '') ? b.colour : '',
+    kind: KINDS[b.kind] ? b.kind : '',
   };
   await rateLimit(request, env);
   const id = token();
@@ -69,7 +71,7 @@ async function createEnquiry(request, env, url) {
     ...thankYouEmail({ first, studio: e.studio, briefUrl, callUrl, contact: env.CONTACT_EMAIL }),
   });
   await notify(env, `New enquiry: ${e.studio}`, [
-    ['Name', e.name], ['Studio', e.studio], ['Email', e.email], ['Active members', e.members],
+    ['Name', e.name], ['Studio', e.studio], ['Type', KINDS[e.kind] || ''], ['Email', e.email], ['Active members', e.members],
     ['Colour', e.colour], ['Note', e.note],
   ]);
   return json({ ok: true, id, brief_url: briefUrl, call_url: callUrl });
@@ -82,6 +84,7 @@ async function readEnquiry(env, id) {
     name: rec.name.split(' ')[0],
     studio: rec.studio,
     colour: rec.colour,
+    kind: rec.kind || '',
     brief: rec.brief,
     demo_due: rec.demo_due || null,
     fields: brief ? brief.fields : null,
@@ -387,7 +390,7 @@ async function getEnquiry(env, id) {
 async function putEnquiry(env, rec) {
   const metadata = {
     studio: rec.studio.slice(0, 80), name: rec.name.slice(0, 80), email: rec.email.slice(0, 120),
-    members: rec.members, created_at: rec.created_at, brief: rec.brief, demo_due: rec.demo_due || null,
+    members: rec.members, kind: rec.kind || '', created_at: rec.created_at, brief: rec.brief, demo_due: rec.demo_due || null,
   };
   await env.ENQUIRIES.put(`enq:${rec.id}`, JSON.stringify(rec), { expirationTtl: YEAR, metadata });
 }
