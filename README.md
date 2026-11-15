@@ -7,8 +7,10 @@ Static marketing site for Taal. Files live in `public/`; deployed to Cloudflare 
 `src/worker.js` also answers `GET /api/licence` for client studios' booking systems
 (see the booking repo's README, "Licence"). Licences are entries in the
 `taal-licences` KV namespace: key = the studio's licence key, value =
-`{"studio":"Name","status":"active"}`, or `{"studio":"Name","status":"ended","ended_at":"YYYY-MM-DD"}`
-when a plan ends. Edit them in the Cloudflare dashboard under Storage & databases → KV.
+`{"studio":"Name","status":"active"}`. Licences are permanent once setup is paid. Only if a
+setup payment is more than 30 days overdue, change it to
+`{"studio":"Name","status":"ended","ended_at":"YYYY-MM-DD"}`: the studio sees a notice for 30 days, then the
+system goes read-only until you set it back to active. A missing or deleted entry never locks a studio out. Edit them in the Cloudflare dashboard under Storage & databases → KV.
 
 ## The demo builder
 

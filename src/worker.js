@@ -8,7 +8,8 @@
  * Licences live in the LICENCES KV namespace (taal-licences), one entry per studio:
  *   key:   the studio's licence key (a long random string, e.g. `openssl rand -hex 24`)
  *   value: {"studio":"SQ Fitness","status":"active"}
- * When a plan ends, change the value to {"studio":"SQ Fitness","status":"ended","ended_at":"YYYY-MM-DD"}.
+ * Licences are permanent. Only if a setup payment is over 30 days overdue, change the value to
+ * {"studio":"SQ Fitness","status":"ended","ended_at":"YYYY-MM-DD"}; set it back to active once paid.
  * The demo builder (studios build their own demo): see src/demos.js.
  * Everything else is the static site in ./public.
  */
