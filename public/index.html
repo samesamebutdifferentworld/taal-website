@@ -823,7 +823,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 <footer><div class="wrap">
   <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software for gyms and wellness studios, made in London.</p>
-  <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="demo.html">Contact</a></div>
+  <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
 <script>
@@ -1181,7 +1181,8 @@ const CONTACT_EMAIL = 'EMAIL';
 
 /* "Build your demo" links carry the type, name and colour tried on the phone */
 (function () {
-  document.getElementById('footMail').href = CONTACT_EMAIL.includes('@') ? 'mailto:' + CONTACT_EMAIL : 'demo.html';
+  // Contact is always the email address; set CONTACT_EMAIL at the top of this script.
+  document.getElementById('footMail').href = 'mailto:' + CONTACT_EMAIL;
   document.querySelectorAll('a.to-demo').forEach(a => a.addEventListener('click', () => {
     const q = new URLSearchParams();
     const on = document.querySelector('.kinds [aria-checked="true"]');
