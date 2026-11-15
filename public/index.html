@@ -334,7 +334,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* yue float, the studio Tim ran: faded right back so the quote reads easily */
 .founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .86) 0%, rgb(242 243 238 / .8) 55%, rgb(242 243 238 / .64) 100%), url('img/yue-float.jpg') center 40%/cover no-repeat; }
 @media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .82), rgb(242 243 238 / .82)), url('img/yue-float-sm.jpg') 0% 30%/auto 125% no-repeat; } }
-.founder .photo-note { margin-top:28px; font-size:12px; color:var(--green); font-weight:600; }
+.founder .photo-note { margin-left:auto; align-self:flex-end; font-size:12px; color:var(--green); font-weight:600; }
 .founder blockquote, .founder figcaption, .founder figcaption .mute { color:var(--green); }
 .founder blockquote::before { background:var(--green) !important; }
 .founder .wrap { max-width:980px; }
@@ -723,9 +723,8 @@ footer .made { display:flex; align-items:center; gap:12px; }
 <section class="founder" data-beat="2"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
   <figure style="margin:0">
     <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
-    <figcaption><span class="seal" aria-hidden="true">TA</span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span></figcaption>
+    <figcaption><span class="seal" aria-hidden="true">TA</span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
   </figure>
-  <p class="photo-note">yue float</p>
 </div></section>
 
 <section class="pricing" id="pricing" data-beat="3"><div class="wrap">
