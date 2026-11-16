@@ -49,11 +49,15 @@ def nav(current=''):
 
 
 def footer(current=''):
-    links = [(f, label) for f, _, label, *_ in KINDS] + [('compare.html', 'Compare costs'), ('leaving.html', 'Leaving taal'), ('privacy.html', 'Privacy')]
-    a = ''.join(f'<a href="{h}"{" aria-current=\"page\"" if h == current else ""}>{t}</a>' for h, t in links)
-    return (f'<footer><div class="wrap">\n  <a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a>\n'
-            '  <p>Studio software made in London for independent gyms and wellness studios.</p>\n'
-            f'  <div class="links">{a}<a class="mail" href="mailto:EMAIL">Contact</a></div>\n</div></footer>\n'
+    def a(h, t, extra=''):
+        return f'<a href="{h}"{extra}{" aria-current=\"page\"" if h == current else ""}>{t}</a>'
+    studios = ''.join(a(f, label) for f, _, label, *_ in KINDS)
+    before = a('compare.html', 'Compare costs') + a('leaving.html', 'Leaving taal') + a('privacy.html', 'Privacy') + '<a class="mail" href="mailto:EMAIL">Contact</a>'
+    return (f'<footer><div class="wrap foot">\n'
+            f'  <div class="foot-brand"><a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>\n'
+            f'  <div class="foot-col"><span class="foot-h">For your studio</span>{studios}</div>\n'
+            f'  <div class="foot-col"><span class="foot-h">Before you sign</span>{before}</div>\n'
+            '</div></footer>\n'
             "<script>(function () { const EMAIL = 'EMAIL'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });\n"
             "  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { threshold: .35 });\n"
             "  document.querySelectorAll('.coda, .line-in').forEach(el => io.observe(el));\n"

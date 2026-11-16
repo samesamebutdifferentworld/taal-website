@@ -566,11 +566,17 @@ details p { margin-top:12px; color:var(--mute); max-width:38em; }
 .demo-cta .btn { font-size:17px; padding:16px 28px; }
 .demo-cta .haven-link { color:var(--paper); font-size:15px; }
 
-footer { padding:36px 0 56px; font-size:14px; color:var(--mute); }
-footer .wrap { display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:flex-start; }
-footer p { max-width:640px; }
-footer .links { display:flex; flex-wrap:wrap; gap:8px 20px; }
-footer .made { display:flex; align-items:center; gap:12px; }
+footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px solid var(--rule); }
+.foot { display:grid; grid-template-columns:minmax(0,1.6fr) repeat(2, minmax(0,.7fr)); gap:36px 56px; align-items:start; }
+.foot-brand .logo { font-size:22px; }
+.foot-brand p { margin-top:14px; max-width:21em; font-size:15px; line-height:1.5; }
+.foot-col { display:grid; gap:9px; align-content:start; }
+.foot-col .foot-h { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:15px; color:var(--ink); letter-spacing:-0.01em; margin-bottom:4px; }
+.foot-col a { color:var(--mute); text-decoration:none; width:max-content; position:relative; }
+.foot-col a::after { content:''; position:absolute; left:0; right:0; bottom:-3px; height:1.5px; background:var(--seal); transform:scaleX(0); transform-origin:left; transition:transform .35s var(--curve); }
+.foot-col a:hover, .foot-col a[aria-current] { color:var(--ink); }
+.foot-col a:hover::after, .foot-col a[aria-current]::after { transform:scaleX(1); }
+@media (max-width: 720px) { footer { padding:48px 0 56px; } .foot { grid-template-columns:repeat(2, minmax(0,1fr)); gap:32px 24px; } .foot-brand { grid-column:1 / -1; } }
 
 @media (max-width: 960px) {
   nav ul { display:none; }
@@ -914,10 +920,10 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 </div></section>
 
-<footer><div class="wrap">
-  <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
-  <p class="made">Studio software made in London for independent gyms and wellness studios.</p>
-  <div class="links"><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
+<footer><div class="wrap foot">
+  <div class="foot-brand"><a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>
+  <div class="foot-col"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a></div>
+  <div class="foot-col"><span class="foot-h">Before you sign</span><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
 <script>
