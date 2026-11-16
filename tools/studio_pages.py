@@ -145,7 +145,7 @@ def studio_page(file, key, label, studio, team, brand, plural=None):
     people = c['people']
     plural = plural or studio.replace('your ', '') + 's'
     title = f'Booking app for {plural}: taal'
-    desc = f"Your own booking app for {plural}, in your brand. {c['show1']} Pay once from £1,900, with no monthly fee to us."
+    desc = f"Your own booking app for {plural}, in your brand. {c['show1']} Pay once from £1,900, or spread it over 12 or 24 months."
     others = ''.join(f'<a href="{f}"{" aria-current=\"page\"" if f == file else ""}>{l}</a>' for f, _, l, *_ in KINDS)
     folds = '\n'.join([
         fold('members', f'For your {people}', 'Their own app, in your name', cols([(c['f1h'], c['f1']), (c['f2h'], c['f2']), (c['f3h'], c['f3']), (c['f4h'], c['f4'])], ' four')),
