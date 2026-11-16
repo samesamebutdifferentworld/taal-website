@@ -215,6 +215,11 @@ summary::after { transition:transform .3s var(--curve); }
 .reel-phone, .phone { transition:transform .6s var(--curve); }
 .grid6 > div::before { transition:height .25s, top .25s, opacity .25s; }
 
+/* everything under the sample phone is centred, on every screen size */
+.switch { justify-items:center; text-align:center; }
+.switch label.name, .switch .note { text-align:center; }
+.switch .swatches { justify-content:center; }
+.switch .kinds, .switch input[type=text], .switch .hero-go { justify-self:stretch; }
 /* the demo button sits under the sample phone, with its note */
 .hero-go.under { display:flex; flex-direction:column; align-items:stretch; gap:10px; margin-top:10px; width:100%; text-align:center; }
 
