@@ -429,14 +429,101 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app-row i::before { content:''; display:block; height:100%; width:var(--w); background:var(--ink); border-radius:3px; }
 .app-row b { font-size:11px; text-align:right; }
 .app-row b.ok { color:color-mix(in srgb, var(--ink) 75%, #3a7a4a); }
-.app-nav { position:absolute; left:0; right:0; bottom:0; background:var(--brand); color:color-mix(in srgb, var(--on-brand) 75%, transparent); display:grid; grid-template-columns:repeat(5,1fr); padding:8px 4px 12px; font-size:9.5px; text-align:center; }
-.app-nav span { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.app-nav { position:absolute; z-index:4; left:0; right:0; bottom:0; background:var(--brand); color:color-mix(in srgb, var(--on-brand) 75%, transparent); display:grid; grid-template-columns:repeat(5,1fr); padding:8px 4px 12px; font-size:9.5px; text-align:center; }
 .app-nav svg { width:18px; height:18px; }
-.app-nav .on { color:var(--accent); font-weight:700; }
-.app-nav .on svg { background:color-mix(in srgb, var(--on-brand) 12%, transparent); border-radius:10px; padding:3px 10px; box-sizing:content-box; margin-top:-3px; }
 .app-nav .qr { position:relative; }
 .app-nav .qr i { width:42px; height:42px; border-radius:50%; background:var(--accent); color:var(--qr-fg); display:grid; place-items:center; margin-top:-24px; border:3px solid var(--brand); box-shadow:0 0 14px rgb(0 0 0 / .18); }
 .app-nav .qr i svg { width:18px; height:18px; fill:currentColor; stroke:none; }
+
+/* the hero phone works: screens, a sheet to confirm, a toast and a space-opened alert */
+.app { display:flex; flex-direction:column; }
+:where(.app) button { font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-align:inherit; }
+.app button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.app-top { flex-shrink:0; }
+.scr { display:none; flex:1; min-height:0; overflow-y:auto; padding-bottom:84px; scrollbar-width:none; }
+.scr::-webkit-scrollbar { display:none; }
+.scr.on { display:block; }
+@media (prefers-reduced-motion: no-preference) { .scr.on { animation:scrIn .28s cubic-bezier(.2,.7,.2,1); } }
+@keyframes scrIn { from { opacity:0; transform:translateY(6px); } }
+.app-next-go { display:block; min-width:0; }
+.app-next-go small, .app-next-go strong, .app-next-go span { display:block; }
+
+.app-tile { cursor:pointer; transition:transform .12s; }
+.app-tile:active, .bk:active, .buy-item:active { transform:scale(.97); }
+.app-head button { color:var(--ink); font-weight:700; font-size:11px; }
+.app-nav button { display:flex; flex-direction:column; align-items:center; gap:3px; text-align:center; }
+.app-nav .on { color:var(--accent); font-weight:700; }
+.app-nav .on svg { background:color-mix(in srgb, var(--on-brand) 12%, transparent); border-radius:10px; padding:3px 10px; box-sizing:content-box; margin-top:-3px; }
+.app-nav .qr.on svg { background:none; padding:0; margin:0; }
+.scr h3 { margin:16px 14px 10px; font-size:21px; letter-spacing:-.01em; color:#2F2B26; }
+.days { display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:4px; padding:0 10px 10px; }
+.days button { display:grid; justify-items:center; gap:1px; padding:6px 0 7px; border-radius:11px; background:#FCFAF8; font-size:9px; color:#8a8580; box-shadow:0 1px 2px rgb(0 0 0 / .05); text-align:center; }
+.days button b { font-size:14px; color:#2F2B26; }
+.days button[aria-pressed=true] { background:var(--brand); color:color-mix(in srgb, var(--on-brand) 80%, transparent); }
+.days button[aria-pressed=true] b { color:var(--on-brand); }
+.bk-list, .buy-list { display:grid; gap:7px; padding:0 10px; }
+.bk { display:grid; grid-template-columns:40px 40px minmax(0,1fr) auto; gap:9px; align-items:center; background:#FCFAF8; border-radius:14px; padding:8px 10px 8px 9px; box-shadow:0 1px 3px rgb(0 0 0 / .06); width:100%; transition:transform .12s; }
+.bk time { font-weight:700; font-size:12.5px; line-height:1.15; }
+.bk time small { display:block; font-weight:400; font-size:9.5px; color:#8a8580; }
+.bk .img { width:40px; height:40px; border-radius:10px; background:var(--img) center/cover; position:relative; overflow:hidden; }
+.bk .img::after { content:''; position:absolute; inset:0; background:var(--brand); mix-blend-mode:color; opacity:.45; }
+.bk strong, .buy-item strong { display:block; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk span, .buy-item span { display:block; font-size:10px; color:#8a8580; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pill { font-size:9.5px; font-weight:700; padding:4px 8px; border-radius:999px; background:#EDE8E2; color:#5c5751; white-space:nowrap; }
+.pill.in { background:color-mix(in srgb, var(--brand) 16%, #fff); color:var(--ink); }
+.pill.wait { background:#F6E7D5; color:#8a5a22; }
+.pill.full { background:#F1DEDB; color:#8f3a2f; }
+.scr-qr { background:var(--brand); color:var(--on-brand); text-align:center; }
+.qr-card { margin:24px 22px 14px; background:#fff; color:#1d1b18; border-radius:22px; padding:20px 18px 16px; display:grid; justify-items:center; gap:8px; box-shadow:0 10px 30px rgb(0 0 0 / .18); }
+.qr-card svg { width:168px; height:168px; stroke:none; }
+.qr-card b { font-size:17px; }
+.qr-card small { color:#8a8580; font-size:10.5px; }
+.qr-hint { font-size:11px; opacity:.85; margin:0 26px; }
+.app .qr-go { margin-top:14px; display:inline-block; background:var(--accent); color:var(--qr-fg); font-weight:700; font-size:12px; padding:9px 16px; border-radius:999px; }
+@media (prefers-reduced-motion: no-preference) { .scr-qr.on .qr-card { animation:qrPop .45s cubic-bezier(.2,.8,.3,1.2); } }
+@keyframes qrPop { from { transform:scale(.9); opacity:0; } }
+.buy-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; background:#FCFAF8; border-radius:14px; padding:11px 12px; box-shadow:0 1px 3px rgb(0 0 0 / .06); width:100%; transition:transform .12s; }
+.buy-item b { font-size:13px; color:var(--ink); white-space:nowrap; }
+.me-top { display:flex; align-items:center; gap:11px; margin:16px 14px 6px; }
+.me-top i { width:44px; height:44px; border-radius:50%; background:var(--brand); color:var(--on-brand); display:grid; place-items:center; font-style:normal; font-weight:700; font-size:17px; flex-shrink:0; }
+.me-top b { display:block; font-size:16px; }
+.me-top span { font-size:10.5px; color:#8a8580; }
+.me-sec { margin:14px 14px 6px; font-size:11px; font-weight:600; color:#6f6a64; }
+.me-empty { margin:0 14px; font-size:11px; color:#8a8580; }
+.me-rows { margin:0 10px; background:#FCFAF8; border-radius:14px; box-shadow:0 1px 3px rgb(0 0 0 / .06); overflow:hidden; }
+.me-rows button { display:flex; justify-content:space-between; width:100%; padding:10px 12px; font-size:11.5px; border-top:1px solid #EFEAE4; }
+.me-rows button:first-child { border-top:0; }
+.me-rows button::after { content:'›'; color:#b3ada6; }
+.me-cta { display:block; margin:14px 10px 0; padding:11px 12px; border-radius:14px; background:color-mix(in srgb, var(--brand) 10%, #fff); color:var(--ink); font-size:10.5px; line-height:1.4; text-decoration:none; }
+.me-cta b { display:block; font-size:12px; margin-bottom:1px; }
+.app-dim { position:absolute; inset:0; background:rgb(20 18 16 / .38); z-index:5; }
+.app-dim[hidden], .app-sheet[hidden], .app-ping[hidden] { display:none; }
+.app-sheet { position:absolute; left:0; right:0; bottom:0; z-index:6; background:#FCFAF8; border-radius:22px 22px 0 0; padding:10px 16px 18px; box-shadow:0 -10px 30px rgb(0 0 0 / .15); }
+.app-sheet::before { content:''; display:block; width:36px; height:4px; border-radius:2px; background:#DDD6CF; margin:0 auto 12px; }
+.app-sheet h4 { margin:0 0 4px; font-size:17px; color:#2F2B26; }
+.app-sheet p { margin:0 0 4px; font-size:11.5px; color:#6f6a64; }
+.app-sheet .use { margin:10px 0 14px; padding:9px 11px; border-radius:11px; background:#F2EDE7; font-size:11px; color:#4a453f; }
+.app-sheet .go { display:block; width:100%; text-align:center; background:var(--brand); color:var(--on-brand); font-weight:700; font-size:13px; padding:12px; border-radius:999px; }
+.app-sheet .go.warn { background:#B4483A; color:#fff; }
+.app-sheet .no { display:block; width:100%; text-align:center; font-weight:600; font-size:12px; padding:10px; margin-top:4px; color:#6f6a64; }
+@media (prefers-reduced-motion: no-preference) {
+  .app-sheet:not([hidden]) { animation:sheetUp .3s cubic-bezier(.2,.8,.2,1); }
+  .app-dim:not([hidden]) { animation:dimIn .25s ease; }
+  .app-ping:not([hidden]) { animation:pingDown .45s cubic-bezier(.2,.8,.2,1); }
+}
+@keyframes sheetUp { from { transform:translateY(100%); } }
+@keyframes dimIn { from { opacity:0; } }
+@keyframes pingDown { from { transform:translateY(-130%); } }
+.app-ping { position:absolute; left:8px; right:8px; top:8px; z-index:7; display:grid; grid-template-columns:30px 1fr; gap:9px; align-items:center; background:rgb(252 250 248 / .97); border-radius:16px; padding:9px 11px; box-shadow:0 8px 24px rgb(0 0 0 / .22); font-size:11px; color:#2F2B26; line-height:1.3; }
+.app-ping i { width:30px; height:30px; border-radius:8px; background:var(--brand); color:var(--on-brand); display:grid; place-items:center; font-style:normal; font-weight:700; font-size:13px; }
+.app-ping b { display:block; font-size:11.5px; }
+.app-toast { position:absolute; left:50%; bottom:86px; z-index:8; transform:translate(-50%, 8px); margin:0; max-width:86%; text-align:center; background:#2F2B26; color:#fff; font-size:11px; font-weight:600; padding:8px 13px; border-radius:14px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; }
+.app-toast.on { opacity:1; transform:translate(-50%, 0); }
+.tap-hint { display:flex; align-items:center; gap:8px; margin:0 0 -8px; font-size:13px; font-weight:600; color:var(--mute); transition:opacity .4s; }
+.tap-hint i { width:8px; height:8px; border-radius:50%; background:var(--seal); }
+@media (prefers-reduced-motion: no-preference) { .tap-hint i { animation:hintPulse 1.8s ease-out infinite; } }
+@keyframes hintPulse { 0% { box-shadow:0 0 0 0 rgb(168 56 43 / .45); } 70%, 100% { box-shadow:0 0 0 9px rgb(168 56 43 / 0); } }
+.tap-hint.gone { opacity:0; }
 
 /* switcher */
 .switch { width:min(100%, 340px); display:grid; gap:12px; }
@@ -807,18 +894,20 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   </div>
 
   <div class="try">
-    <div class="phone" aria-label="Sample app home screen, shown in the brand you choose">
+    <p class="tap-hint" id="tapHint"><i></i>Tap the phone. It works.</p>
+    <div class="phone" aria-label="A sample members' app in the brand you choose. Tap around to try it.">
       <div class="app" id="app">
         <div class="app-top">
           <div class="app-id"><img class="app-logo" id="appLogo" src="img/app/taal-mark.svg" alt=""><span class="app-mono" id="appMono" aria-hidden="true" hidden></span><span class="app-words"><span class="app-name" id="appName">taal</span><span class="app-sub" id="appSub">Fitness</span></span></div>
           <span class="app-chat" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
         </div>
+        <div class="scr on" data-s="home">
         <div class="app-hero">
           <small id="greet">Good afternoon</small>
           <b>Alex</b>
           <div class="app-next">
-            <div><small id="nextWhen">Next up, Mon 16 Nov 07:00</small><strong id="nextName">Strength</strong><span id="nextWith">with Elena</span></div>
-            <span class="app-qr">Entry QR</span>
+            <button type="button" class="app-next-go" data-go="me"><small id="nextWhen">Next up, Mon 16 Nov 07:00</small><strong id="nextName">Strength</strong><span id="nextWith">with Elena</span></button>
+            <button type="button" class="app-qr" data-go="qr">Entry QR</button>
           </div>
         </div>
         <div class="app-tiles" id="appTiles">
@@ -827,20 +916,29 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
           <div class="app-tile" style="--img:url('img/app/pt.svg')"><span>PT</span></div>
           <div class="app-tile" style="--img:url('img/app/deeptissue.svg')"><span>Massage</span></div>
         </div>
-        <div class="app-head"><b>Your credits</b><a>Buy more</a></div>
+        <div class="app-head"><b>Your credits</b><button type="button" data-go="buy">Buy more</button></div>
         <div class="app-card" id="appCard">
           <h4>Included in your membership <span>Renews 3 Dec</span></h4>
           <div class="app-row"><span>Gym floor</span><i style="--w:100%"></i><b class="ok">Unlimited</b></div>
           <div class="app-row"><span>8 classes a month</span><i style="--w:75%"></i><b>6 of 8 left</b></div>
           <div class="app-row"><span>PT session</span><i style="--w:100%"></i><b>1 of 1 left</b></div>
         </div>
-        <div class="app-nav" aria-hidden="true">
-          <span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</span>
-          <span><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</span>
-          <span class="qr"><i><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z"/></svg></i>Sign in</span>
-          <span><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>Buy</span>
-          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Me</span>
         </div>
+        <div class="scr" data-s="book" id="scrBook"></div>
+        <div class="scr scr-qr" data-s="qr" id="scrQr"></div>
+        <div class="scr" data-s="buy" id="scrBuy"></div>
+        <div class="scr" data-s="me" id="scrMe"></div>
+        <div class="app-nav">
+          <button type="button" data-go="home" class="on" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+          <button type="button" data-go="book"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</button>
+          <button type="button" data-go="qr" class="qr"><i><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z"/></svg></i>Sign in</button>
+          <button type="button" data-go="buy"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>Buy</button>
+          <button type="button" data-go="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Me</button>
+        </div>
+        <div class="app-dim" id="appDim" hidden></div>
+        <div class="app-sheet" id="appSheet" role="dialog" aria-labelledby="sheetTitle" hidden></div>
+        <button type="button" class="app-ping" id="appPing" hidden></button>
+        <p class="app-toast" id="appToast" role="status" aria-live="polite"></p>
       </div>
     </div>
 
@@ -1117,6 +1215,9 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   sw.forEach(btn => btn.addEventListener('click', () => { stop(); pick(btn); }));
   own.addEventListener('input', () => { stop(); sw.forEach(b => b.setAttribute('aria-pressed', false)); setColour(own.value); });
   nameIn.addEventListener('focus', stop);
+  // Someone trying the phone keeps the colour they're looking at.
+  app.addEventListener('pointerdown', stop);
+  app.addEventListener('keydown', stop);
   const appSub = document.getElementById('appSub');
   nameIn.addEventListener('input', () => {
     const v = nameIn.value.trim();
@@ -1271,15 +1372,161 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   // Load the tile art up front so switching is instant.
   Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
 
+  /* The phone works: book, cancel, join a waitlist, scan in, buy. All in the browser; nothing is saved. */
+  // Sessions: [time, minutes, name, with, picture, credit row used, spaces left]. Buy: [name, note, price, row topped up, how many].
+  const A = {
+    fitness: { pre: [1, 0], book: [['07:00', 55, 'Strength', 'Elena', 'strength', 1, 3], ['09:30', 45, 'HIIT', 'Leo', 'opengym', 1, 6], ['12:30', 50, 'Mobility', 'Jonah', 'mat', 1, 9], ['17:00', 60, 'PT session', 'Elena', 'pt', 2, 1], ['18:00', 45, 'Condition', 'Leo', 'strength', 1, 0], ['19:15', 45, 'Spin', 'Maya', 'opengym', 1, 11]],
+      buy: [['10 class pack', 'Use within three months', '£120', 1, 10], ['PT session', 'An hour with a coach', '£55', 2, 1], ['Day pass', 'Gym floor and classes', '£15'], ['Unlimited membership', 'Everything, every month', '£89 a month']] },
+    wellness: { pre: [0, 3], book: [['08:00', 45, 'Sauna session', 'Open', 'sauna', 0, 4], ['12:00', 60, 'Sports massage', 'Maya', 'deeptissue', 1, 1], ['17:30', 45, 'Breathwork', 'Noor', 'pt', 2, 10], ['18:00', 60, 'Deep tissue', 'Maya', 'deeptissue', 1, 0], ['19:30', 60, 'Sauna social', 'Open', 'sauna', 0, 6]],
+      buy: [['4 sauna sessions', 'Use within two months', '£60', 0, 4], ['60 min massage', 'Sports or deep tissue', '£75', 1, 1], ['Gift card', 'Any amount from £25', 'from £25'], ['Sauna membership', 'Unlimited sauna', '£79 a month']] },
+    yoga: { pre: [1, 0], book: [['07:15', 60, 'Vinyasa flow', 'Priya', 'yoga', 0, 12], ['09:30', 50, 'Reformer', 'Sofia', 'reformer', 1, 3], ['12:30', 45, 'Mat Pilates', 'Sofia', 'mat', 0, 9], ['18:00', 50, 'Reformer', 'Jonah', 'reformer', 1, 0], ['19:30', 75, 'Yin', 'Priya', 'yoga', 0, 14]],
+      buy: [['5 reformer classes', 'Use within two months', '£110', 1, 5], ['Private session', 'One to one, an hour', '£65', 2, 1], ['Drop-in class', 'Any studio class', '£18'], ['Unlimited studio', 'Every mat and yoga class', '£120 a month']] },
+    dance: { pre: [1, 1], book: [['12:30', 45, 'Stretch and conditioning', 'Anya', 'mat', 0, 10], ['17:00', 30, 'Private lesson', 'Carla', 'pt', 2, 1], ['18:00', 60, 'Ballet basics', 'Anya', 'dance', 0, 7], ['19:00', 60, 'Salsa improvers', 'Carla', 'dance', 1, 4], ['20:00', 60, 'Contemporary', 'Anya', 'dance', 0, 0]],
+      buy: [['10 class pass', 'Use within three months', '£110', 0, 10], ['Private lesson', 'Half an hour, one to one', '£50', 2, 1], ['Drop-in class', 'Any open class', '£13'], ['Next salsa course', 'Six weeks, starts January', '£85']] },
+    martial: { pre: [3, 2], book: [['07:00', 60, 'BJJ fundamentals', 'Rafa', 'martial', 0, 10], ['12:30', 60, 'Open mat', 'Open', 'mat', 1, 20], ['17:00', 45, 'Private session', 'Kai', 'pt', 2, 1], ['18:00', 60, 'Muay Thai', 'Kai', 'martial', 0, 0], ['19:15', 60, 'No-gi', 'Rafa', 'martial', 0, 8]],
+      buy: [['Private session', 'Forty five minutes, one to one', '£45', 2, 1], ['Gloves and wraps', 'Collect at reception', '£40'], ['Drop-in class', 'Any class', '£15'], ['Unlimited membership', 'Every class and open mat', '£95 a month']] },
+    climbing: { pre: [5, 1], book: [['07:00', 120, 'Early bird session', 'Open', 'climbing', 0, 30], ['10:00', 90, 'Intro to bouldering', 'Sam', 'climbing', 0, 4], ['12:00', 60, 'Technique class', 'Mia', 'strength', 0, 6], ['18:30', 60, 'Yoga for climbers', 'Priya', 'yoga', 0, 0], ['19:30', 90, 'Social climb', 'Open', 'climbing', 0, 14]],
+      buy: [['4 shoe hires', 'Use any time', '£14', 1, 4], ['Guest pass', 'Bring a friend', '£15', 2, 1], ['10 entry pass', 'Use within six months', '£110'], ['Monthly membership', 'Unlimited climbing', '£59 a month']] },
+  };
+  const D = new Date(); D.setHours(0, 0, 0, 0);
+  const day = n => new Date(D.getTime() + n * 864e5);
+  const fmt = (d, o) => d.toLocaleDateString('en-GB', o);
+  let S = null, kindNow = 'fitness', toastT = 0, pingT = 0, waitT = 0;
+  const studio = () => $('appName').textContent.trim() || 'Your studio';
+  function reset(kind) {
+    kindNow = kind;
+    const k = T[kind] || T.fitness, a = A[kind] || A.fitness;
+    S = { day: 0, booked: new Set(), wait: new Set(), taken: {},
+      rows: k.rows.map(([label, w, val, ok]) => { const m = /(\d+) of (\d+) left/.exec(val); return { label, w, val, ok, left: m ? +m[1] : null, total: m ? +m[2] : null }; }) };
+    S.booked.add(a.pre.join('|'));
+    clearTimeout(waitT); clearTimeout(pingT); $('appPing').hidden = true; closeSheet();
+    $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<button type="button" class="app-tile" data-go="book" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></button>`).join('');
+    renderAll(); go('home', true);
+  }
+  const ses = (d, i) => { const b = (A[kindNow] || A.fitness).book[i]; const base = b[6]; const left = d === 0 ? base : (base === 0 ? 2 : base + (d % 3)); return { d, i, time: b[0], mins: b[1], name: b[2], who: b[3], img: b[4], row: b[5], left: Math.max(0, left - (S.taken[d + '|' + i] || 0)) }; };
+  const when = x => fmt(day(x.d), { weekday: 'short', day: 'numeric', month: 'short' }) + ', ' + x.time;
+  const withWho = x => x.who === 'Open' ? 'Open session' : 'with ' + x.who;
+  function renderCard() {
+    const k = T[kindNow] || T.fitness;
+    $('appCard').innerHTML = `<h4>${esc(k.card[0])} <span>${esc(k.card[1])}</span></h4>` + S.rows.map(r => {
+      const counted = r.left != null, w = counted ? Math.round(r.left / r.total * 100) : r.w, val = counted ? `${r.left} of ${r.total} left` : r.val;
+      return `<div class="app-row"><span>${esc(r.label)}</span><i style="--w:${w}%"></i><b${r.ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`;
+    }).join('');
+  }
+  function upcoming() { return [...S.booked].map(key => ses(...key.split('|').map(Number))).sort((x, y) => x.d - y.d || x.time.localeCompare(y.time)); }
+  function renderNext() {
+    const n = upcoming()[0], go = document.querySelector('.app-next-go');
+    if (n) { $('nextWhen').textContent = 'Next up, ' + when(n); $('nextName').textContent = n.name; $('nextWith').textContent = withWho(n); go.dataset.go = 'me'; }
+    else { $('nextWhen').textContent = 'Nothing booked yet'; $('nextName').textContent = 'Book something'; $('nextWith').textContent = 'Tap to see the timetable'; go.dataset.go = 'book'; }
+  }
+  function pill(x) {
+    const key = x.d + '|' + x.i;
+    if (S.booked.has(key)) return '<span class="pill in">Booked</span>';
+    if (S.wait.has(key)) return '<span class="pill wait">Waitlist</span>';
+    if (!x.left) return '<span class="pill full">Full</span>';
+    return `<span class="pill">${x.left} left</span>`;
+  }
+  const bkRow = x => `<button type="button" class="bk" data-bk="${x.d}|${x.i}"><time>${x.time}<small>${x.mins} min</small></time><i class="img" style="--img:url('img/app/${x.img}.svg')"></i><span><strong>${esc(x.name)}</strong><span>${esc(withWho(x))}</span></span>${pill(x)}</button>`;
+  function renderBook() {
+    const days = [...Array(7)].map((_, d) => `<button type="button" data-day="${d}" aria-pressed="${d === S.day}"><span>${d ? fmt(day(d), { weekday: 'short' }) : 'Today'}</span><b>${day(d).getDate()}</b></button>`).join('');
+    const list = (A[kindNow] || A.fitness).book.map((_, i) => bkRow(ses(S.day, i))).join('');
+    $('scrBook').innerHTML = `<h3>Book</h3><div class="days">${days}</div><div class="bk-list">${list}</div>`;
+  }
+  function qrSvg(seed) {
+    let h = 2166136261; for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+    const n = 25, cells = [];
+    const finder = (x, y) => { for (const [cx, cy] of [[0, 0], [n - 7, 0], [0, n - 7]]) { const dx = x - cx, dy = y - cy; if (dx >= 0 && dx < 7 && dy >= 0 && dy < 7) return (dx === 0 || dx === 6 || dy === 0 || dy === 6 || (dx > 1 && dx < 5 && dy > 1 && dy < 5)) ? 1 : 0; } return -1; };
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const f = finder(x, y); let on = f;
+      if (f === -1) { const near = (x < 8 && y < 8) || (x > n - 9 && y < 8) || (x < 8 && y > n - 9); h = Math.imul(h ^ (x * 31 + y), 2654435761); on = near ? 0 : ((h >>> 13) & 1); }
+      if (on) cells.push(`M${x} ${y}h1v1h-1z`);
+    }
+    return `<svg viewBox="-1 -1 27 27" aria-hidden="true"><path d="${cells.join('')}" fill="#1d1b18"/></svg>`;
+  }
+  function renderQr() {
+    $('scrQr').innerHTML = `<div class="qr-card">${qrSvg(studio() + kindNow)}<b>Alex Morgan</b><small>Member at ${esc(studio())}</small></div><p class="qr-hint">Hold it up to the scanner at the door. No fobs or cards.</p><button type="button" class="qr-go" data-act="scan">Try a scan</button>`;
+  }
+  function renderBuy() {
+    $('scrBuy').innerHTML = `<h3>Buy</h3><div class="buy-list">${(A[kindNow] || A.fitness).buy.map((b, i) => `<button type="button" class="buy-item" data-buy="${i}"><span><strong>${esc(b[0])}</strong><span>${esc(b[1])}</span></span><b>${esc(b[2])}</b></button>`).join('')}</div>`;
+  }
+  function renderMe() {
+    const k = T[kindNow] || T.fitness, up = upcoming(), waits = [...S.wait].map(key => ses(...key.split('|').map(Number)));
+    $('scrMe').innerHTML = `<div class="me-top"><i>A</i><span><b>Alex Morgan</b><span>Member since 2024</span></span></div>
+      <p class="me-sec">Coming up</p>${up.length || waits.length ? `<div class="bk-list">${up.concat(waits).map(bkRow).join('')}</div>` : '<p class="me-empty">Nothing booked yet.</p>'}
+      <p class="me-sec">Account</p><div class="me-rows"><button type="button" data-soon>${esc(k.card[0])}</button><button type="button" data-soon>Payment methods</button><button type="button" data-soon>Notifications</button><button type="button" data-soon>Health and waiver</button></div>
+      <a class="me-cta to-demo" href="demo.html"><b>Like it?</b>Build the real one for your studio, with your timetable and back office, in about a minute.</a>`;
+  }
+  function renderAll() { renderCard(); renderNext(); renderBook(); renderQr(); renderBuy(); renderMe(); }
+  function go(s, quiet) {
+    app.querySelectorAll('.scr').forEach(el => el.classList.toggle('on', el.dataset.s === s));
+    app.querySelectorAll('.app-nav button').forEach(b => { const on = b.dataset.go === s; b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    if (s === 'qr') renderQr();
+    if (s === 'me') renderMe();
+    const sc = app.querySelector('.scr.on'); if (sc && !quiet) sc.scrollTop = 0;
+  }
+  function toast(msg) { const t = $('appToast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); }
+  let onSheet = null;
+  function sheet(html, handler) { const sh = $('appSheet'); sh.innerHTML = html; sh.hidden = false; $('appDim').hidden = false; onSheet = handler; const b = sh.querySelector('.go'); if (b) b.focus({ preventScroll: true }); }
+  function closeSheet() { $('appSheet').hidden = true; $('appDim').hidden = true; onSheet = null; }
+  const credit = x => S.rows[x.row];
+  function creditLine(x) {
+    const r = credit(x); if (!r) return 'Included in your membership';
+    if (r.left == null) return `${r.val === 'Unlimited' ? 'Included' : r.val}: ${r.label.toLowerCase()}`;
+    return r.left ? `Uses 1 of your ${r.left} left: ${r.label.toLowerCase()}` : `No ${r.label.toLowerCase()} left`;
+  }
+  function book(x, viaWait) {
+    const key = x.d + '|' + x.i, r = credit(x);
+    if (r && r.left != null) r.left--;
+    S.booked.add(key); S.wait.delete(key); S.taken[key] = (S.taken[key] || 0) + 1;
+    renderAll(); toast(viaWait ? 'Booked from the waitlist.' : 'Booked. See you there.');
+  }
+  function tapSession(key) {
+    const x = ses(...key.split('|').map(Number)), r = credit(x);
+    const head = `<h4 id="sheetTitle">${esc(x.name)}</h4><p>${esc(when(x))}, ${x.mins} min, ${esc(withWho(x).toLowerCase())}</p>`;
+    if (S.booked.has(key)) return sheet(head + `<p class="use">You're booked in. Cancel up to two hours before and the credit comes back.</p><button type="button" class="go warn" data-act="cancel">Cancel booking</button><button type="button" class="no" data-act="close">Keep it</button>`, act => {
+      if (act !== 'cancel') return; if (r && r.left != null) r.left++; S.booked.delete(key); S.taken[key] = Math.max(0, (S.taken[key] || 0) - 1); renderAll(); toast('Cancelled. Your credit is back.');
+    });
+    if (S.wait.has(key)) return sheet(head + `<p class="use">You're on the waitlist. If a space opens, you'll get an alert straight away.</p><button type="button" class="go warn" data-act="leave">Leave the waitlist</button><button type="button" class="no" data-act="close">Stay on it</button>`, act => { if (act === 'leave') { S.wait.delete(key); clearTimeout(waitT); renderAll(); toast('Left the waitlist.'); } });
+    if (!x.left) return sheet(head + `<p class="use">It's full. Join the waitlist and you'll get an alert the moment a space opens.</p><button type="button" class="go" data-act="wait">Join the waitlist</button><button type="button" class="no" data-act="close">Not now</button>`, act => {
+      if (act !== 'wait') return; S.wait.add(key); renderAll(); toast("You're on the waitlist.");
+      clearTimeout(waitT); waitT = setTimeout(() => { if (!S.wait.has(key)) return; const p = $('appPing'); p.innerHTML = `<i>${esc(studio()[0] || 't')}</i><span><b>${esc(studio())}</b>A space opened in ${esc(x.name)} at ${x.time}. Tap to book.</span>`; p.hidden = false; p.dataset.key = key; clearTimeout(pingT); pingT = setTimeout(() => { p.hidden = true; }, 8000); }, 4500);
+    });
+    if (r && r.left === 0) return sheet(head + `<p class="use">${esc(creditLine(x))}. Top up to book.</p><button type="button" class="go" data-act="topup">Buy more</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'topup') go('buy'); });
+    sheet(head + `<p class="use">${esc(creditLine(x))}</p><button type="button" class="go" data-act="book">Book</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'book') book(x); });
+  }
+  function tapBuy(i) {
+    const b = (A[kindNow] || A.fitness).buy[i];
+    sheet(`<h4 id="sheetTitle">${esc(b[0])}</h4><p>${esc(b[1])}</p><p class="use">Pay by card or Apple Pay through Stripe. In this preview nothing is charged.</p><button type="button" class="go" data-act="pay">Pay ${esc(b[2].replace(/^from /, ''))}</button><button type="button" class="no" data-act="close">Not now</button>`, act => {
+      if (act !== 'pay') return;
+      const r = b[3] != null ? S.rows[b[3]] : null;
+      if (r && r.left != null) { r.left += b[4]; r.total += b[4]; }
+      renderAll(); toast(r ? `Paid. ${b[4]} added to your credits.` : 'Paid. A receipt is on its way.');
+    });
+  }
+  app.addEventListener('click', e => {
+    const t = e.target.closest('button, a'); if (!t || !app.contains(t)) return;
+    if (t.id === 'appPing') { const key = t.dataset.key; t.hidden = true; clearTimeout(pingT); if (key && S.wait.has(key)) { const x = ses(...key.split('|').map(Number)); x.left = Math.max(1, x.left); book(x, true); go('me'); } return; }
+    if (t.dataset.act) { const act = t.dataset.act, fn = onSheet; if (act === 'scan') { toast('Checked in at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '. Have a good one.'); return; } closeSheet(); if (fn) fn(act); return; }
+    if (t.dataset.go) { closeSheet(); go(t.dataset.go); return; }
+    if (t.dataset.day) { S.day = +t.dataset.day; renderBook(); return; }
+    if (t.dataset.bk) { tapSession(t.dataset.bk); return; }
+    if (t.dataset.buy) { tapBuy(+t.dataset.buy); return; }
+    if ('soon' in t.dataset) { toast('This works in the real app.'); return; }
+  });
+  $('appDim').addEventListener('click', closeSheet);
+  app.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('appSheet').hidden) { closeSheet(); e.stopPropagation(); } });
+  // The hint goes once someone has tried it.
+  app.addEventListener('pointerdown', () => { const h = $('tapHint'); if (h && !h.classList.contains('gone')) { h.classList.add('gone'); setTimeout(() => { h.style.visibility = 'hidden'; }, 400); } }, { once: true });
+  // A new studio name shows on the QR card and in alerts.
+  const nameIn = $('studioName'); if (nameIn) nameIn.addEventListener('input', () => setTimeout(renderQr, 0));
+
+
   function apply(kind, animate) {
     const k = T[kind] || T.fitness;
     btns.forEach(b => { const on = b.dataset.k === kind; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
     const paint = () => {
       $('appSub').textContent = k.sub;
-      [$('nextWhen').textContent, $('nextName').textContent, $('nextWith').textContent] = k.next;
-      $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<div class="app-tile" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></div>`).join('');
-      $('appCard').innerHTML = `<h4>${esc(k.card[0])} <span>${esc(k.card[1])}</span></h4>` +
-        k.rows.map(([label, w, val, ok]) => `<div class="app-row"><span>${esc(label)}</span><i style="--w:${w}%"></i><b${ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`).join('');
+      reset(T[kind] ? kind : 'fitness');
       app.classList.remove('swap');
     };
     if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) { app.classList.add('swap'); setTimeout(paint, 180); } else paint();
