@@ -1848,9 +1848,10 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   function costs() {
     const on = ['base', ...($('optApps').checked ? ['apps'] : []), ...($('optSite').checked ? ['site'] : [])];
     const mode = picked('pay'), months = MONTHS[mode] || 0;
-    const p = on.reduce((t, k) => ({ once: t.once + ITEMS[k].once, start: t.start + (months ? ITEMS[k][mode].start : 0), monthly: t.monthly + (months ? ITEMS[k][mode].monthly : 0) }), { once: 0, start: 0, monthly: 0 });
     // The founding offer takes 30% off setup, whichever way they pay. Running costs and the care plan stay the same.
-    if (founding()) for (const k in p) p[k] = Math.round(p[k] * (1 - OFF));
+    // It comes off each option, so the total always matches the prices shown beside them.
+    const cut = v => Math.round(v * (founding() ? 1 - OFF : 1));
+    const p = on.reduce((t, k) => ({ once: t.once + cut(ITEMS[k].once), start: t.start + (months ? cut(ITEMS[k][mode].start) : 0), monthly: t.monthly + (months ? cut(ITEMS[k][mode].monthly) : 0) }), { once: 0, start: 0, monthly: 0 });
     const spread = months > 0;
     const setup = spread ? p.start + p.monthly * months : p.once;
     const care = $('optCare').checked ? CARE : 0;
