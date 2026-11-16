@@ -251,6 +251,68 @@ section.features .grid6 .plain h3::before { background:var(--sage); }
 .save-band a { color:#FBF3EF; text-decoration-thickness:2px; text-underline-offset:5px; white-space:normal; }
 .save-band a:hover { color:#fff; text-decoration-thickness:3px; }
 .save-band ::selection { background:rgb(255 255 255 / .25); }
+/* ---------- section motion: each band keeps time with the mark ---------- */
+/* taal means rhythm: the three promises and the notification beat in turn with the mark (X 2 0 3) */
+.promises > div { position:relative; }
+.promises > div::before { content:''; position:absolute; left:0; top:-7px; width:3px; height:14px; border-radius:2px; background:var(--paper); opacity:.85; transform-origin:center; }
+.promises > div:nth-child(1)::before { background:#E59A8C; opacity:1; }
+.promises > div:nth-child(3)::before { width:9px; height:9px; top:-5px; border-radius:50%; background:none; box-shadow:inset 0 0 0 1.6px var(--paper); }
+@keyframes pingBeat { 0%,100% { background:rgb(242 243 238 / .12); } 6% { background:rgb(242 243 238 / .22); } 18% { background:rgb(242 243 238 / .12); } }
+/* One place for it all: the old tools are struck through one by one, then the mark plays */
+.features .instead span { position:relative; text-decoration:none; }
+.features .instead span::after { content:''; position:absolute; left:10px; right:10px; top:52%; height:1.5px; border-radius:1px; background:rgb(229 154 140 / .9); transform-origin:left; }
+@keyframes breathe { from { transform:scale(1); } to { transform:scale(1.035); } }
+@media (prefers-reduced-motion: no-preference) {
+  .rhythm:not(.seen) .tala-loop * { animation:none; }
+  .rhythm h2 > span { opacity:0; transform:translateY(.3em); transition:opacity .9s var(--curve) .25s, transform .9s var(--curve) .25s; }
+  .rhythm.seen h2 > span { opacity:1; transform:none; }
+  .rhythm .promises > div { opacity:0; transform:translateY(18px); transition:opacity .8s var(--curve), transform .8s var(--curve); }
+  .rhythm.seen .promises > div { opacity:1; transform:none; }
+  .rhythm.seen .promises > div:nth-child(2) { transition-delay:.15s; }
+  .rhythm.seen .promises > div:nth-child(3) { transition-delay:.3s; }
+  .rhythm.seen .promises > div:nth-child(1)::before { animation:lSam 3.2s ease-out infinite; }
+  .rhythm.seen .promises > div:nth-child(2)::before { animation:lClap 3.2s ease-out .8s infinite; }
+  .rhythm.seen .promises > div:nth-child(3)::before { animation:lWave 3.2s ease-out 1.6s infinite; }
+  .rhythm.seen .ping.solo { animation:noteIn .8s var(--curve) .3s both, pingBeat 3.2s ease-out 2.4s infinite; }
+
+  .features .instead span::after { transform:scaleX(0); transition:transform .5s var(--curve); }
+  .features .instead span { transition:opacity .6s; }
+  .features.seen .instead span::after { transform:none; }
+  .features.seen .instead span { opacity:.65; }
+  .features.seen .instead span:nth-child(1), .features.seen .instead span:nth-child(1)::after { transition-delay:.25s; }
+  .features.seen .instead span:nth-child(2), .features.seen .instead span:nth-child(2)::after { transition-delay:.5s; }
+  .features.seen .instead span:nth-child(3), .features.seen .instead span:nth-child(3)::after { transition-delay:.75s; }
+  .features.seen .instead span:nth-child(4), .features.seen .instead span:nth-child(4)::after { transition-delay:1s; }
+  .features .instead b { opacity:0; transform:translateX(-8px); transition:opacity .7s var(--curve) 1.3s, transform .7s var(--curve) 1.3s; }
+  .features.seen .instead b { opacity:1; transform:none; }
+  .features.seen .instead b .ts { animation:tSam .45s ease-out 1.6s both, tSamH .45s ease-out 3s both; }
+  .features.seen .instead b .t2 { animation:tClap .45s ease-out 1.95s both; }
+  .features.seen .instead b .tk { animation:tWave .5s ease-out 2.3s both; }
+  .features.seen .instead b .t3 { animation:tClap .45s ease-out 2.65s both; }
+  .features:not(.seen) .grid6 > div { animation:none !important; opacity:0; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(2) { animation-delay:.05s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(3) { animation-delay:.1s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(4) { animation-delay:.15s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(5) { animation-delay:.2s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(6) { animation-delay:.25s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(7) { animation-delay:.3s; }
+  [role=tabpanel]:not([hidden]) .grid6 > div:nth-child(8) { animation-delay:.35s; }
+
+  /* the quote: the photo settles and then breathes very slowly, the words follow, the line under it draws across */
+  .founder-bg { transform:scale(1.06); transition:transform 2.4s var(--curve); }
+  .founder.seen .founder-bg { transform:scale(1); animation:breathe 26s ease-in-out 2.4s infinite alternate; }
+  .founder blockquote::before { transform:scaleX(0); transform-origin:left; transition:transform 1s var(--curve) .1s; }
+  .founder.seen blockquote::before { transform:none; }
+  .founder blockquote { opacity:0; transform:translateY(16px); transition:opacity 1s var(--curve) .25s, transform 1s var(--curve) .25s; }
+  .founder figcaption { opacity:0; transition:opacity .8s var(--curve) .7s; }
+  .founder.seen blockquote, .founder.seen figcaption { opacity:1; transform:none; }
+  .aim { position:relative; border-top-color:transparent; }
+  .aim::before { content:''; position:absolute; left:0; right:0; top:-1px; height:1px; background:rgb(15 92 87 / .3); transform:scaleX(0); transform-origin:left; transition:transform 1.4s var(--curve) .9s; }
+  .founder.seen .aim::before { transform:none; }
+  .aim h2, .aim p { opacity:0; transform:translateY(12px); transition:opacity .8s var(--curve) 1.2s, transform .8s var(--curve) 1.2s; }
+  .aim p { transition-delay:1.4s; }
+  .founder.seen .aim h2, .founder.seen .aim p { opacity:1; transform:none; }
+}
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
@@ -1246,6 +1308,8 @@ const CONTACT_EMAIL = 'EMAIL';
 })();
 
 (function () {
+  // each band starts its motion once, when it comes into view
+  document.querySelectorAll('.features, .founder').forEach(el => new IntersectionObserver(([e], o) => { if (e.isIntersecting) { el.classList.add('seen'); o.disconnect(); } }, { threshold: .25 }).observe(el));
   const band = document.querySelector('.rhythm'); if (!band) return;
   new IntersectionObserver(([e], o) => { if (e.isIntersecting) { band.classList.add('seen'); o.disconnect(); } }, { threshold: .35 }).observe(band);
 })();
