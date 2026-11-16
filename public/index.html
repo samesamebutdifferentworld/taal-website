@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>taal: your own booking app, in your brand, that you own</title>
-<meta name="description" content="Bookings, memberships, payments and the back office for gyms and wellness studios, in your own brand. Pay once to set it up, from £1,900. Hosting and email then cost about £1 a day, paid to those companies, not to us.">
+<meta name="description" content="Bookings, memberships, payments and the back office for independent gyms and wellness studios, in your own brand. Pay once to set it up, from £1,900. Hosting and email then cost about £1 a day, paid to those companies, not to us.">
 <meta property="og:title" content="taal: your own booking app, in your brand">
-<meta property="og:description" content="Bookings, memberships, payments and the back office for gyms and wellness studios. Pay once, own it. Hosting and email cost about £1 a day, paid to those companies, not to us.">
+<meta property="og:description" content="Bookings, memberships, payments and the back office for independent gyms and wellness studios. Pay once, own it. Hosting and email cost about £1 a day, paid to those companies, not to us.">
 <meta name="theme-color" content="#F2F3EE">
 <link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Cg transform='translate(3.5 3.5) scale(0.7083)'%3E%3Crect x='2.5' y='4' width='3' height='16' rx='1.5' fill='%23E59A8C'/%3E%3Crect x='8.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3Ccircle cx='15.5' cy='12' r='2.1' fill='none' stroke='%23F2F3EE' stroke-width='1.8'/%3E%3Crect x='19.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
@@ -162,6 +162,12 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 .founding { color:var(--seal) !important; }
 .founding:hover { box-shadow:inset 0 0 0 1.5px var(--seal) !important; }
 .founding[aria-pressed=true] { background:var(--seal) !important; color:#FBF3EF !important; }
+
+/* the aim: who taal is for */
+.aim { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px 48px; align-items:start; margin-top:64px; padding-top:28px; border-top:1px solid rgb(15 92 87 / .3); }
+.aim h2 { font-size:clamp(26px, 2.8vw, 36px); line-height:1.05; letter-spacing:-0.03em; color:var(--seal); }
+.aim p { color:var(--green); font-size:17px; max-width:34em; }
+@media (max-width: 760px) { .aim { grid-template-columns:minmax(0,1fr); margin-top:48px; } }
 
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
@@ -577,7 +583,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 <header class="hero" id="top" data-beat="0"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">That you own.</span></h1>
-    <p class="lede">Bookings, memberships and payments for gyms and wellness studios, under your own name. Pay once from £1,900, with no monthly fee to us.</p>
+    <p class="lede">Bookings, memberships and payments for independent gyms and wellness studios, under your own name. Pay once from £1,900, with no monthly fee to us.</p>
     <div class="hero-go"><a class="btn btn-seal to-demo" href="demo.html">Try your demo today</a><span>Free, in about a minute, with just your email</span></div>
     <p class="hero-sign"><span class="rule" aria-hidden="true"></span>Made in London for independent studios</p>
   </div>
@@ -731,6 +737,10 @@ footer .made { display:flex; align-items:center; gap:12px; }
     <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
     <figcaption><span class="seal" aria-hidden="true">TA</span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
   </figure>
+  <div class="aim">
+    <h2>For independent studios, not chains.</h2>
+    <p>taal is made for small studios run by the people who teach in them. The aim is to give them software as good as the big chains have, at a price they can own outright, so more of what members pay stays in the studio.</p>
+  </div>
 </div></section>
 
 <section class="pricing" id="pricing" data-beat="3"><div class="wrap">
@@ -839,7 +849,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 
 <footer><div class="wrap">
   <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
-  <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software for gyms and wellness studios, made in London.</p>
+  <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software for independent gyms and wellness studios, made in London.</p>
   <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
