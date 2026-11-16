@@ -1148,7 +1148,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <label class="opt fixed"><span class="opt-text"><b>Booking system</b><small>Web booking, payments, back office</small></span><span class="opt-price" data-item="base">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Your own apps</b><small>App Store and Google Play</small></span><span class="opt-price" data-item="apps">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Care plan</b><small>Updates and support</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Care plan</b><small>From year two. Year one is included</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-foot">Up to 2,000 active clients. Bigger than that? We'll quote.</p>
     </div>
     <div class="total" aria-live="polite">
@@ -1157,13 +1157,13 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <span class="t-note" id="tSetupNote">Then £235 a month for a year, £3,420 in all</span>
       <div class="t-stats">
         <span><b>£30</b><span>a month for hosting and email, on top of our fees, paid to them, not to us</span></span>
-        <span><b id="tY1">£3,780</b><span id="tY1Label">year one: £3,420 to us, £360 hosting and email</span></span>
+        <span><b id="tY1">£3,780</b><span id="tY1Label">year one: £3,420 to us, £360 hosting and email, updates and support included</span></span>
         <span><b id="tLater">£360</b><span id="tLaterLabel">each year after: hosting and email only, nothing to us</span></span>
       </div>
       <div class="t-go"><button type="button" class="btn btn-seal" id="callOpen" aria-haspopup="dialog">Arrange a call</button><a class="t-demo to-demo" href="demo.html">Or build your demo first</a></div>
     </div>
   </div>
-  <p class="allin">Setup includes 12 months of updates and support. Prices include VAT.</p>
+  <p class="allin">Updates and support for year one are included in setup. The care plan is optional from year two. Prices include VAT.</p>
   <details class="incl"><summary>What's included in setup?</summary>
     <ul class="incl-list">
       <li>Hosting, email and app store accounts in your studio's name, on your own billing</li>
@@ -1900,7 +1900,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
       : 'In three parts as we build') + (founding() ? ', with 30% off' : '');
     // Hosting and email are on top of our fees and go to those companies, so the bar says which part is which.
     const run = RUNNING * 12, after = c.months === 24 ? 'each year after year two' : 'each year after';
-    $('tY1Label').textContent = 'year one: ' + gbp(c.y1 - run) + ' to us, ' + gbp(run) + ' hosting and email';
+    $('tY1Label').textContent = 'year one: ' + gbp(c.y1 - run) + ' to us, ' + gbp(run) + ' hosting and email, updates and support included';
     $('tLaterLabel').textContent = c.care
       ? after + ': ' + gbp(c.care) + ' care plan to us, ' + gbp(run) + ' hosting and email'
       : after + ': hosting and email only, nothing to us';
