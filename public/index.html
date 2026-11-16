@@ -607,6 +607,19 @@ dialog.callbox::backdrop { background:rgb(19 32 30 / .55); }
 .callbox .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 @media (max-width: 480px) { .callbox .two { grid-template-columns:1fr; } .callbox .cb { padding:26px 20px 22px; } }
 .callbox [hidden] { display:none !important; }
+.callbox h2:focus { outline:none; }
+.callbox .cb-x:focus:not(:focus-visible) { outline:none; box-shadow:none; }
+@media (max-width: 560px) {
+  dialog.callbox { width:100%; max-width:100%; max-height:calc(100dvh - 12px); margin:auto 0 0; border-radius:24px 24px 0 0; }
+  .callbox .cb { gap:11px; padding:22px 18px calc(18px + env(safe-area-inset-bottom)); }
+  .callbox h2 { font-size:26px; }
+  .callbox .cb-lede { font-size:14px; }
+  .callbox .cb-pick { font-size:13px; padding:10px 12px; }
+  .callbox label { gap:5px; font-size:13.5px; }
+  .callbox input, .callbox textarea { padding:10px 12px; }
+  .callbox textarea { min-height:60px; }
+  .callbox .cb-x { top:14px; right:12px; }
+}
 .callbox .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
 .callbox .btn { margin-top:4px; }
 .callbox .cb-msg { font-size:14px; color:var(--seal); min-height:0; }
@@ -1056,7 +1069,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 <dialog class="callbox" id="callBox" aria-labelledby="cbTitle">
   <form class="cb" id="callForm" novalidate>
     <button type="button" class="cb-x" id="callClose" aria-label="Close">&times;</button>
-    <h2 id="cbTitle">Arrange a call</h2>
+    <h2 id="cbTitle" tabindex="-1">Arrange a call</h2>
     <p class="cb-lede">A short video call with Tim. Ask anything and see how it would work with your timetable, prices and team.</p>
     <p class="cb-pick" id="cbPick" hidden></p>
     <label><span>Your name</span><input name="name" autocomplete="name" required maxlength="80"></label>
@@ -1502,7 +1515,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   if (!box || !box.showModal) { const b = $('callOpen'); if (b) b.addEventListener('click', () => { location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A call about taal'); }); return; }
   function picked() {
     const items = ['Booking system'];
-    if ($('optApps').checked) items.push('their own apps');
+    if ($('optApps').checked) items.push('your own apps');
     if ($('optSite').checked) items.push('a website');
     const list = items.length > 1 ? items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1] : items[0];
     const spread = (document.querySelector('input[name=pay]:checked') || {}).value === 'spread';
@@ -1520,6 +1533,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     if (name && !$('cbStudio').value) $('cbStudio').value = name;
     form.hidden = false; $('callDone').hidden = true; $('cbMsg').textContent = '';
     box.showModal();
+    box.scrollTop = 0; $('cbTitle').focus({ preventScroll: true });
   });
   const close = () => box.close();
   $('callClose').addEventListener('click', close);
