@@ -57,7 +57,7 @@ def footer(current=''):
     def a(h, t, extra=''):
         return f'<a href="{h}"{extra}{" aria-current=\"page\"" if h == current else ""}>{t}</a>'
     studios = ''.join(a(f, label) for f, _, label, *_ in KINDS)
-    before = a('compare.html', 'Compare costs') + a('leaving.html', 'Leaving taal') + a('privacy.html', 'Privacy') + '<a class="mail" href="mailto:EMAIL">Contact</a>'
+    before = a('compare.html', 'Compare costs') + a('leaving.html', 'Leaving taal') + a('privacy.html', 'Privacy') + '<a class="mail" href="mailto:hello@taal.solutions">Contact</a>'
     return (f'<footer><div class="wrap foot">\n'
             f'  <div class="foot-brand"><a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a><p>Studio software made in London for independent gyms, studios and clubs.</p></div>\n'
             f'  <div class="foot-col foot-two"><span class="foot-h">For your studio</span>{studios}</div>\n'
