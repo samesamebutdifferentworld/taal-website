@@ -461,7 +461,7 @@ footer a { color:var(--mute); }
 (function () {
   const $ = id => document.getElementById(id);
   const esc = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-  const HAVEN = 'https://booking.tjallan13.workers.dev/?s=haven';
+  const HAVEN = 'https://app.taal.solutions/?s=haven';
   document.querySelectorAll('.haven-link').forEach(a => { a.href = HAVEN; });
 
   /* What each kind of studio looks like in the preview. Tiles and credits are tagged:

@@ -11,13 +11,18 @@
  * Licences are permanent. Only if a setup payment is over 30 days overdue, change the value to
  * {"studio":"SQ Fitness","status":"ended","ended_at":"YYYY-MM-DD"}; set it back to active once paid.
  * The demo builder (studios build their own demo): see src/demos.js.
- * Everything else is the static site in ./public.
+ * Everything else is the static site in ./public, served on taal.solutions (www and workers.dev redirect).
  */
 import { demos } from './demos.js';
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    // www.taal.solutions and the old workers.dev address send people to taal.solutions.
+    const home = env.PUBLIC_URL ? new URL(env.PUBLIC_URL) : null;
+    if (home && url.hostname !== home.hostname && (url.hostname === 'www.' + home.hostname || url.hostname.endsWith('.workers.dev')) && !url.pathname.startsWith('/api/')) {
+      return Response.redirect(home.origin + url.pathname + url.search, 301);
+    }
     if (url.pathname === '/api/licence') return licence(request, env);
     if (url.pathname.startsWith('/api/')) {
       const res = await demos(request, env, url);

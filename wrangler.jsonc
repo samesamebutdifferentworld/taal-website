@@ -3,7 +3,12 @@
   "main": "src/worker.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
-  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  // The site lives on taal.solutions; www and the old workers.dev address redirect there (src/worker.js).
+  "routes": [
+    { "pattern": "taal.solutions", "custom_domain": true },
+    { "pattern": "www.taal.solutions", "custom_domain": true }
+  ],
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
   "kv_namespaces": [
     { "binding": "LICENCES", "id": "fc1426bc38504f78b52e0bf054e18250" },
     // People who built a demo (kept for a year).
@@ -12,10 +17,12 @@
   // The booking app builds the demos. This connection can't be reached from the internet.
   "services": [{ "binding": "BOOKING", "service": "booking", "entrypoint": "DemoBuilder" }],
   "vars": {
+    // The site's own address: links in emails, and where other addresses redirect.
+    "PUBLIC_URL": "https://taal.solutions",
     // Where the demos live.
-    "BOOKING_URL": "https://booking.tjallan13.workers.dev",
+    "BOOKING_URL": "https://app.taal.solutions",
     // Where new demos are reported, and the reply-to on emails to studios.
-    "CONTACT_EMAIL": "",
+    "CONTACT_EMAIL": "tim@taal.solutions",
     // The sender, on a domain verified in Resend, e.g. "Tim at Taal <hello@yourdomain.com>".
     "EMAIL_FROM": "",
     // Booking link for a call (Calendly, Cal.com or Zoom Scheduler). Empty: "reply to book a call".
