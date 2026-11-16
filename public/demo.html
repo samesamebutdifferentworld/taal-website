@@ -269,6 +269,11 @@ footer a { color:var(--mute); }
   .call .btn { justify-self:stretch; }
   .again { text-align:center; }
 }
+/* touch and hover feedback, matching the home page */
+* { -webkit-tap-highlight-color:transparent; }
+.btn { transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .3s, background-color .25s, color .25s; }
+.btn:active { transform:scale(.96); box-shadow:none; }
+@media (hover: hover) { .btn:hover { transform:translateY(-2px); box-shadow:0 10px 22px -12px rgb(19 32 30 / .45); } .btn:active { transform:scale(.96); } }
 </style>
 </head>
 <body>

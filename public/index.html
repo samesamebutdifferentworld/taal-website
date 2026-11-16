@@ -193,6 +193,45 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 @keyframes noteIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
 @media (max-width: 860px) { .why .wrap { grid-template-columns:minmax(0,1fr); } .why-card { padding:28px 24px; } .why { padding:8px 0 88px; } }
 
+/* ---------- touch and hover feedback ----------
+   Hover effects only on devices with a pointer (so phones don't get stuck hover states);
+   a small press on everything you can tap. */
+* { -webkit-tap-highlight-color:transparent; }
+.btn, .seg span, .kinds button, .tabs button, .founding, .swatches button, .swatches .own, .opt, .step-card, .why-card, .reel-tabs button, summary, .cycle button, .demo-link, .haven-link, nav ul a, .logo {
+  transition:transform .25s var(--curve), box-shadow .3s var(--curve), background-color .25s, color .25s, opacity .25s; }
+.btn:active, .founding:active, .seg label:active span, .kinds button:active, .tabs button:active, .swatches button:active, .swatches .own:active { transform:scale(.96); }
+.opt:active, .step-card:active, a.step-card:active { transform:scale(.985); }
+summary:active { opacity:.7; }
+.reel-tabs button:active b { opacity:.8; }
+@media (hover: hover) {
+  .btn:hover { transform:translateY(-2px); box-shadow:0 10px 22px -12px rgb(19 32 30 / .45); }
+  .btn.btn-seal:hover { box-shadow:0 10px 24px -10px rgb(168 56 43 / .55); }
+  .btn:active { transform:scale(.96); box-shadow:none; }
+  .swatches button:hover, .swatches .own:hover { transform:scale(1.12); }
+  .kinds button:hover:not([aria-checked="true"]), .tabs button:hover:not([aria-selected="true"]) { background:rgb(15 92 87 / .08); color:var(--ink); }
+  .seg label:hover input:not(:checked) + span { color:var(--ink); }
+  .opt:not(.fixed):hover { box-shadow:inset 0 0 0 1.5px rgb(15 92 87 / .45); transform:translateY(-1px); }
+  .opt:not(.fixed):has(input:checked):hover { box-shadow:inset 0 0 0 1.5px var(--green); }
+  a.step-card:hover { transform:translateY(-4px); box-shadow:0 22px 40px -24px rgb(10 63 59 / .7); }
+  .step-card:not(a):hover { transform:translateY(-2px); }
+  .why-card:hover { transform:translateY(-4px); box-shadow:0 26px 50px -30px rgb(19 32 30 / .4); }
+  .grid6 > div h3 { transition:transform .3s var(--curve), color .25s; }
+  .grid6 > div:hover h3 { transform:translateX(4px); color:var(--green); }
+  .grid6 > div:hover h3 svg { color:var(--seal); }
+  .grid6 > div:hover::before { opacity:1; height:10px; top:-5px; }
+  .faq-list summary:hover, .faq-all > summary:hover h2, .incl summary:hover { color:var(--green); }
+  details summary:hover::after { transform:rotate(90deg); }
+  .demo-link:hover, .haven-link:hover { text-decoration-thickness:2px; }
+  nav ul a { position:relative; }
+  nav ul a::after { content:''; position:absolute; left:0; right:0; bottom:-4px; height:1.5px; background:var(--seal); transform:scaleX(0); transform-origin:left; transition:transform .35s var(--curve); }
+  nav ul a:hover::after { transform:scaleX(1); }
+  .reel-stage:hover .reel-phone { transform:translateY(-6px) rotate(-1deg); }
+  .phone:hover { transform:translateY(-4px); }
+}
+summary::after { transition:transform .3s var(--curve); }
+.reel-phone, .phone { transition:transform .6s var(--curve); }
+.grid6 > div::before { transition:height .25s, top .25s, opacity .25s; }
+
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
