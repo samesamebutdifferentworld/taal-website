@@ -450,7 +450,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app-next-go small, .app-next-go strong, .app-next-go span { display:block; }
 
 .app-tile { cursor:pointer; transition:transform .12s; }
-.app-tile:active, .bk:active, .buy-item:active { transform:scale(.97); }
+.app-tile:active, .bk:active { transform:scale(.97); }
 .app-head button { color:var(--ink); font-weight:700; font-size:11px; }
 .app-nav button { display:flex; flex-direction:column; align-items:center; gap:3px; text-align:center; }
 .app-nav .on { color:var(--accent); font-weight:700; }
@@ -483,8 +483,29 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app .qr-go { margin-top:14px; display:inline-block; background:var(--accent); color:var(--qr-fg); font-weight:700; font-size:12px; padding:9px 16px; border-radius:999px; }
 @media (prefers-reduced-motion: no-preference) { .scr-qr.on .qr-card { animation:qrPop .45s cubic-bezier(.2,.8,.3,1.2); } }
 @keyframes qrPop { from { transform:scale(.9); opacity:0; } }
-.buy-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; background:#FCFAF8; border-radius:14px; padding:11px 12px; box-shadow:0 1px 3px rgb(0 0 0 / .06); width:100%; transition:transform .12s; }
+.buy-item { display:grid; grid-template-columns:minmax(0,1fr) auto 30px; gap:8px; align-items:center; background:#FCFAF8; border-radius:14px; padding:6px 8px 6px 0; box-shadow:0 1px 3px rgb(0 0 0 / .06); width:100%; }
+.buy-main { min-width:0; padding:5px 0 5px 12px; text-align:left; transition:transform .12s; }
+.buy-main:active { transform:scale(.97); }
 .buy-item b { font-size:13px; color:var(--ink); white-space:nowrap; }
+.app .buy-add { width:30px; height:30px; border-radius:50%; background:color-mix(in srgb, var(--brand) 14%, #fff); color:var(--ink); font-size:18px; font-weight:600; line-height:1; display:grid; place-items:center; }
+.app .buy-add:active { transform:scale(.9); }
+.cart-bar { position:sticky; bottom:8px; z-index:2; margin:12px 10px 0; display:flex; align-items:center; justify-content:space-between; gap:10px; background:#2F2B26; color:#fff; border-radius:16px; padding:9px 9px 9px 14px; box-shadow:0 8px 20px rgb(0 0 0 / .2); font-size:11px; }
+.cart-bar b { display:block; font-size:12px; }
+.app .cart-bar button { background:var(--brand); color:var(--on-brand); font-weight:700; font-size:12px; padding:9px 14px; border-radius:999px; }
+@media (prefers-reduced-motion: no-preference) { .cart-bar { animation:scrIn .25s cubic-bezier(.2,.7,.2,1); } }
+.app-nav [data-go=buy] { position:relative; }
+.app-nav .count { position:absolute; top:-3px; left:calc(50% + 6px); min-width:15px; height:15px; padding:0 4px; border-radius:999px; background:#E0533D; color:#fff; font-style:normal; font-size:9px; font-weight:700; line-height:15px; text-align:center; box-shadow:0 0 0 2px #FCFAF8; }
+.app-nav .count[hidden] { display:none; }
+.book-tabs { display:flex; gap:5px; padding:0 10px 10px; overflow-x:auto; scrollbar-width:none; }
+.book-tabs::-webkit-scrollbar { display:none; }
+.app .book-tabs button { flex-shrink:0; padding:7px 12px; border-radius:999px; background:#EDE8E2; color:#5c5751; font-size:11px; font-weight:600; }
+.app .book-tabs button[aria-pressed=true] { background:#2F2B26; color:#fff; }
+.app-sheet .go.ghost { background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--brand) 55%, #DDD6CF); margin-top:7px; }
+.cart-lines { list-style:none; margin:10px 0 0; padding:0; display:grid; gap:2px; }
+.cart-lines li { display:grid; grid-template-columns:minmax(0,1fr) auto 26px; gap:8px; align-items:center; font-size:12px; color:#2F2B26; padding:6px 0; border-bottom:1px solid #EFEAE4; }
+.cart-lines span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.app .cart-lines .rm { width:24px; height:24px; border-radius:50%; background:rgb(0 0 0 / .06); color:#6f6a64; font-size:15px; line-height:1; display:grid; place-items:center; }
+.app-sheet .cart-total { display:flex; justify-content:space-between; margin:8px 0 0; font-size:13px; color:#2F2B26; }
 .me-top { display:flex; align-items:center; gap:11px; margin:16px 14px 6px; }
 .me-top i { width:44px; height:44px; border-radius:50%; background:var(--brand); color:var(--on-brand); display:grid; place-items:center; font-style:normal; font-weight:700; font-size:17px; flex-shrink:0; }
 .me-top b { display:block; font-size:16px; }
@@ -520,7 +541,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .app-ping b { display:block; font-size:11.5px; }
 .app-toast { position:absolute; left:50%; bottom:86px; z-index:8; transform:translate(-50%, 8px); margin:0; max-width:86%; text-align:center; background:#2F2B26; color:#fff; font-size:11px; font-weight:600; padding:8px 13px; border-radius:14px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; }
 .app-toast.on { opacity:1; transform:translate(-50%, 0); }
-.app:has(.scr-chat.on) .app-toast { bottom:auto; top:64px; }
+.app:has(.scr-chat.on) .app-toast, .app:has(.app-sheet:not([hidden])) .app-toast { bottom:auto; top:64px; }
 .tap-hint { display:flex; align-items:center; gap:8px; margin:0 0 -8px; font-size:13px; font-weight:600; color:var(--mute); transition:opacity .4s; }
 .tap-hint i { width:8px; height:8px; border-radius:50%; background:var(--seal); }
 @media (prefers-reduced-motion: no-preference) { .tap-hint i { animation:hintPulse 1.8s ease-out infinite; } }
@@ -937,10 +958,10 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
           </div>
         </div>
         <div class="app-tiles" id="appTiles">
-          <div class="app-tile" style="--img:url('img/app/strength.svg')"><span>Classes</span></div>
-          <div class="app-tile" style="--img:url('img/app/opengym.svg')"><span>Gym floor</span></div>
-          <div class="app-tile" style="--img:url('img/app/pt.svg')"><span>PT</span></div>
-          <div class="app-tile" style="--img:url('img/app/deeptissue.svg')"><span>Massage</span></div>
+          <button type="button" class="app-tile" data-cat="0" style="--img:url('img/app/strength.svg')"><span>Classes</span></button>
+          <button type="button" class="app-tile" data-cat="1" style="--img:url('img/app/opengym.svg')"><span>Gym floor</span></button>
+          <button type="button" class="app-tile" data-cat="2" style="--img:url('img/app/pt.svg')"><span>PT</span></button>
+          <button type="button" class="app-tile" data-cat="3" style="--img:url('img/app/deeptissue.svg')"><span>Massage</span></button>
         </div>
         <div class="app-head"><b>Your credits</b><button type="button" data-go="buy">Buy more</button></div>
         <div class="app-card" id="appCard">
@@ -959,7 +980,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
           <button type="button" data-go="home" class="on" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
           <button type="button" data-go="book"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</button>
           <button type="button" data-go="qr" class="qr"><i><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z"/></svg></i>Sign in</button>
-          <button type="button" data-go="buy"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>Buy</button>
+          <button type="button" data-go="buy"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg><i class="count" hidden></i>Buy</button>
           <button type="button" data-go="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Me</button>
         </div>
         <div class="app-dim" id="appDim" hidden></div>
@@ -1399,39 +1420,90 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   // Load the tile art up front so switching is instant.
   Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
 
-  /* The phone works: book, cancel, join a waitlist, scan in, buy. All in the browser; nothing is saved. */
-  // Sessions: [time, minutes, name, with, picture, credit row used, spaces left]. Buy: [name, note, price, row topped up, how many].
+  /* The phone works: book, cancel, join a waitlist, scan in, message the studio, buy now or add to a cart.
+     All in the browser; nothing is saved. */
+  // book: one list per tile, in tile order. A session is [time, minutes, name, with, picture, credit row it uses
+  // (null = paid when booked), spaces left, price]. A tile that sells rather than books is 'buy'.
+  // buy: [name, note, price shown, credit row it tops up, how many].
   const A = {
-    fitness: { pre: [1, 0], book: [['07:00', 55, 'Strength', 'Elena', 'strength', 1, 3], ['09:30', 45, 'HIIT', 'Leo', 'opengym', 1, 6], ['12:30', 50, 'Mobility', 'Jonah', 'mat', 1, 9], ['17:00', 60, 'PT session', 'Elena', 'pt', 2, 1], ['18:00', 45, 'Condition', 'Leo', 'strength', 1, 0], ['19:15', 45, 'Spin', 'Maya', 'opengym', 1, 11]],
+    fitness: { pre: [1, 0, 0],
+      book: [
+        [['07:00', 55, 'Strength', 'Elena', 'strength', 1, 3], ['09:30', 45, 'HIIT', 'Leo', 'opengym', 1, 6], ['12:30', 50, 'Mobility', 'Jonah', 'mat', 1, 9], ['18:00', 45, 'Condition', 'Leo', 'strength', 1, 0], ['19:15', 45, 'Spin', 'Maya', 'opengym', 1, 11]],
+        [['06:00', 90, 'Gym floor', 'Open', 'opengym', 0, 25], ['09:00', 90, 'Gym floor', 'Open', 'opengym', 0, 18], ['12:00', 90, 'Gym floor', 'Open', 'opengym', 0, 12], ['17:00', 90, 'Gym floor', 'Open', 'opengym', 0, 4], ['19:00', 90, 'Gym floor', 'Open', 'opengym', 0, 9]],
+        [['08:00', 60, 'PT session', 'Elena', 'pt', 2, 1], ['13:00', 60, 'PT session', 'Leo', 'pt', 2, 1], ['17:00', 60, 'PT session', 'Elena', 'pt', 2, 1], ['19:00', 60, 'PT session', 'Leo', 'pt', 2, 0]],
+        [['10:00', 60, 'Sports massage', 'Maya', 'deeptissue', null, 1, 60], ['14:00', 45, 'Recovery massage', 'Maya', 'deeptissue', null, 1, 45], ['18:30', 60, 'Sports massage', 'Maya', 'deeptissue', null, 0, 60]],
+      ],
       buy: [['10 class pack', 'Use within three months', '£120', 1, 10], ['PT session', 'An hour with a coach', '£55', 2, 1], ['Day pass', 'Gym floor and classes', '£15'], ['Unlimited membership', 'Everything, every month', '£89 a month']] },
-    wellness: { pre: [0, 3], book: [['08:00', 45, 'Sauna session', 'Open', 'sauna', 0, 4], ['12:00', 60, 'Sports massage', 'Maya', 'deeptissue', 1, 1], ['17:30', 45, 'Breathwork', 'Noor', 'pt', 2, 10], ['18:00', 60, 'Deep tissue', 'Maya', 'deeptissue', 1, 0], ['19:30', 60, 'Sauna social', 'Open', 'sauna', 0, 6]],
-      buy: [['4 sauna sessions', 'Use within two months', '£60', 0, 4], ['60 min massage', 'Sports or deep tissue', '£75', 1, 1], ['Gift card', 'Any amount from £25', 'from £25'], ['Sauna membership', 'Unlimited sauna', '£79 a month']] },
-    yoga: { pre: [1, 0], book: [['07:15', 60, 'Vinyasa flow', 'Priya', 'yoga', 0, 12], ['09:30', 50, 'Reformer', 'Sofia', 'reformer', 1, 3], ['12:30', 45, 'Mat Pilates', 'Sofia', 'mat', 0, 9], ['18:00', 50, 'Reformer', 'Jonah', 'reformer', 1, 0], ['19:30', 75, 'Yin', 'Priya', 'yoga', 0, 14]],
+    wellness: { pre: [0, 0, 3],
+      book: [
+        [['10:00', 60, 'Sports massage', 'Maya', 'deeptissue', 1, 1], ['12:00', 60, 'Deep tissue', 'Maya', 'deeptissue', 1, 1], ['16:00', 30, 'Express massage', 'Theo', 'deeptissue', null, 1, 40], ['18:00', 60, 'Deep tissue', 'Maya', 'deeptissue', 1, 0]],
+        [['08:00', 45, 'Sauna session', 'Open', 'sauna', 0, 4], ['12:30', 45, 'Sauna session', 'Open', 'sauna', 0, 6], ['17:00', 45, 'Sauna session', 'Open', 'sauna', 0, 2], ['19:30', 60, 'Sauna social', 'Open', 'sauna', 0, 0]],
+        [['07:30', 45, 'Morning breathwork', 'Noor', 'pt', 2, 10], ['17:30', 45, 'Breathwork', 'Noor', 'pt', 2, 8], ['19:00', 60, 'Breath and sound', 'Noor', 'pt', 2, 0]],
+        'buy',
+      ],
+      buy: [['Gift card', 'Any amount from £25', 'from £25'], ['4 sauna sessions', 'Use within two months', '£60', 0, 4], ['60 min massage', 'Sports or deep tissue', '£75', 1, 1], ['Sauna membership', 'Unlimited sauna', '£79 a month']] },
+    yoga: { pre: [1, 0, 0],
+      book: [
+        [['07:15', 60, 'Vinyasa flow', 'Priya', 'yoga', 0, 12], ['12:30', 45, 'Lunchtime flow', 'Priya', 'yoga', 0, 9], ['19:30', 75, 'Yin', 'Priya', 'yoga', 0, 0]],
+        [['09:30', 50, 'Reformer', 'Sofia', 'reformer', 1, 3], ['13:00', 50, 'Reformer', 'Jonah', 'reformer', 1, 5], ['18:00', 50, 'Reformer', 'Jonah', 'reformer', 1, 0]],
+        [['08:00', 45, 'Mat Pilates', 'Sofia', 'mat', 0, 10], ['18:30', 45, 'Core Pilates', 'Sofia', 'mat', 0, 7]],
+        [['11:00', 60, 'Private session', 'Priya', 'pt', 2, 1], ['16:00', 60, 'Private reformer', 'Sofia', 'reformer', 2, 1], ['17:00', 60, 'Private session', 'Priya', 'pt', 2, 0]],
+      ],
       buy: [['5 reformer classes', 'Use within two months', '£110', 1, 5], ['Private session', 'One to one, an hour', '£65', 2, 1], ['Drop-in class', 'Any studio class', '£18'], ['Unlimited studio', 'Every mat and yoga class', '£120 a month']] },
-    dance: { pre: [1, 1], book: [['12:30', 45, 'Stretch and conditioning', 'Anya', 'mat', 0, 10], ['17:00', 30, 'Private lesson', 'Carla', 'pt', 2, 1], ['18:00', 60, 'Ballet basics', 'Anya', 'dance', 0, 7], ['19:00', 60, 'Salsa improvers', 'Carla', 'dance', 1, 4], ['20:00', 60, 'Contemporary', 'Anya', 'dance', 0, 0]],
+    dance: { pre: [1, 1, 0],
+      book: [
+        [['12:30', 45, 'Stretch and conditioning', 'Anya', 'mat', 0, 10], ['18:00', 60, 'Ballet basics', 'Anya', 'dance', 0, 7], ['20:00', 60, 'Contemporary', 'Anya', 'dance', 0, 0]],
+        [['19:00', 60, 'Salsa improvers', 'Carla', 'dance', 1, 4], ['20:15', 60, 'Bachata beginners', 'Carla', 'dance', null, 6, 85]],
+        [['16:00', 30, 'Private lesson', 'Anya', 'pt', 2, 1], ['17:00', 30, 'Private lesson', 'Carla', 'pt', 2, 1], ['18:30', 30, 'Private lesson', 'Carla', 'pt', 2, 0]],
+        [['14:00', 120, 'Heels workshop', 'Mia', 'dance', null, 6, 30], ['15:00', 120, 'Choreography workshop', 'Anya', 'yoga', null, 0, 30]],
+      ],
       buy: [['10 class pass', 'Use within three months', '£110', 0, 10], ['Private lesson', 'Half an hour, one to one', '£50', 2, 1], ['Drop-in class', 'Any open class', '£13'], ['Next salsa course', 'Six weeks, starts January', '£85']] },
-    martial: { pre: [3, 2], book: [['07:00', 60, 'BJJ fundamentals', 'Rafa', 'martial', 0, 10], ['12:30', 60, 'Open mat', 'Open', 'mat', 1, 20], ['17:00', 45, 'Private session', 'Kai', 'pt', 2, 1], ['18:00', 60, 'Muay Thai', 'Kai', 'martial', 0, 0], ['19:15', 60, 'No-gi', 'Rafa', 'martial', 0, 8]],
+    martial: { pre: [3, 0, 1],
+      book: [
+        [['07:00', 60, 'BJJ', 'Rafa', 'martial', 0, 10], ['18:00', 60, 'Muay Thai', 'Kai', 'martial', 0, 0], ['19:15', 60, 'No-gi', 'Rafa', 'martial', 0, 8]],
+        [['12:30', 60, 'Open mat', 'Open', 'mat', 1, 20], ['20:30', 60, 'Open mat', 'Open', 'mat', 1, 15]],
+        [['11:00', 45, 'Private session', 'Rafa', 'pt', 2, 1], ['17:00', 45, 'Private session', 'Kai', 'pt', 2, 1]],
+        [['18:00', 60, 'BJJ fundamentals', 'Rafa', 'strength', 0, 6], ['19:00', 60, 'Muay Thai fundamentals', 'Kai', 'martial', 0, 0]],
+      ],
       buy: [['Private session', 'Forty five minutes, one to one', '£45', 2, 1], ['Gloves and wraps', 'Collect at reception', '£40'], ['Drop-in class', 'Any class', '£15'], ['Unlimited membership', 'Every class and open mat', '£95 a month']] },
-    climbing: { pre: [5, 1], book: [['07:00', 120, 'Early bird session', 'Open', 'climbing', 0, 30], ['10:00', 90, 'Intro to bouldering', 'Sam', 'climbing', 0, 4], ['12:00', 60, 'Technique class', 'Mia', 'strength', 0, 6], ['18:30', 60, 'Yoga for climbers', 'Priya', 'yoga', 0, 0], ['19:30', 90, 'Social climb', 'Open', 'climbing', 0, 14]],
+    climbing: { pre: [5, 1, 0],
+      book: [
+        [['07:00', 120, 'Early bird session', 'Open', 'climbing', 0, 30], ['12:00', 120, 'Daytime climbing', 'Open', 'climbing', 0, 40], ['18:00', 120, 'Evening session', 'Open', 'climbing', 0, 4]],
+        [['10:00', 90, 'Intro to bouldering', 'Sam', 'climbing', 0, 4], ['18:30', 60, 'Technique class', 'Mia', 'strength', 0, 0]],
+        [['11:00', 30, 'Induction', 'Sam', 'pt', null, 3, 10], ['17:30', 30, 'Induction', 'Mia', 'pt', null, 0, 10]],
+        [['08:00', 60, 'Yoga for climbers', 'Priya', 'yoga', 0, 9], ['19:30', 60, 'Stretch and mobility', 'Priya', 'yoga', 0, 0]],
+      ],
       buy: [['4 shoe hires', 'Use any time', '£14', 1, 4], ['Guest pass', 'Bring a friend', '£15', 2, 1], ['10 entry pass', 'Use within six months', '£110'], ['Monthly membership', 'Unlimited climbing', '£59 a month']] },
   };
   const D = new Date(); D.setHours(0, 0, 0, 0);
   const day = n => new Date(D.getTime() + n * 864e5);
   const fmt = (d, o) => d.toLocaleDateString('en-GB', o);
+  const gbp = n => '£' + n.toLocaleString('en-GB');
+  const priceOf = str => +((/£([\d,]+)/.exec(str) || [0, '0'])[1].replace(/,/g, ''));
   let S = null, kindNow = 'fitness', toastT = 0, pingT = 0, waitT = 0;
   const studio = () => $('appName').textContent.trim() || 'Your studio';
+  const kd = () => A[kindNow] || A.fitness;
+  const cats = () => (T[kindNow] || T.fitness).tiles.map(([label], c) => ({ c, label, list: kd().book[c] })).filter(x => x.list !== 'buy');
   function reset(kind) {
     kindNow = kind;
-    const k = T[kind] || T.fitness, a = A[kind] || A.fitness;
-    S = { day: 0, booked: new Set(), wait: new Set(), taken: {}, msgs: [], prev: 'home', cur: 'home',
+    const k = T[kind] || T.fitness, a = kd();
+    S = { day: 0, cat: 0, booked: new Set(), wait: new Set(), taken: {}, msgs: [], cart: [], prev: 'home', cur: 'home',
       rows: k.rows.map(([label, w, val, ok]) => { const m = /(\d+) of (\d+) left/.exec(val); return { label, w, val, ok, left: m ? +m[1] : null, total: m ? +m[2] : null }; }) };
     S.booked.add(a.pre.join('|'));
     $('chatDot').hidden = false;
     clearTimeout(waitT); clearTimeout(pingT); $('appPing').hidden = true; closeSheet();
-    $('appTiles').innerHTML = k.tiles.map(([label, img]) => `<button type="button" class="app-tile" data-go="book" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></button>`).join('');
+    $('appTiles').innerHTML = k.tiles.map(([label, img], c) => `<button type="button" class="app-tile" data-cat="${c}" style="--img:url('img/app/${img}.svg')"><span>${esc(label)}</span></button>`).join('');
     renderAll(); go('home', true);
   }
-  const ses = (d, i) => { const b = (A[kindNow] || A.fitness).book[i]; const base = b[6]; const left = d === 0 ? base : (base === 0 ? 2 : base + (d % 3)); return { d, i, time: b[0], mins: b[1], name: b[2], who: b[3], img: b[4], row: b[5], left: Math.max(0, left - (S.taken[d + '|' + i] || 0)) }; };
+  const keyOf = x => x.d + '|' + x.c + '|' + x.i;
+  const parse = key => key.split('|').map(Number);
+  const ses = (d, c, i) => {
+    const b = kd().book[c][i], base = b[6];
+    const left = d === 0 ? base : (base === 0 ? 2 : base + (d % 3));
+    const x = { d, c, i, time: b[0], mins: b[1], name: b[2], who: b[3], img: b[4], row: b[5], price: b[7] || 0 };
+    x.left = Math.max(0, left - (S.taken[keyOf(x)] || 0));
+    return x;
+  };
   const when = x => fmt(day(x.d), { weekday: 'short', day: 'numeric', month: 'short' }) + ', ' + x.time;
   const withWho = x => x.who === 'Open' ? 'Open session' : 'with ' + x.who;
   function renderCard() {
@@ -1441,24 +1513,26 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
       return `<div class="app-row"><span>${esc(r.label)}</span><i style="--w:${w}%"></i><b${r.ok ? ' class="ok"' : ''}>${esc(val)}</b></div>`;
     }).join('');
   }
-  function upcoming() { return [...S.booked].map(key => ses(...key.split('|').map(Number))).sort((x, y) => x.d - y.d || x.time.localeCompare(y.time)); }
+  const upcoming = () => [...S.booked].map(key => ses(...parse(key))).sort((x, y) => x.d - y.d || x.time.localeCompare(y.time));
   function renderNext() {
     const n = upcoming()[0], go = document.querySelector('.app-next-go');
     if (n) { $('nextWhen').textContent = 'Next up, ' + when(n); $('nextName').textContent = n.name; $('nextWith').textContent = withWho(n); go.dataset.go = 'me'; }
     else { $('nextWhen').textContent = 'Nothing booked yet'; $('nextName').textContent = 'Book something'; $('nextWith').textContent = 'Tap to see the timetable'; go.dataset.go = 'book'; }
   }
   function pill(x) {
-    const key = x.d + '|' + x.i;
+    const key = keyOf(x);
     if (S.booked.has(key)) return '<span class="pill in">Booked</span>';
     if (S.wait.has(key)) return '<span class="pill wait">Waitlist</span>';
     if (!x.left) return '<span class="pill full">Full</span>';
-    return `<span class="pill">${x.left} left</span>`;
+    return x.price ? `<span class="pill">${gbp(x.price)}</span>` : `<span class="pill">${x.left} left</span>`;
   }
-  const bkRow = x => `<button type="button" class="bk" data-bk="${x.d}|${x.i}"><time>${x.time}<small>${x.mins} min</small></time><i class="img" style="--img:url('img/app/${x.img}.svg')"></i><span><strong>${esc(x.name)}</strong><span>${esc(withWho(x))}</span></span>${pill(x)}</button>`;
+  const bkRow = x => `<button type="button" class="bk" data-bk="${keyOf(x)}"><time>${x.time}<small>${x.mins} min</small></time><i class="img" style="--img:url('img/app/${x.img}.svg')"></i><span><strong>${esc(x.name)}</strong><span>${esc(withWho(x))}</span></span>${pill(x)}</button>`;
   function renderBook() {
+    const cs = cats(); if (!cs.some(x => x.c === S.cat)) S.cat = cs[0].c;
+    const tabs = cs.map(x => `<button type="button" data-tab="${x.c}" aria-pressed="${x.c === S.cat}">${esc(x.label)}</button>`).join('');
     const days = [...Array(7)].map((_, d) => `<button type="button" data-day="${d}" aria-pressed="${d === S.day}"><span>${d ? fmt(day(d), { weekday: 'short' }) : 'Today'}</span><b>${day(d).getDate()}</b></button>`).join('');
-    const list = (A[kindNow] || A.fitness).book.map((_, i) => bkRow(ses(S.day, i))).join('');
-    $('scrBook').innerHTML = `<h3>Book</h3><div class="days">${days}</div><div class="bk-list">${list}</div>`;
+    const list = kd().book[S.cat].map((_, i) => bkRow(ses(S.day, S.cat, i))).join('');
+    $('scrBook').innerHTML = `<h3>Book</h3><div class="book-tabs">${tabs}</div><div class="days">${days}</div><div class="bk-list">${list}</div>`;
   }
   function qrSvg(seed) {
     let h = 2166136261; for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
@@ -1471,16 +1545,23 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     }
     return `<svg viewBox="-1 -1 27 27" aria-hidden="true"><path d="${cells.join('')}" fill="#1d1b18"/></svg>`;
   }
+  const X = '<button type="button" class="x" data-close aria-label="Close">&times;</button>';
   function renderQr() {
-    $('scrQr').innerHTML = `<div class="scr-bar"><b>Entry pass</b><button type="button" class="x" data-close aria-label="Close">&times;</button></div><div class="qr-card">${qrSvg(studio() + kindNow)}<b>Alex Morgan</b><small>Member at ${esc(studio())}</small></div><p class="qr-hint">Hold it up to the scanner at the door. No fobs or cards.</p><button type="button" class="qr-go" data-act="scan">Try a scan</button>`;
+    $('scrQr').innerHTML = `<div class="scr-bar"><b>Entry pass</b>${X}</div><div class="qr-card">${qrSvg(studio() + kindNow)}<b>Alex Morgan</b><small>Member at ${esc(studio())}</small></div><p class="qr-hint">Hold it up to the scanner at the door. No fobs or cards.</p><button type="button" class="qr-go" data-act="scan">Try a scan</button>`;
   }
+  const cartTotal = () => S.cart.reduce((t, i) => t + priceOf(kd().buy[i][2]), 0);
   function renderBuy() {
-    $('scrBuy').innerHTML = `<h3>Buy</h3><div class="buy-list">${(A[kindNow] || A.fitness).buy.map((b, i) => `<button type="button" class="buy-item" data-buy="${i}"><span><strong>${esc(b[0])}</strong><span>${esc(b[1])}</span></span><b>${esc(b[2])}</b></button>`).join('')}</div>`;
+    const items = kd().buy.map((b, i) => `<div class="buy-item"><button type="button" class="buy-main" data-buy="${i}"><strong>${esc(b[0])}</strong><span>${esc(b[1])}</span></button><b>${esc(b[2])}</b><button type="button" class="buy-add" data-add="${i}" aria-label="Add ${esc(b[0])} to cart">+</button></div>`).join('');
+    const n = S.cart.length;
+    const bar = n ? `<div class="cart-bar"><span><b>${n} in your cart</b>${gbp(cartTotal())}</span><button type="button" data-act="checkout">Checkout</button></div>` : '';
+    $('scrBuy').innerHTML = `<h3>Buy</h3><div class="buy-list">${items}</div>${bar}`;
+    const badge = app.querySelector('.app-nav [data-go=buy] .count');
+    if (badge) { badge.textContent = n; badge.hidden = !n; }
   }
   function renderMe() {
-    const k = T[kindNow] || T.fitness, up = upcoming(), waits = [...S.wait].map(key => ses(...key.split('|').map(Number)));
+    const k = T[kindNow] || T.fitness, list = upcoming().concat([...S.wait].map(key => ses(...parse(key))));
     $('scrMe').innerHTML = `<div class="me-top"><i>A</i><span><b>Alex Morgan</b><span>Member since 2024</span></span></div>
-      <p class="me-sec">Coming up</p>${up.length || waits.length ? `<div class="bk-list">${up.concat(waits).map(bkRow).join('')}</div>` : '<p class="me-empty">Nothing booked yet.</p>'}
+      <p class="me-sec">Coming up</p>${list.length ? `<div class="bk-list">${list.map(bkRow).join('')}</div>` : '<p class="me-empty">Nothing booked yet.</p>'}
       <p class="me-sec">Account</p><div class="me-rows"><button type="button" data-soon>${esc(k.card[0])}</button><button type="button" data-soon>Payment methods</button><button type="button" data-soon>Notifications</button><button type="button" data-soon>Health and waiver</button></div>
       <a class="me-cta to-demo" href="demo.html"><b>Like it?</b>Build the real one for your studio, with your timetable and back office, in about a minute.</a>`;
   }
@@ -1490,7 +1571,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
       S.msgs.push({ who: 'team', text: `Hi Alex, welcome to ${studio()}! Message us here about bookings, your membership or anything else.` });
       if (n) S.msgs.push({ who: 'team', text: `See you at ${n.name}, ${when(n)}. Reply here if you need to move it.` });
     }
-    $('scrChat').innerHTML = `<div class="scr-bar"><b>Messages</b>${'<button type=\"button\" class=\"x\" data-close aria-label=\"Close\">&times;</button>'}</div><div class="chat">${S.msgs.map((m, i) => `<p class="msg${m.who === 'me' ? ' me' : ''}${m.typing ? ' typing' : ''}${fresh && i === S.msgs.length - 1 ? ' new' : ''}">${m.who === 'me' ? '' : `<small>${esc(studio())}</small>`}${esc(m.text)}</p>`).join('')}</div>
+    $('scrChat').innerHTML = `<div class="scr-bar"><b>Messages</b>${X}</div><div class="chat">${S.msgs.map((m, i) => `<p class="msg${m.who === 'me' ? ' me' : ''}${m.typing ? ' typing' : ''}${fresh && i === S.msgs.length - 1 ? ' new' : ''}">${m.who === 'me' ? '' : `<small>${esc(studio())}</small>`}${esc(m.text)}</p>`).join('')}</div>
       <form class="chat-in" id="chatForm"><input id="chatText" placeholder="Message ${esc(studio())}" aria-label="Message" maxlength="200" autocomplete="off"><button type="submit">Send</button></form>`;
     const sc = $('scrChat'); sc.scrollTop = sc.scrollHeight;
   }
@@ -1502,57 +1583,78 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     app.querySelectorAll('.app-nav button').forEach(b => { const on = b.dataset.go === s; b.classList.toggle('on', on); if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     if (s === 'qr') renderQr();
     if (s === 'me') renderMe();
-    const sc = app.querySelector('.scr.on'); if (sc && !quiet) sc.scrollTop = 0;
+    if (s === 'book') renderBook();
+    const sc = app.querySelector('.scr.on'); if (sc && !quiet && s !== 'chat') sc.scrollTop = 0;
   }
   function toast(msg) { const t = $('appToast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); }
   let onSheet = null;
   function sheet(html, handler) { const sh = $('appSheet'); sh.innerHTML = '<button type="button" class="x" data-act="close" aria-label="Close">&times;</button>' + html; sh.hidden = false; $('appDim').hidden = false; onSheet = handler; const b = sh.querySelector('.go'); if (b) b.focus({ preventScroll: true }); }
-  const back = () => { closeSheet(); go(S.prev || 'home'); };
   function closeSheet() { $('appSheet').hidden = true; $('appDim').hidden = true; onSheet = null; }
-  const credit = x => S.rows[x.row];
+  const back = () => { closeSheet(); go(S.prev || 'home'); };
+  const credit = x => x.row == null ? null : S.rows[x.row];
   function creditLine(x) {
+    if (x.price) return `${gbp(x.price)}, paid when you book. Cancel up to 24 hours before for a full refund.`;
     const r = credit(x); if (!r) return 'Included in your membership';
     if (r.left == null) return `${r.val === 'Unlimited' ? 'Included' : r.val}: ${r.label.toLowerCase()}`;
     return r.left ? `Uses 1 of your ${r.left} left: ${r.label.toLowerCase()}` : `No ${r.label.toLowerCase()} left`;
   }
   function book(x, viaWait) {
-    const key = x.d + '|' + x.i, r = credit(x);
-    if (r && r.left != null) r.left--;
+    const key = keyOf(x), r = credit(x);
+    if (!x.price && r && r.left != null) r.left--;
     S.booked.add(key); S.wait.delete(key); S.taken[key] = (S.taken[key] || 0) + 1;
-    renderAll(); toast(viaWait ? 'Booked from the waitlist.' : 'Booked. See you there.');
+    renderAll(); toast(viaWait ? 'Booked from the waitlist.' : x.price ? 'Booked and paid. See you there.' : 'Booked. See you there.');
   }
   function tapSession(key) {
-    const x = ses(...key.split('|').map(Number)), r = credit(x);
+    const x = ses(...parse(key)), r = credit(x);
     const head = `<h4 id="sheetTitle">${esc(x.name)}</h4><p>${esc(when(x))}, ${x.mins} min, ${esc(x.who === 'Open' ? 'open session' : withWho(x))}</p>`;
-    if (S.booked.has(key)) return sheet(head + `<p class="use">You're booked in. Cancel up to two hours before and the credit comes back.</p><button type="button" class="go warn" data-act="cancel">Cancel booking</button><button type="button" class="no" data-act="close">Keep it</button>`, act => {
-      if (act !== 'cancel') return; if (r && r.left != null) r.left++; S.booked.delete(key); S.taken[key] = Math.max(0, (S.taken[key] || 0) - 1); renderAll(); toast('Cancelled. Your credit is back.');
+    if (S.booked.has(key)) return sheet(head + `<p class="use">You're booked in. ${x.price ? 'Cancel up to 24 hours before for a full refund.' : 'Cancel up to two hours before and the credit comes back.'}</p><button type="button" class="go warn" data-act="cancel">Cancel booking</button><button type="button" class="no" data-act="close">Keep it</button>`, act => {
+      if (act !== 'cancel') return; if (!x.price && r && r.left != null) r.left++; S.booked.delete(key); S.taken[key] = Math.max(0, (S.taken[key] || 0) - 1); renderAll(); toast(x.price ? 'Cancelled and refunded.' : 'Cancelled. Your credit is back.');
     });
     if (S.wait.has(key)) return sheet(head + `<p class="use">You're on the waitlist. If a space opens, you'll get an alert straight away.</p><button type="button" class="go warn" data-act="leave">Leave the waitlist</button><button type="button" class="no" data-act="close">Stay on it</button>`, act => { if (act === 'leave') { S.wait.delete(key); clearTimeout(waitT); renderAll(); toast('Left the waitlist.'); } });
     if (!x.left) return sheet(head + `<p class="use">It's full. Join the waitlist and you'll get an alert the moment a space opens.</p><button type="button" class="go" data-act="wait">Join the waitlist</button><button type="button" class="no" data-act="close">Not now</button>`, act => {
       if (act !== 'wait') return; S.wait.add(key); renderAll(); toast("You're on the waitlist.");
       clearTimeout(waitT); waitT = setTimeout(() => { if (!S.wait.has(key)) return; const p = $('appPing'); p.innerHTML = `<i>${esc(studio()[0] || 't')}</i><span><b>${esc(studio())}</b>A space opened in ${esc(x.name)} at ${x.time}. Tap to book.</span>`; p.hidden = false; p.dataset.key = key; clearTimeout(pingT); pingT = setTimeout(() => { p.hidden = true; }, 8000); }, 4500);
     });
-    if (r && r.left === 0) return sheet(head + `<p class="use">${esc(creditLine(x))}. Top up to book.</p><button type="button" class="go" data-act="topup">Buy more</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'topup') go('buy'); });
-    sheet(head + `<p class="use">${esc(creditLine(x))}</p><button type="button" class="go" data-act="book">Book</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'book') book(x); });
+    if (!x.price && r && r.left === 0) return sheet(head + `<p class="use">${esc(creditLine(x))}. Top up to book.</p><button type="button" class="go" data-act="topup">Buy more</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'topup') go('buy'); });
+    sheet(head + `<p class="use">${esc(creditLine(x))}</p><button type="button" class="go" data-act="book">${x.price ? 'Book and pay ' + gbp(x.price) : 'Book'}</button><button type="button" class="no" data-act="close">Not now</button>`, act => { if (act === 'book') book(x); });
+  }
+  function addCredits(list) {
+    let added = 0;
+    list.forEach(i => { const b = kd().buy[i], r = b[3] != null ? S.rows[b[3]] : null; if (r && r.left != null) { r.left += b[4]; r.total += b[4]; added++; } });
+    return added;
   }
   function tapBuy(i) {
-    const b = (A[kindNow] || A.fitness).buy[i];
-    sheet(`<h4 id="sheetTitle">${esc(b[0])}</h4><p>${esc(b[1])}</p><p class="use">Pay by card or Apple Pay through Stripe. In this preview nothing is charged.</p><button type="button" class="go" data-act="pay">Pay ${esc(b[2].replace(/^from /, ''))}</button><button type="button" class="no" data-act="close">Not now</button>`, act => {
-      if (act !== 'pay') return;
-      const r = b[3] != null ? S.rows[b[3]] : null;
-      if (r && r.left != null) { r.left += b[4]; r.total += b[4]; }
-      renderAll(); toast(r ? `Paid. ${b[4]} added to your credits.` : 'Paid. A receipt is on its way.');
+    const b = kd().buy[i], p = priceOf(b[2]), monthly = / a month/.test(b[2]);
+    sheet(`<h4 id="sheetTitle">${esc(b[0])}</h4><p>${esc(b[1])}. ${esc(b[2])}.</p><p class="use">Pay by card or Apple Pay through Stripe${monthly ? ', then monthly by Direct Debit' : ''}. In this preview nothing is charged.</p><button type="button" class="go" data-act="pay">Buy now, ${gbp(p)}</button><button type="button" class="go ghost" data-act="cart">Add to cart</button>`, act => {
+      if (act === 'pay') { const n = addCredits([i]); renderAll(); toast(n ? `Paid. ${b[4]} added to your credits.` : 'Paid. A receipt is on its way.'); }
+      if (act === 'cart') { S.cart.push(i); renderBuy(); toast('Added to your cart.'); }
+    });
+  }
+  function checkout() {
+    const lines = S.cart.map((i, n) => { const b = kd().buy[i]; return `<li><span>${esc(b[0])}${/ a month/.test(b[2]) ? ', first month' : ''}</span><b>${gbp(priceOf(b[2]))}</b><button type="button" class="rm" data-rm="${n}" aria-label="Remove ${esc(b[0])}">&times;</button></li>`; }).join('');
+    sheet(`<h4 id="sheetTitle">Your cart</h4><ul class="cart-lines">${lines}</ul><p class="cart-total"><span>Total</span><b>${gbp(cartTotal())}</b></p><p class="use">Pay by card or Apple Pay through Stripe. In this preview nothing is charged.</p><button type="button" class="go" data-act="paycart">Pay ${gbp(cartTotal())}</button>`, act => {
+      if (act !== 'paycart') return;
+      const n = S.cart.length; addCredits(S.cart); S.cart = []; renderAll(); toast(`Paid for ${n} item${n > 1 ? 's' : ''}. Receipt on its way.`);
     });
   }
   app.addEventListener('click', e => {
     const t = e.target.closest('button, a'); if (!t || !app.contains(t)) return;
-    if (t.id === 'appPing') { const key = t.dataset.key; t.hidden = true; clearTimeout(pingT); if (key && S.wait.has(key)) { const x = ses(...key.split('|').map(Number)); x.left = Math.max(1, x.left); book(x, true); go('me'); } return; }
-    if (t.dataset.act) { const act = t.dataset.act, fn = onSheet; if (act === 'scan') { toast('Checked in at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '. Have a good one.'); return; } closeSheet(); if (fn) fn(act); return; }
+    if (t.id === 'appPing') { const key = t.dataset.key; t.hidden = true; clearTimeout(pingT); if (key && S.wait.has(key)) { const x = ses(...parse(key)); x.left = Math.max(1, x.left); book(x, true); go('me'); } return; }
+    if (t.dataset.rm != null) { S.cart.splice(+t.dataset.rm, 1); renderBuy(); if (S.cart.length) checkout(); else { closeSheet(); toast('Your cart is empty.'); } return; }
+    if (t.dataset.act) {
+      const act = t.dataset.act, fn = onSheet;
+      if (act === 'scan') { toast('Checked in at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '. Have a good one.'); return; }
+      if (act === 'checkout') { checkout(); return; }
+      closeSheet(); if (fn) fn(act); return;
+    }
     if ('close' in t.dataset) { back(); return; }
+    if (t.dataset.cat != null) { const c = +t.dataset.cat; closeSheet(); if (kd().book[c] === 'buy') { go('buy'); } else { S.cat = c; go('book'); } return; }
+    if (t.dataset.tab != null) { S.cat = +t.dataset.tab; renderBook(); return; }
     if (t.dataset.go) { closeSheet(); go(t.dataset.go); return; }
     if (t.dataset.day) { S.day = +t.dataset.day; renderBook(); return; }
     if (t.dataset.bk) { tapSession(t.dataset.bk); return; }
     if (t.dataset.buy) { tapBuy(+t.dataset.buy); return; }
+    if (t.dataset.add) { S.cart.push(+t.dataset.add); renderBuy(); toast('Added to your cart.'); return; }
     if ('soon' in t.dataset) { toast('This works in the real app.'); return; }
   });
   $('appDim').addEventListener('click', closeSheet);
@@ -1568,19 +1670,17 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     const text = $('chatText').value.trim(); if (!text) return;
     S.msgs.push({ who: 'me', text }); renderChat(true);
     S.msgs.push({ who: 'team', text: 'Typing…', typing: true });
-    setTimeout(() => { renderChat(); }, 500);
+    setTimeout(() => { if ($('scrChat').classList.contains('on')) renderChat(); }, 500);
     setTimeout(() => {
       const t = S.msgs.find(m => m.typing); if (t) { t.text = 'Thanks Alex, got it. Someone from the team will reply here shortly.'; t.typing = false; }
-      if ($('scrChat').classList.contains('on')) { renderChat(true); toast("In the real app this lands in the studio's team inbox."); }
+      if ($('scrChat').classList.contains('on')) { renderChat(true); toast("In the real app this lands in the studio's team inbox."); const inp = $('chatText'); if (inp) inp.focus({ preventScroll: true }); }
       else $('chatDot').hidden = false;
-      const inp = $('chatText'); if (inp) inp.focus({ preventScroll: true });
     }, 1700);
   });
   // The hint goes once someone has tried it.
   app.addEventListener('pointerdown', () => { const h = $('tapHint'); if (h && !h.classList.contains('gone')) { h.classList.add('gone'); setTimeout(() => { h.style.visibility = 'hidden'; }, 400); } }, { once: true });
   // A new studio name shows on the QR card and in alerts.
   const nameIn = $('studioName'); if (nameIn) nameIn.addEventListener('input', () => setTimeout(renderQr, 0));
-
 
   function apply(kind, animate) {
     const k = T[kind] || T.fitness;
