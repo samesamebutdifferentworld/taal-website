@@ -728,6 +728,11 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .seg input:checked + span { color:var(--paper); }
 .seg input:focus-visible + span { outline:2px solid var(--green); outline-offset:2px; }
 .opt-foot { font-size:13px; color:var(--mute); margin-top:4px; }
+/* Hosting and email: not ours, so it sits apart from the options, dashed and with no switch. */
+.opt.run { background:transparent; box-shadow:none; outline:1.5px dashed var(--rule); outline-offset:-1.5px; grid-template-columns:minmax(0,1fr) auto; padding-right:74px; }
+.opt.run .opt-text, .opt.run .opt-price { opacity:1 !important; }
+.opt.run .opt-text small { white-space:normal; }
+@media (max-width:560px) { .opt.run { padding-right:16px; } }
 .total { background:var(--ink); color:var(--paper); border-radius:24px; padding:28px 30px; display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; }
 .t-label { font-size:14px; font-weight:600; color:var(--sage); }
 .t-price { font-family:'Funnel Display', sans-serif; font-size:clamp(56px, 6.4vw, 84px); font-weight:650; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; }
@@ -1149,16 +1154,16 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <label class="opt"><span class="opt-text"><b>Your own apps</b><small>App Store and Google Play</small></span><span class="opt-price" data-item="apps">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Care plan</b><small>From year two. Year one is included</small></span><span class="opt-price" id="carePrice">£40<small> a month</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
+      <div class="opt fixed run"><span class="opt-text"><b>Hosting and email</b><small>Separate from our fees: paid straight to them from your own accounts</small></span><span class="opt-price">about £30<small> a month</small></span></div>
       <p class="opt-foot">Up to 2,000 active clients. Bigger than that? We'll quote.</p>
     </div>
     <div class="total" aria-live="polite">
       <span class="t-label" id="tSetupLabel">To start</span>
       <div class="t-price" id="tSetup">£600</div>
-      <span class="t-note" id="tSetupNote">Then £235 a month for a year, £3,420 in all</span>
+      <span class="t-note" id="tSetupNote">Then £235 a month to us for a year, £3,420 to us in total</span>
       <div class="t-stats">
-        <span><b>£30</b><span>a month for hosting and email, on top of our fees, paid to them, not to us</span></span>
-        <span><b id="tY1">£3,780</b><span id="tY1Label">year one: £3,420 to us, £360 hosting and email, updates and support included</span></span>
-        <span><b id="tLater">£360</b><span id="tLaterLabel">each year after: hosting and email only, nothing to us</span></span>
+        <span><b id="tY1">£3,780</b><span id="tY1Label">year one, all in: £3,420 to us and £360 for hosting and email. Updates and support included.</span></span>
+        <span><b id="tLater">£360</b><span id="tLaterLabel">each year after, all in: hosting and email only, nothing to us</span></span>
       </div>
       <div class="t-go"><button type="button" class="btn btn-seal" id="callOpen" aria-haspopup="dialog">Arrange a call</button><a class="t-demo to-demo" href="demo.html">Or build your demo first</a></div>
     </div>
@@ -1898,13 +1903,13 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     $('tSetupLabel').textContent = c.spread ? 'To start' : 'Once, to set up';
     tween($('tSetup'), c.spread ? c.p.start : c.p.once);
     $('tSetupNote').textContent = (c.spread
-      ? 'Then ' + gbp(c.p.monthly) + ' a month to us for ' + (c.months === 24 ? 'two years' : 'a year') + ', ' + gbp(c.setup) + ' in all'
+      ? 'Then ' + gbp(c.p.monthly) + ' a month to us for ' + (c.months === 24 ? 'two years' : 'a year') + ', ' + gbp(c.setup) + ' to us in total'
       : 'In three parts as we build') + (founding() ? ', with 30% off' : '');
     // Hosting and email are on top of our fees and go to those companies, so the bar says which part is which.
-    const run = RUNNING * 12, after = c.months === 24 ? 'each year after year two' : 'each year after';
-    $('tY1Label').textContent = 'year one: ' + gbp(c.y1 - run) + ' to us, ' + gbp(run) + ' hosting and email, updates and support included';
+    const run = RUNNING * 12, after = (c.months === 24 ? 'each year after year two' : 'each year after') + ', all in';
+    $('tY1Label').textContent = 'year one, all in: ' + gbp(c.y1 - run) + ' to us and ' + gbp(run) + ' for hosting and email. Updates and support included.';
     $('tLaterLabel').textContent = c.care
-      ? after + ': ' + gbp(c.care) + ' care plan to us (' + gbp(c.care / 12) + ' a month), ' + gbp(run) + ' hosting and email'
+      ? after + ': ' + gbp(c.care) + ' care plan to us (' + gbp(c.care / 12) + ' a month) and ' + gbp(run) + ' for hosting and email'
       : after + ': hosting and email only, nothing to us';
     // Each option shows its price for the way they've chosen to pay.
     const mode = picked('pay'), cut = v => Math.round(v * (founding() ? 1 - OFF : 1));
