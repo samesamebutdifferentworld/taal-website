@@ -25,6 +25,10 @@ export default {
     if (home && url.hostname !== home.hostname && (url.hostname === 'www.' + home.hostname || url.hostname.endsWith('.workers.dev')) && !url.pathname.startsWith('/api/')) {
       return Response.redirect(home.origin + url.pathname + url.search, 301);
     }
+    // One address per page, for search engines: old pages and .html addresses move for good.
+    if (/^\/(yoga|pilates)(\.html)?\/?$/.test(url.pathname)) return Response.redirect(url.origin + '/yoga-pilates' + url.search, 301);
+    const page = url.pathname.match(/^\/([a-z-]+)\.html$/);
+    if (page && page[1] !== 'admin') return Response.redirect(url.origin + (page[1] === 'index' ? '/' : '/' + page[1]) + url.search, 301);
     // Partner links: taal.solutions/r/sam -> the home page, with the partner's code in the address.
     const short = url.pathname.match(/^\/r\/([^/]+)\/?$/);
     if (short) {

@@ -1,0 +1,87 @@
+# taal
+
+> taal builds booking software and a branded member app for independent gyms, studios and clubs in the UK. Each studio gets its own system in its own name and accounts: web booking, memberships, payments, a back office for owners and coaches, and its own apps on the App Store and Google Play. Studios pay once to set it up, or spread it over 12 or 24 months, instead of a monthly software subscription. It replaces the likes of Mindbody, Glofox, TeamUp and ClubRight.
+
+taal is run by Tim Allan, who ran yue float, a wellness studio in South West London, for seven years. Website: https://taal.solutions. Email: hello@taal.solutions.
+
+## Who it's for
+
+Independent gyms, wellness studios, yoga and Pilates studios, dance studios, martial arts clubs and climbing walls, with up to about 2,000 active clients. Larger studios get a quote.
+
+## What studios get
+
+- Members book classes, appointments, courses and open gym sessions in an app with the studio's name, logo and colours.
+- Memberships, class packs, credits, peak and off-peak plans and gift cards, paid by card or Direct Debit through the studio's own Stripe account.
+- Waitlists that alert members the moment a space opens, QR code entry at the door, and messages between members and the studio.
+- A back office for owners and a diary for coaches and therapists, with permissions for each.
+- Members, memberships and credits moved across from the studio's current system as part of set-up.
+- Hosting, email and app store accounts in the studio's own name and billing, so the studio owns its system and data. The licence is permanent.
+
+## Prices (UK, including VAT)
+
+| Part | Pay once | Over 12 months | Over 24 months |
+| --- | --- | --- | --- |
+| Booking system (web booking, payments, back office) | £1,900 | £400 then £150 a month | £300 then £90 a month |
+| Your own apps (App Store and Google Play) | £1,000 | £200 then £85 a month | £100 then £50 a month |
+| Studio website with live timetable | £800 | £200 then £65 a month | £200 then £35 a month |
+
+- Paying once is in two parts: half on signing and half at go-live.
+- Set-up includes 12 months of updates and support. From year two an optional care plan costs £30 a month, or £40 a month with the studio's own apps.
+- Hosting and email cost about £30 a month (about £1 a day), paid by the studio straight to those companies, on top of taal's fees. Stripe charges its standard card fees; taal adds nothing.
+- The first three studios get 30% off set-up.
+
+## How it works
+
+1. Build a free demo of your own app at https://taal.solutions/demo in about a minute, with just a first name and email.
+2. Book a call. taal builds the system around your timetable, prices and team, ready for you and your staff to try in about four weeks.
+3. Go live when your current contract ends. Your own apps follow a few weeks later.
+
+## Pages
+
+- [Home and pricing](https://taal.solutions/): what taal is, the pricing builder and questions
+- [Build your demo](https://taal.solutions/demo): a private working demo in your studio's brand
+- [Compare costs](https://taal.solutions/compare): three years of taal against Mindbody, TeamUp, ClubRight and others, from published UK prices
+- [Leaving taal](https://taal.solutions/leaving): what you keep and how to export your data
+- [Gyms](https://taal.solutions/gyms), [Wellness](https://taal.solutions/wellness), [Yoga and Pilates](https://taal.solutions/yoga-pilates), [Dance](https://taal.solutions/dance), [Martial arts](https://taal.solutions/martial-arts), [Climbing](https://taal.solutions/climbing)
+
+## Questions
+
+### What do we pay after setup?
+
+Once setup is paid, only the running costs: about £30 a month for hosting and email, separate from our fees and paid directly to those companies from your own accounts, not to us. That's about £1 a day. If you spread setup over 12 or 24 months, these are on top of those payments. Your system runs on your own accounts so you can see exactly what it costs and nobody adds a mark-up. It covers studios with up to about 2,000 active clients; above that, email costs grow and we quote for your size. There's no monthly fee to us.
+
+### How do we pay for setup?
+
+Pay once, in two parts: half when you sign and half when you go live. Or spread it over 12 months: £400 to start then £150 a month for the booking system (£2,200 in total). Your own apps add £200 then £85 a month, and the website £200 then £65 a month, so all three come to £800 then £300 a month (£4,400). Or over 24 months, to keep cash flow easy: £300 to start then £90 a month for the booking system (£2,460), with apps adding £100 then £50 a month and the website £200 then £35 a month, so all three come to £600 then £175 a month (£4,800). Our first three studios get 30% off setup, in return for a short case study.
+
+### Who sets up the accounts, and who owns the apps?
+
+We set everything up in your studio's name and on your own billing: hosting, email, payments and your Apple and Google developer accounts. The apps are published under your accounts, so they're yours. Apple charges about £79 a year and Google $25 once. Apple asks businesses for a D-U-N-S number, which is free, and we'll help you get one.
+
+### How long until we switch?
+
+You can build a working demo yourself in about a minute, and we build your full system the way you want it, ready for you to try within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.
+
+### Can you change it when our studio changes?
+
+Yes. It's your system, so it changes when you do, not when a supplier gets round to it. Small changes are included for the first 12 months and on the care plan: new class types, prices, wording and how booking works. Bigger features, like a new module or connecting another service, get a fixed quote before we start. And if we ever can't look after it, you get the full source code, so any developer can.
+
+### Can you move us from our current system?
+
+Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.
+
+### How do you look after our members' data?
+
+Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. You can export or delete a member's data when they ask, as UK GDPR requires, and if you ever leave, it all goes with you.
+
+### What happens after the first year?
+
+Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan, paid monthly: £30 a month, or £40 a month with your own apps. Or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.
+
+### What if we want to leave?
+
+Everything runs in accounts in your studio's name and your licence is permanent, so the system keeps running without us. You can export members, bookings and payments from the back office at any time, and we remove our access and hand over everything we hold. If we ever stop trading or can't support you, you get the full source code, so any developer can look after it. What you keep, and how.
+
+### What about card fees?
+
+Stripe charges its standard rates on each payment. We don't add anything on top.

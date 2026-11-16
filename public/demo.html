@@ -11,7 +11,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Build a working demo of your own booking app, in your studio's brand, in about a minute.">
 <meta name="theme-color" content="#F2F3EE">
-<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Cg transform='translate(3.5 3.5) scale(0.7083)'%3E%3Crect x='2.5' y='4' width='3' height='16' rx='1.5' fill='%23E59A8C'/%3E%3Crect x='8.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3Ccircle cx='15.5' cy='12' r='2.1' fill='none' stroke='%23F2F3EE' stroke-width='1.8'/%3E%3Crect x='19.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/funnel-sans.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -282,10 +281,22 @@ footer a { color:var(--mute); }
 .btn:active { transform:scale(.96); box-shadow:none; }
 @media (hover: hover) { .btn:hover { transform:translateY(-2px); box-shadow:0 10px 22px -12px rgb(19 32 30 / .45); } .btn:active { transform:scale(.96); } }
 </style>
+<!--seo-->
+<link rel="canonical" href="https://taal.solutions/demo">
+<meta property="og:url" content="https://taal.solutions/demo">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="taal">
+<meta property="og:locale" content="en_GB">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Build your demo: taal">
+<meta property="og:description" content="Build a working demo of your own booking app, in your studio&#x27;s brand, in about a minute.">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://taal.solutions/demo#page","url":"https://taal.solutions/demo","name":"Build your demo: taal","description":"Build a working demo of your own booking app, in your studio's brand, in about a minute.","inLanguage":"en-GB","isPartOf":{"@id":"https://taal.solutions/#website"},"publisher":{"@id":"https://taal.solutions/#org"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"taal","item":"https://taal.solutions/"},{"@type":"ListItem","position":2,"name":"Build your demo","item":"https://taal.solutions/demo"}]}]}</script>
+<!--/seo-->
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo" href="./" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <a class="logo" href="/" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <div class="links"><a class="haven-link hide-sm" href="#" target="_blank" rel="noopener">Look around Haven</a><a href="./#pricing">Pricing</a></div>
 </div></nav>
 
@@ -425,7 +436,7 @@ footer a { color:var(--mute); }
       <div class="go">
         <button class="btn" type="submit" id="go">Build my demo</button>
         <p class="msg" id="msg" role="status" aria-live="polite"></p>
-        <p class="fine">We'll email you the links. Your demo is private to you and is deleted after 30 days. <a href="privacy.html">Privacy</a></p>
+        <p class="fine">We'll email you the links. Your demo is private to you and is deleted after 30 days. <a href="/privacy">Privacy</a></p>
       </div>
     </fieldset>
   </form>
@@ -454,7 +465,7 @@ footer a { color:var(--mute); }
   </section>
 </main>
 
-<footer><div class="wrap"><span>taal, studio software for independent gyms, studios and clubs, made in London.</span><span class="flinks"><a href="./">Home</a> <a href="privacy.html">Privacy</a></span></div></footer>
+<footer><div class="wrap"><span>taal, studio software for independent gyms, studios and clubs, made in London.</span><span class="flinks"><a href="/">Home</a> <a href="/privacy">Privacy</a></span></div></footer>
 
 <script src="js/qrcode.min.js" defer></script>
 <script>

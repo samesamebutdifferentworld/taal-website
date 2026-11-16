@@ -1,5 +1,5 @@
 /**
- * Studios build their own demo on /demo.html.
+ * Studios build their own demo on /demo.
  *
  * POST /api/build              the builder form (multipart, with an optional logo). Builds the demo in
  *                              the booking app through the BOOKING service binding, saves the studio as
@@ -97,7 +97,7 @@ async function build(request, env, url) {
     gift_cards: lead.gift_cards,
     logo,
     // The demo's own Book a call button, with their details filled in.
-    cta_url: callUrl ? withDetails(callUrl, { name: lead.name, email: lead.email, studio: lead.studio, ref: lead.ref }) : `${base}/demo.html#call`,
+    cta_url: callUrl ? withDetails(callUrl, { name: lead.name, email: lead.email, studio: lead.studio, ref: lead.ref }) : `${base}/demo#call`,
     days: DEMO_DAYS,
     });
   } catch (err) {

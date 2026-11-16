@@ -80,7 +80,7 @@ test('a demo is built, the studio gets its links and you are told', async () => 
 test('without a call link, the demo points back to the call section of the page', async () => {
   env.CALL_URL = '';
   await build();
-  assert.equal(built[0].cta_url, 'https://taal.test/demo.html#call');
+  assert.equal(built[0].cta_url, 'https://taal.test/demo#call');
   assert.match(sent[0].text, /reply to this email/);
 });
 
@@ -137,7 +137,12 @@ test('the old enquiry and brief addresses are gone, and the licence check still 
   assert.equal((await call('/api/enquiry', { method: 'POST' })).status, 404);
   assert.equal((await call('/api/brief', { method: 'POST' })).status, 404);
   assert.equal((await call('/api/licence')).status, 401);
-  assert.equal(await (await call('/demo.html')).text(), 'asset');
+  assert.equal(await (await call('/demo')).text(), 'asset');
+  // Old .html addresses move for good to the clean ones.
+  const moved = await call('/demo.html?type=yoga');
+  assert.equal(moved.status, 301);
+  assert.equal(new URL(moved.headers.get('location')).pathname + new URL(moved.headers.get('location')).search, '/demo?type=yoga');
+  assert.equal(new URL((await call('/pilates.html')).headers.get('location')).pathname, '/yoga-pilates');
 });
 
 test('what they offer goes through to the demo', async () => {

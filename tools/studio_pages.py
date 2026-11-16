@@ -40,6 +40,16 @@ KINDS = [
     ('climbing.html', 'climbing', 'Climbing', 'your climbing wall', 'staff', ('Crux', '#4D5A2C')),
 ]
 
+# Page titles: the words studios search for first, then taal.
+TITLES = {
+    'gyms.html': 'Gym booking software, with your own app: taal',
+    'wellness.html': 'Booking software for wellness studios, with your own app: taal',
+    'yoga-pilates.html': 'Yoga and Pilates studio booking software, with your own app: taal',
+    'dance.html': 'Dance studio booking software, with your own app: taal',
+    'martial-arts.html': 'Martial arts club booking software, with your own app: taal',
+    'climbing.html': 'Climbing wall booking software, with your own app: taal',
+}
+
 # Old addresses that now live on a combined page.
 REDIRECTS = {'yoga.html': 'yoga-pilates.html', 'pilates.html': 'yoga-pilates.html'}
 
@@ -144,7 +154,7 @@ def studio_page(file, key, label, studio, team, brand, plural=None):
     k = T[key]; c = k['copy']
     people = c['people']
     plural = plural or studio.replace('your ', '') + 's'
-    title = f'Booking app for {plural}: taal'
+    title = TITLES.get(file, f'Booking app for {plural}: taal')
     desc = f"Your own booking app for {plural}, in your brand. {c['show1']} Pay once from £1,900, or spread it over 12 or 24 months."
     others = ''.join(f'<a href="{f}"{" aria-current=\"page\"" if f == file else ""}>{l}</a>' for f, _, l, *_ in KINDS)
     folds = '\n'.join([
@@ -199,7 +209,7 @@ def leaving_page():
     folds = '\n'.join([
         fold('export', 'How to export', "You don't need us for this", '<div class="prose"><p>In the back office, open <b>Import &amp; export</b> and download your clients, memberships, bookings, payments for any dates, and a sales journal for Xero, QuickBooks or Sage with VAT split out.</p>\n    <p>They\'re CSV files: they open in Excel, Numbers and Google Sheets, and other booking systems can import them. For the whole database as one file, ask us, or download it from your Cloudflare account.</p></div>'),
         fold('going', 'When you go', 'What we do', '<div class="prose"><ul><li>Remove our access to your accounts, and confirm it in writing.</li><li>Hand over what we hold for you: logins we set up, your brand files, a copy of your data and an up-to-date handover document, so another developer can take over in a day.</li><li>Delete our own copies once you have everything.</li></ul></div>'),
-        fold('care', 'The care plan', 'Stopping it', '<div class="prose"><p>It's paid monthly and runs a year at a time. Tell us 30 days before it renews and it stops; there\'s nothing else to cancel. Your system keeps running without it, but without updates or support. If you have your own apps, Apple and Google ask for regular updates, so you\'d need someone to do those.</p></div>'),
+        fold('care', 'The care plan', 'Stopping it', '<div class="prose"><p>It\'s paid monthly and runs a year at a time. Tell us 30 days before it renews and it stops; there\'s nothing else to cancel. Your system keeps running without it, but without updates or support. If you have your own apps, Apple and Google ask for regular updates, so you\'d need someone to do those.</p></div>'),
     ])
     out = head('Leaving taal: what you keep and how to take it with you',
                "If you stop working with taal, your system, your apps and your data stay yours. Here's what you keep and how to export it.") + nav('leaving.html') + f'''
@@ -243,3 +253,6 @@ if __name__ == '__main__':
         if (PUB / f).exists():
             stamp(f)
     print('built', ', '.join(r[0] for r in KINDS))
+    # Search: clean links, canonical addresses, structured data, sitemap and llms.txt.
+    import seo
+    seo.main()
