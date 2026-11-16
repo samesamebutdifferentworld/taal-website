@@ -54,9 +54,6 @@ body::after { content:''; position:absolute; inset:0; pointer-events:none; z-ind
 .hero-sign .rule { background:var(--seal) !important; opacity:.9 !important; }
 .grid6 > div::before { background:var(--seal) !important; opacity:.7; }
 .reel-tabs .bar i { background:var(--seal) !important; }
-/* the seal: a small cinnabar stamp, used twice */
-.seal { display:inline-grid; place-items:center; width:46px; height:46px; background:var(--seal); color:#F6EDE6; border-radius:5px; font-family:'Funnel Display', sans-serif; font-weight:700; font-size:13px; line-height:.95; letter-spacing:.02em; text-align:center; transform:rotate(-4deg); box-shadow:inset 0 0 0 2px var(--seal), inset 0 0 0 3.5px #F6EDE6; flex-shrink:0; }
-.seal.sm { width:30px; height:30px; font-size:9.5px; border-radius:4px; box-shadow:inset 0 0 0 1.5px var(--seal), inset 0 0 0 2.5px #F6EDE6; }
 /* the beat: taal's three bars, used as a small mark */
 /* hairlines that draw across as they come into view */
 .line-in { transform-origin:left; transform:scaleX(0); transition:transform 1.2s var(--curve); }
@@ -168,14 +165,17 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 .instead span { font-size:14px; color:var(--mute); padding:7px 12px; border-radius:999px; box-shadow:inset 0 0 0 1px #C3CEC5; text-decoration:line-through; text-decoration-color:rgb(168 56 43 / .7); text-decoration-thickness:1.5px; }
 .instead b { display:inline-flex; align-items:center; gap:8px; font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:650; letter-spacing:-0.02em; color:var(--ink); padding:6px 4px; }
 /* their own app, inside "Your brand" in the green band */
-.brand-point .more-line { display:block; margin-top:12px; font-size:15px; line-height:1.5; color:#CFE0D7; max-width:26em; }
 .ping { margin-top:16px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px; align-items:center; padding:12px 14px; border-radius:18px; background:rgb(242 243 238 / .12); color:var(--paper); font-size:13.5px; line-height:1.35; max-width:360px; }
 .ping .ic { width:34px; height:34px; border-radius:9px; background:#F2F3EE; color:var(--green); display:grid; place-items:center; font-family:'Funnel Display', sans-serif; font-weight:700; font-size:17px; }
 .ping b { display:block; font-size:13.5px; }
 .ping div span { color:#DCE8E2; }
 .ping i { font-style:normal; font-size:12px; color:#B9CEC5; align-self:start; }
-.rhythm.seen .ping { animation:noteIn .8s var(--curve) .3s both; }
+.rhythm.seen .ping:nth-of-type(1), .rhythm.seen .ping { animation:noteIn .8s var(--curve) .3s both; }
 @keyframes noteIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
+
+/* Tim's photo, round, beside his name; his initials show until the photo is added as img/tim.jpg */
+.avatar { position:relative; width:58px; height:58px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--green); color:var(--paper); display:grid; place-items:center; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:18px; box-shadow:0 0 0 3px var(--paper); }
+.avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
@@ -299,7 +299,16 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .rhythm h2 { max-width:12ch; }
 .rhythm h2 span { display:block; color:var(--sage); }
 .promises { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px; margin-top:88px; position:relative; z-index:1; }
-.promises > div { border-top:1px solid rgb(169 194 178 / .35); padding-top:18px; }
+.promises > div { border-top:1px solid rgb(169 194 178 / .35); padding-top:18px; display:grid; grid-template-rows:subgrid; grid-row:span 3; align-content:start; }
+.promises { grid-template-rows:auto; row-gap:0; }
+.promises h3 { margin-bottom:8px !important; }
+.promises p { max-width:none !important; }
+.promises .more-line { display:block; margin-top:12px; font-size:15px; line-height:1.5; color:#CFE0D7; max-width:26em; }
+.ping.solo { margin:64px auto 0; width:min(100%, 380px); position:relative; z-index:1; }
+@media (max-width: 960px) { .ping.solo { margin:40px 0 0; } }
+.ping .ic.file { font-size:10px; letter-spacing:.04em; }
+.ping i.zero { font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:650; color:var(--paper); align-self:center; }
+@media (max-width: 960px) { .promises > div { grid-row:auto; grid-template-rows:none; } .promises { row-gap:28px; } }
 .promises h3 { font-size:15px; font-weight:600; letter-spacing:0; color:var(--sage); margin-bottom:8px; font-family:'Funnel Sans', sans-serif; }
 .promises p { font-family:'Funnel Display', sans-serif; font-size:24px; line-height:1.2; letter-spacing:-0.015em; max-width:16ch; }
 
@@ -651,13 +660,17 @@ footer .made { display:flex; align-items:center; gap:12px; }
   <div class="tala-note"><svg class="tala-loop" width="132" height="132" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#A9C2B2" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/></svg><p><b>Teentaal:</b> clap, clap, wave, clap. The red beat is sam, where every cycle comes back to.</p></div>
   <h2>taal means rhythm. <span>Keep your studio in it.</span></h2>
   <div class="promises">
-    <div class="brand-point"><h3>Your brand</h3><p>Your name and colours on every screen, and your own app on your <span data-t="people">members</span>' phones.</p>
+    <div><h3>Your brand</h3><p>Your name and colours, and your own app on their phones.</p>
       <span class="more-line">Booking takes seconds, reminders cut no-shows and alerts bring people back when a space opens.</span>
-      <div class="ping" aria-hidden="true"><span class="ic">H</span><div><b>Haven</b><span>A space opened in Reformer at 18:30. Tap to book.</span></div><i>now</i></div>
     </div>
-    <div><h3>Your data</h3><p>Kept in your own accounts. If you leave, it goes with you.</p></div>
-    <div><h3>No monthly fee</h3><p>Pay once and the system is yours.</p></div>
+    <div><h3>Your data</h3><p>Kept in your own accounts. If you leave, it goes with you.</p>
+      <span class="more-line">Export members, bookings and payments any time. Nothing sits in a database shared with other studios.</span>
+    </div>
+    <div><h3>No monthly fee</h3><p>Pay once and the system is yours, for good.</p>
+      <span class="more-line">Hosting and email are paid straight to those companies. The care plan after year one is optional.</span>
+    </div>
   </div>
+  <div class="ping solo" aria-hidden="true"><span class="ic">H</span><div><b>Haven</b><span>A space opened in Reformer at 18:30. Tap to book.</span></div><i>now</i></div>
 </div>
 </section>
 
@@ -741,7 +754,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 <section class="founder" data-beat="2"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
   <figure style="margin:0">
     <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
-    <figcaption><span class="seal" aria-hidden="true">TA</span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
+    <figcaption><span class="avatar"><img src="img/tim.jpg" alt="Tim Allan" width="112" height="112" onerror="this.remove()"><span aria-hidden="true">TA</span></span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
   </figure>
   <div class="aim">
     <h2>For independent studios, not chains.</h2>
@@ -854,7 +867,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 
 <footer><div class="wrap">
   <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
-  <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software made in London for independent gyms and wellness studios.</p>
+  <p class="made">Studio software made in London for independent gyms and wellness studios.</p>
   <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
