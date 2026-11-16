@@ -68,13 +68,16 @@
 .chart.on .tip { opacity:1; }
 .tip b { font-weight:600; }
 .yrs { margin-top:18px; font-size:14px; }
-.yrs summary { cursor:pointer; color:var(--green); font-weight:600; }
+.yrs summary { cursor:pointer; color:var(--green); font-weight:600; list-style:none; display:inline-flex; gap:10px; align-items:baseline; }
+.yrs summary::-webkit-details-marker { display:none; }
+.yrs summary::after { content:'+'; color:var(--seal); font-weight:500; }
+.yrs[open] summary::after { content:'\2212'; }
 .yrs table { width:100%; border-collapse:collapse; margin-top:10px; font-variant-numeric:tabular-nums; }
 .yrs th, .yrs td { text-align:right; padding:8px 0; border-bottom:1px solid var(--rule); }
 .yrs th:first-child, .yrs td:first-child { text-align:left; }
 .yrs th { color:var(--mute); font-weight:500; }
 
-.prices { width:100%; border-collapse:collapse; margin-top:40px; font-size:15.5px; }
+.prices { width:100%; border-collapse:collapse; margin-top:28px; font-size:15.5px; }
 .prices th, .prices td { text-align:left; vertical-align:top; padding:16px 18px 16px 0; border-bottom:1px solid var(--rule); }
 .prices thead th { color:var(--mute); font-weight:500; font-size:14px; border-bottom:2px solid var(--ink); }
 .prices td:first-child { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:18px; white-space:nowrap; }
@@ -93,18 +96,21 @@
 </head>
 <body>
 <!--nav--><nav><div class="wrap">
-  <a class="logo" href="index.html" aria-label="taal home"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <a class="logo" href="index.html" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <ul><li><a href="compare.html" aria-current="page">Compare costs</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="leaving.html">Leaving taal</a></li></ul>
   <a class="btn btn-seal" href="demo.html">Build your demo</a>
 </div></nav><!--/nav-->
 
 <header class="head"><div class="wrap">
-  <h1>Three years, <span class="tone">side by side.</span></h1>
-  <p class="lede">What you likely pay for booking software now, against taal, from each company's published prices. Where taal costs more, this page says so. And unlike software everyone shares, taal is built around your studio.</p>
+  <div>
+    <h1><span>Three years,</span><span class="tone">side by side.</span></h1>
+    <p class="lede">What you pay now against taal, from published prices. Where taal costs more, it says so.</p>
+  </div>
+  <div class="art" aria-hidden="true"><svg class="tala-loop" viewBox="0 0 24 24"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.4"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg></div>
 </div></header>
 
 <section class="band" id="calc"><div class="wrap">
-  <h2>Your three years</h2>
+  <h2 class="sr">Your three years</h2>
   <div class="cmp">
     <div class="ctl">
       <div>
@@ -152,23 +158,24 @@
       </details>
     </div>
   </div>
-  <p class="note" style="margin-top:36px">taal's side counts setup paid at the start, about £30 a month for hosting and email, and, with apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20). Card fees and SMS aren't counted on either side. Most studios also pay for tools taal replaces, so add those for the full picture.</p>
+
 </div></section>
 
-<section class="band"><div class="wrap">
-  <h2>Built around your studio, not the other way round</h2>
-  <p class="sub">Monthly software gives every studio the same system and asks you to fit in with it. With taal, setup means we build it to work the way you already do, then you try it before you go live.</p>
+<div class="folds"><div class="wrap">
+<details class="fold" id="built"><summary><h2>Built around your studio</h2><small>Your rules, memberships, team and voice</small></summary>
+  <div class="in">
+  <p class="sub" style="margin:0 0 36px">Monthly software gives every studio the same system and asks you to fit in with it. With taal, setup means we build it to work the way you already do, then you try it before you go live.</p>
   <div class="cols four">
     <div><h3>Your booking rules</h3><p>Cancellation windows, waitlists, off-peak times, intro offers and credits, set the way you run them now.</p></div>
     <div><h3>Your memberships</h3><p>Whatever mix of memberships, packs, add-ons and passes you sell, built as you sell them.</p></div>
     <div><h3>Your team's way of working</h3><p>Rotas, cover, pay splits and who sees what, matched to how your team actually works.</p></div>
     <div><h3>Your name and voice</h3><p>Your logo, colours, fonts, wording and emails, on the web and in your own app.</p></div>
   </div>
-</div></section>
-
-<section class="band"><div class="wrap">
-  <h2>Published prices</h2>
-  <p class="sub">Checked 16 November 2026. Prices change, so check your own invoice. Where a company doesn't publish a price, we say so rather than guess.</p>
+  </div>
+</details>
+<details class="fold" id="prices"><summary><h2>Published prices</h2><small>Checked 16 November 2026</small></summary>
+  <div class="in">
+  <p class="sub" style="margin:0">Checked 16 November 2026. Prices change, so check your own invoice. Where a company doesn't publish a price, we say so rather than guess.</p>
   <table class="prices">
     <thead><tr><th>Software</th><th>Each month</th><th>Your own branded app</th><th>Where from</th></tr></thead>
     <tbody>
@@ -181,30 +188,44 @@
       <tr class="us"><td>taal</td><td data-h="Each month">Nothing to us. About £30 to hosting and email, from your own accounts<small>£1,900 once for the booking system, £2,900 with your own apps, built around how your studio works. Prices include VAT.</small></td><td data-h="Branded app">+£1,000 once, under your own developer accounts</td><td data-h="From"><a href="index.html#pricing">Our pricing</a></td></tr>
     </tbody>
   </table>
-</div></section>
-
-<section class="band"><div class="wrap">
-  <h2>Where staying might suit you better</h2>
+  </div>
+</details>
+<details class="fold" id="honest"><summary><h2>When staying might suit you</h2><small>The honest case</small></summary>
+  <div class="in">
   <div class="cols two">
     <div><h3>Nothing up front</h3><p>Monthly software has no setup fee, so year one costs less. With taal you pay for setup before you see a saving, which usually comes in year two.</p></div>
     <div><h3>Leave any month</h3><p>Most are month to month. taal's setup is paid whether you use it for one year or ten, though it keeps running if you stop working with us.</p></div>
     <div><h3>Finding new clients</h3><p>Mindbody's consumer app can bring you people who've never heard of you. taal doesn't list you anywhere. It's your own app, for the people who already know you.</p></div>
     <div><h3>A bigger company</h3><p>The larger platforms have big support teams, a long track record and many integrations. taal is a small London business.</p></div>
   </div>
-</div></section>
+  </div>
+</details>
+<details class="fold" id="method"><summary><h2>How it's worked out</h2><small>What each side counts</small></summary>
+  <div class="in">
+    <div class="prose"><p>taal's side counts setup paid at the start, about £30 a month for hosting and email, the care plan if you switch it on, and with your own apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20).</p>
+    <p>Your side counts what you enter, plus VAT if you say their prices are before VAT. Card fees and SMS aren't counted on either side, as they're similar either way.</p></div>
+  </div>
+</details>
+</div></div>
 
-<section class="close"><div class="wrap">
-  <h2>See your studio in it first.</h2>
-  <p>A working version of your app, with your name and colours. It takes about a minute and stays live for 30 days.</p>
-  <div class="go"><a class="btn btn-seal" href="demo.html">Try your free demo</a><a href="leaving.html">What you keep if you leave</a></div>
-</div></section>
+<section class="coda">
+  <div class="giant" aria-hidden="true"><span class="g-sam"></span><span>taal</span></div>
+  <div class="wrap">
+    <h2>See your studio in it first.</h2>
+    <div class="cta"><p>A working version of your app, with your name and colours. Ready in about a minute.</p><a class="btn btn-seal" href="demo.html">Try your free demo</a><a href="leaving.html">What you keep if you leave</a></div>
+  </div>
+</section>
 
 <!--foot--><footer><div class="wrap">
-  <a class="logo" href="index.html" aria-label="taal home"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <a class="logo" href="index.html" aria-label="taal home"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <p>Studio software made in London for independent gyms and wellness studios.</p>
   <div class="links"><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="compare.html" aria-current="page">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a class="mail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
-<script>(function () { const EMAIL = 'EMAIL'; if (!EMAIL.includes('@')) return; document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; }); })();</script><!--/foot-->
+<script>(function () { const EMAIL = 'EMAIL'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { threshold: .35 });
+  document.querySelectorAll('.coda, .line-in').forEach(el => io.observe(el));
+  if (location.hash) { const d = document.querySelector(location.hash); if (d && d.tagName === 'DETAILS') d.open = true; }
+})();</script><!--/foot-->
 
 <script>
 (function () {

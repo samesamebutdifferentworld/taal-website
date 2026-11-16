@@ -203,7 +203,7 @@ summary:active { opacity:.7; }
   .grid6 > div:hover h3 svg { color:var(--seal); }
   .grid6 > div:hover::before { opacity:1; height:10px; top:-5px; }
   .faq-list summary:hover, .faq-all > summary:hover h2, .incl summary:hover { color:var(--green); }
-  details summary:hover::after { transform:rotate(90deg); }
+  details:not([open]) > summary:hover::after { transform:rotate(90deg); }
   .haven-link:hover { text-decoration-thickness:2px; }
   nav ul a { position:relative; }
   nav ul a::after { content:''; position:absolute; left:0; right:0; bottom:-4px; height:1.5px; background:var(--seal); transform:scaleX(0); transform-origin:left; transition:transform .35s var(--curve); }

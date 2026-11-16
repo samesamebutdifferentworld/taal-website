@@ -2,66 +2,70 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Privacy: taal</title>
 <meta name="robots" content="noindex">
-<style>
-@font-face { font-family:'Funnel Display'; src:url('fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
-@font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
-body { margin:0; background:#F2F3EE; color:#13201E; font-family:'Funnel Sans', system-ui, sans-serif; font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; }
-main { max-width:680px; margin:0 auto; padding:48px 24px 96px; }
-a { color:#0F5C57; text-underline-offset:3px; }
-.logo { display:inline-flex; align-items:center; gap:6px; color:#13201E; text-decoration:none; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:22px; letter-spacing:-0.03em; }
-h1, h2 { font-family:'Funnel Display', sans-serif; font-weight:650; }
-h1 { font-size:clamp(44px, 9vw, 64px); line-height:.95; letter-spacing:-0.04em; margin:56px 0 20px; }
-h2 { font-size:21px; letter-spacing:-0.02em; margin:40px 0 8px; padding-top:18px; border-top:1px solid #D3DAD3; }
-p, li { color:#33403D; }
-ul { padding-left:20px; }
-li { margin:4px 0; }
-.lede { font-size:19px; color:#55625F; }
-.gap { background:#F9E7E3; color:#8A2E22; padding:0 4px; border-radius:3px; }
-.small { font-size:14px; color:#55625F; margin-top:48px; }
-</style>
+<meta name="theme-color" content="#F2F3EE">
+<link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="page.css">
+<style>.gap { background:#F9E7E3; color:#8A2E22; padding:0 4px; border-radius:3px; }</style>
 </head>
 <body>
-<main>
-  <a class="logo" href="index.html" aria-label="Back to taal"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
-  <h1>Privacy</h1>
-  <p class="lede">What this website and the demo builder collect, why, and what you can ask us to do with it. Studios using taal have their own privacy notice for their members.</p>
+<!--nav--><nav><div class="wrap">
+  <a class="logo" href="index.html" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <ul><li><a href="compare.html">Compare costs</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="leaving.html">Leaving taal</a></li></ul>
+  <a class="btn btn-seal" href="demo.html">Build your demo</a>
+</div></nav><!--/nav-->
 
-  <h2>Who we are</h2>
-  <p>taal is run by Tim Allan, trading as <span class="gap">[trading name]</span>, <span class="gap">[address]</span>. We are responsible for the personal data described here. You can reach us at <a class="mail" href="mailto:EMAIL">EMAIL</a>.</p>
+<header class="head"><div class="wrap">
+  <div>
+    <h1><span>Privacy.</span><span class="tone">Kept simple.</span></h1>
+    <p class="lede">What this website and the demo builder collect, why, and what you can ask us to do with it. Studios using taal have their own notice for their members.</p>
+  </div>
+</div></header>
 
-  <h2>Browsing this site</h2>
-  <p>We don't use cookies, analytics or tracking. Our fonts are served from this site, so your visit isn't shared with Google or anyone else. If you pick a kind of studio on the sample app, your browser remembers that choice on your own device so the page opens the same way next time. It isn't sent to us.</p>
-
-  <h2>If you build a demo</h2>
-  <p>To make your demo we need your email address. You can also give us your name and studio name, and choose a type of studio, colours, fonts, class names and a logo. We use these to build your demo, email you the links and follow up about it. We don't add you to a mailing list or sell or share your details.</p>
-  <p>The legal basis is that you asked us to do this before possibly becoming a client, and our legitimate interest in following up about a demo you asked for. You can tell us to stop at any time.</p>
-
-  <h2>How long we keep it</h2>
-  <ul>
+<div class="folds"><div class="wrap">
+<details class="fold" id="who"><summary><h2>Who we are</h2><small>Tim Allan, and how to reach us</small></summary>
+  <div class="in"><div class="prose"><p>taal is run by Tim Allan, trading as <span class="gap">[trading name]</span>, <span class="gap">[address]</span>. We are responsible for the personal data described here. You can reach us at <a class="mail" href="mailto:EMAIL">EMAIL</a>.</p></div></div>
+</details>
+<details class="fold" id="browsing"><summary><h2>Browsing this site</h2><small>No cookies, analytics or tracking</small></summary>
+  <div class="in"><div class="prose"><p>We don't use cookies, analytics or tracking. Our fonts are served from this site, so your visit isn't shared with Google or anyone else. If you pick a kind of studio on the sample app, your browser remembers that choice on your own device so the page opens the same way next time. It isn't sent to us.</p></div></div>
+</details>
+<details class="fold" id="demo"><summary><h2>If you build a demo</h2><small>What we use and why</small></summary>
+  <div class="in"><div class="prose"><p>To make your demo we need your email address. You can also give us your name and studio name, and choose a type of studio, colours, fonts, class names and a logo. We use these to build your demo, email you the links and follow up about it. We don't add you to a mailing list or sell or share your details.</p>
+  <p>The legal basis is that you asked us to do this before possibly becoming a client, and our legitimate interest in following up about a demo you asked for. You can tell us to stop at any time.</p></div></div>
+</details>
+<details class="fold" id="keep"><summary><h2>How long we keep it</h2><small>30 days for demos, a year for details</small></summary>
+  <div class="in"><div class="prose"><ul>
     <li>Your demo, including any logo you uploaded, is deleted after 30 days.</li>
     <li>Your contact details are deleted after a year, unless you become a client.</li>
-  </ul>
-
-  <h2>Services we use</h2>
-  <p>These companies process data for us, only to run the site and send emails:</p>
+  </ul></div></div>
+</details>
+<details class="fold" id="services"><summary><h2>Services we use</h2><small>Cloudflare and Resend</small></summary>
+  <div class="in"><div class="prose"><p>These companies process data for us, only to run the site and send emails:</p>
   <ul>
     <li><b>Cloudflare</b> hosts this site, the demo builder and the demos. It processes technical data such as IP addresses to deliver pages and protect against attacks.</li>
     <li><b>Resend</b> sends the emails with your demo links.</li>
   </ul>
-  <p>Both are US companies, so your data may be processed outside the UK. Where it is, it's protected by the safeguards UK law requires, such as the UK's data bridge with the US or approved contract terms.</p>
+  <p>Both are US companies, so your data may be processed outside the UK. Where it is, it's protected by the safeguards UK law requires, such as the UK's data bridge with the US or approved contract terms.</p></div></div>
+</details>
+<details class="fold" id="rights"><summary><h2>Your rights</h2><small>Copies, corrections and deletion</small></summary>
+  <div class="in"><div class="prose"><p>You can ask us for a copy of what we hold about you, or ask us to correct it, delete it, stop using it or send it to you in a usable format. Email <a class="mail" href="mailto:EMAIL">EMAIL</a> and we'll reply within a month.</p>
+  <p>If you're unhappy with how we handle your data, please tell us first. You can also complain to the Information Commissioner's Office at <a href="https://ico.org.uk">ico.org.uk</a>.</p></div></div>
+</details>
+</div></div>
 
-  <h2>Your rights</h2>
-  <p>You can ask us for a copy of what we hold about you, or ask us to correct it, delete it, stop using it or send it to you in a usable format. Email <a class="mail" href="mailto:EMAIL">EMAIL</a> and we'll reply within a month.</p>
-  <p>If you're unhappy with how we handle your data, please tell us first. You can also complain to the Information Commissioner's Office at <a href="https://ico.org.uk">ico.org.uk</a>.</p>
+<section class="band" style="border-top:0"><div class="wrap"><p class="note">Last updated November 2026.</p></div></section>
 
-  <p class="small">Last updated November 2026.</p>
-</main>
-<script>
-// Fills in the contact address once it's set on the home page.
-(function () { const EMAIL = 'EMAIL'; if (!EMAIL.includes('@')) return; document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; a.textContent = EMAIL; }); })();
-</script>
+<!--foot--><footer><div class="wrap">
+  <a class="logo" href="index.html" aria-label="taal home"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <p>Studio software made in London for independent gyms and wellness studios.</p>
+  <div class="links"><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html" aria-current="page">Privacy</a><a class="mail" href="mailto:EMAIL">Contact</a></div>
+</div></footer>
+<script>(function () { const EMAIL = 'EMAIL'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { threshold: .35 });
+  document.querySelectorAll('.coda, .line-in').forEach(el => io.observe(el));
+  if (location.hash) { const d = document.querySelector(location.hash); if (d && d.tagName === 'DETAILS') d.open = true; }
+})();</script><!--/foot-->
 </body>
 </html>
