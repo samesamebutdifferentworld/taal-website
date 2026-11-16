@@ -58,18 +58,10 @@ body::after { content:''; position:absolute; inset:0; pointer-events:none; z-ind
 .seal { display:inline-grid; place-items:center; width:46px; height:46px; background:var(--seal); color:#F6EDE6; border-radius:5px; font-family:'Funnel Display', sans-serif; font-weight:700; font-size:13px; line-height:.95; letter-spacing:.02em; text-align:center; transform:rotate(-4deg); box-shadow:inset 0 0 0 2px var(--seal), inset 0 0 0 3.5px #F6EDE6; flex-shrink:0; }
 .seal.sm { width:30px; height:30px; font-size:9.5px; border-radius:4px; box-shadow:inset 0 0 0 1.5px var(--seal), inset 0 0 0 2.5px #F6EDE6; }
 /* the beat: taal's three bars, used as a small mark */
-/* ensō: one brush circle, drawn once */
-.enso { position:absolute; pointer-events:none; overflow:visible; }
-.enso { filter:url(#ink); }
-.enso path { fill:none; stroke-linecap:round; stroke-dasharray:1000; stroke-dashoffset:1000; }
-.enso .e2 { stroke-width:calc(var(--w, 8px) * .35) !important; opacity:calc(var(--o, .14) * .8) !important; }
-.enso.drawn .e2 { animation-delay:.25s; animation-duration:2.6s; }
-.enso.drawn path { animation:draw 2.4s var(--curve) forwards; }
-@keyframes draw { to { stroke-dashoffset:0; } }
 /* hairlines that draw across as they come into view */
 .line-in { transform-origin:left; transform:scaleX(0); transition:transform 1.2s var(--curve); }
 .line-in.seen { transform:none; }
-@media (prefers-reduced-motion: reduce) { .enso path { stroke-dashoffset:0; } .line-in { transform:none; } }
+@media (prefers-reduced-motion: reduce) { .line-in { transform:none; } }
 
 /* the tāla mark: teentaal's four sections, X 2 0 3. Sam (red) is the first beat; the ring is the wave (khali).
    It plays once when the page opens, again on hover, and loops slowly where it is the subject. */
@@ -267,8 +259,6 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .hero .lede { font-size:18px; max-width:25em; margin:32px 0 0; color:var(--mute); }
 .ctas { display:flex; gap:12px; flex-wrap:wrap; }
 .try { display:grid; justify-items:center; gap:22px; position:relative; }
-.hero .enso { width:min(560px, 140%); left:50%; top:-28px; transform:translateX(-50%); z-index:-1; }
-.hero .enso path { stroke:var(--green); stroke-width:6; opacity:.2; --w:6px; --o:.2; }
 .hero .wrap { position:relative; isolation:isolate; }
 .hero-go { display:flex; align-items:center; gap:18px; margin-top:32px; flex-wrap:wrap; }
 .hero-go .btn { font-size:17px; padding:16px 28px; }
@@ -389,8 +379,6 @@ nav .btn { padding:10px 18px; font-size:15px; }
 @keyframes fill { to { transform:scaleX(1); } }
 .reel-tabs button:focus-visible { outline:2px solid var(--green); outline-offset:4px; border-radius:6px; }
 .reel-stage { background:var(--stone); border-radius:36px; aspect-ratio:1 / 1.02; display:grid; place-items:center; overflow:hidden; position:relative; touch-action:pan-y; }
-.reel-stage .enso { width:88%; left:6%; top:50%; transform:translateY(-50%) rotate(var(--rot, 0deg)); transition:transform 1.4s var(--curve); }
-.reel-stage .enso path { stroke:var(--green); stroke-width:5; opacity:.22; --w:5px; --o:.22; }
 .reel-phone { position:relative; height:86%; max-height:600px; aspect-ratio:520 / 1125; border:9px solid var(--ink); border-radius:44px; overflow:hidden; background:var(--ink); box-shadow:0 40px 70px -28px rgba(19,32,30,.45); }
 .reel-phone img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:translateX(18%) scale(1.04); transition:opacity .6s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 .reel-phone img.on { opacity:1; transform:none; }
@@ -468,9 +456,6 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .seg input:focus-visible + span { outline:2px solid var(--green); outline-offset:2px; }
 .opt-foot { font-size:13px; color:var(--mute); margin-top:4px; }
 .total { background:var(--ink); color:var(--paper); border-radius:24px; padding:28px 30px; display:flex; flex-direction:column; gap:6px; position:relative; overflow:hidden; }
-.total .enso { width:340px; right:-120px; top:-110px; }
-.total .enso path { stroke:var(--sage); stroke-width:5; opacity:.22; --w:5px; --o:.22; }
-.total > *:not(.enso) { position:relative; }
 .t-label { font-size:14px; font-weight:600; color:var(--sage); }
 .t-price { font-family:'Funnel Display', sans-serif; font-size:clamp(56px, 6.4vw, 84px); font-weight:650; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; }
 .t-note { font-size:14px; color:#B9C7C1; min-height:1.5em; }
@@ -549,9 +534,6 @@ details p { margin-top:12px; color:var(--mute); max-width:38em; }
 
 /* demo */
 .demo { background:var(--green); color:var(--paper); padding:130px 0; position:relative; overflow:hidden; }
-.demo .enso { width:560px; right:-250px; top:-200px; }
-@media (max-width: 960px) { .demo .enso { width:380px; right:-200px; top:-150px; } .hero .enso { width:130%; top:-16px; } }
-.demo .enso path { stroke:var(--sage); stroke-width:7; opacity:.26; --w:7px; --o:.26; }
 .demo .wrap { position:relative; }
 .demo .wrap { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:56px; align-items:end; }
 .demo h2 { max-width:9ch; }
@@ -629,7 +611,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="ink" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter></svg>
 
 <nav><div class="wrap">
   <a class="logo" href="#top" aria-label="taal home">
@@ -659,7 +640,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 
   <div class="try">
-    <svg class="enso" id="heroEnso" viewBox="0 0 200 200" aria-hidden="true"><path class="e1" pathLength="1000" d="M150 38 C 118 14, 62 16, 36 52 C 12 86, 20 140, 60 166 C 100 190, 158 176, 178 132 C 192 100, 186 70, 166 50"/><path class="e2" pathLength="1000" d="M146 33 C 112 12, 60 18, 34 56 C 14 90, 24 138, 62 162 C 98 184, 152 172, 172 130 C 184 104, 182 80, 170 60"/></svg>
     <div class="phone" aria-label="Sample app home screen, shown in the brand you choose">
       <div class="app" id="app">
         <div class="app-top">
@@ -927,7 +907,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
 
 <section class="demo" id="demo" data-beat="4">
   <div class="giant" aria-hidden="true"><span class="g-sam"></span><span>taal</span></div>
-  <svg class="enso" viewBox="0 0 200 200" aria-hidden="true"><path class="e1" pathLength="1000" d="M150 38 C 118 14, 62 16, 36 52 C 12 86, 20 140, 60 166 C 100 190, 158 176, 178 132 C 192 100, 186 70, 166 50"/><path class="e2" pathLength="1000" d="M146 33 C 112 12, 60 18, 34 56 C 14 90, 24 138, 62 162 C 98 184, 152 172, 172 130 C 184 104, 182 80, 170 60"/></svg>
   <div class="wrap">
   <h2>See your studio in it first.</h2>
   <div class="demo-cta">
@@ -1126,7 +1105,6 @@ const CONTACT_EMAIL = 'EMAIL';
     tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i); t.tabIndex = k === i ? 0 : -1; const bar = t.querySelector('.bar i'); bar.style.animation = 'none'; bar.offsetWidth; bar.style.animation = ''; });
     imgs.forEach((im, k) => { im.classList.toggle('on', k === i); im.classList.toggle('past', k < i); });
     shuffle();
-    stage.style.setProperty('--rot', (i * 50) + 'deg');
     if (user) reel.classList.remove('auto-off');
   }
   // On a phone the screen and the captions stack, so the caption being shown moves up to sit right under the screen.
@@ -1203,10 +1181,10 @@ const CONTACT_EMAIL = 'EMAIL';
   new IntersectionObserver(([e], o) => { if (e.isIntersecting) { why.classList.add('seen'); o.disconnect(); } }, { threshold: .35 }).observe(why);
 })();
 
-/* the ensō circles draw once each as they come into view, and hairlines draw across */
+/* hairlines draw across as they come into view */
 (function () {
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add(e.target.classList.contains('enso') ? 'drawn' : 'seen'); io.unobserve(e.target); } }), { threshold: .3 });
-  document.querySelectorAll('.enso, .line-in').forEach(el => io.observe(el));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { threshold: .3 });
+  document.querySelectorAll('.line-in').forEach(el => io.observe(el));
 })();
 
 /* feature tabs */
