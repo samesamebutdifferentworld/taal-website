@@ -257,6 +257,7 @@ section.features .grid6 .plain h3::before { background:var(--sage); }
 .promises > div::before { content:''; position:absolute; left:0; top:-7px; width:3px; height:14px; border-radius:2px; background:var(--paper); opacity:.85; transform-origin:center; }
 .promises > div:nth-child(1)::before { background:#E59A8C; opacity:1; }
 .promises > div:nth-child(3)::before { width:9px; height:9px; top:-5px; border-radius:50%; background:none; box-shadow:inset 0 0 0 1.6px var(--paper); }
+@keyframes keyBeat { 0%,100% { color:#E4EBE6; } 8% { color:#FFFFFF; } 30% { color:#E4EBE6; } }
 @keyframes pingBeat { 0%,100% { background:rgb(242 243 238 / .12); } 6% { background:rgb(242 243 238 / .22); } 18% { background:rgb(242 243 238 / .12); } }
 /* One place for it all: the old tools are struck through one by one, then the mark plays */
 .features .instead span { position:relative; text-decoration:none; }
@@ -266,10 +267,29 @@ section.features .grid6 .plain h3::before { background:var(--sage); }
   .rhythm:not(.seen) .tala-loop * { animation:none; }
   .rhythm h2 > span { opacity:0; transform:translateY(.3em); transition:opacity .9s var(--curve) .25s, transform .9s var(--curve) .25s; }
   .rhythm.seen h2 > span { opacity:1; transform:none; }
-  .rhythm .promises > div { opacity:0; transform:translateY(18px); transition:opacity .8s var(--curve), transform .8s var(--curve); }
-  .rhythm.seen .promises > div { opacity:1; transform:none; }
-  .rhythm.seen .promises > div:nth-child(2) { transition-delay:.15s; }
-  .rhythm.seen .promises > div:nth-child(3) { transition-delay:.3s; }
+  /* each promise in turn: its rule draws across, the big line rises into place, then the rest fades in */
+  .rhythm .promises > div::after { transform:scaleX(0); transition:transform 1.1s var(--curve); }
+  .rhythm .promises > div::before { opacity:0; transition:opacity .4s; }
+  .rhythm .promises .key span { transform:translateY(110%); transition:transform 1s var(--curve); }
+  .rhythm .promises h3, .rhythm .promises .sub { opacity:0; transform:translateY(8px); transition:opacity .8s var(--curve), transform .8s var(--curve); }
+  .rhythm.seen .promises > div::after, .rhythm.seen .promises .key span, .rhythm.seen .promises h3, .rhythm.seen .promises .sub { transform:none; opacity:1; }
+  .rhythm.seen .promises > div::before { opacity:1; }
+  .rhythm.seen .promises > div:nth-child(1)::after { transition-delay:.1s; }
+  .rhythm.seen .promises > div:nth-child(2)::after { transition-delay:.3s; }
+  .rhythm.seen .promises > div:nth-child(3)::after { transition-delay:.5s; }
+  .rhythm.seen .promises > div:nth-child(1) h3 { transition-delay:.3s; }
+  .rhythm.seen .promises > div:nth-child(2) h3 { transition-delay:.5s; }
+  .rhythm.seen .promises > div:nth-child(3) h3 { transition-delay:.7s; }
+  .rhythm.seen .promises > div:nth-child(1) .key span { transition-delay:.4s; }
+  .rhythm.seen .promises > div:nth-child(2) .key span { transition-delay:.6s; }
+  .rhythm.seen .promises > div:nth-child(3) .key span { transition-delay:.8s; }
+  .rhythm.seen .promises > div:nth-child(1) .sub { transition-delay:.7s; }
+  .rhythm.seen .promises > div:nth-child(2) .sub { transition-delay:.9s; }
+  .rhythm.seen .promises > div:nth-child(3) .sub { transition-delay:1.1s; }
+  /* the big line glows a touch on its own beat */
+  .rhythm.seen .promises .key { animation:keyBeat 3.2s ease-out 2s infinite; }
+  .rhythm.seen .promises > div:nth-child(2) .key { animation-delay:2.8s; }
+  .rhythm.seen .promises > div:nth-child(3) .key { animation-delay:3.6s; }
   .rhythm.seen .promises > div:nth-child(1)::before { animation:lSam 3.2s ease-out infinite; }
   .rhythm.seen .promises > div:nth-child(2)::before { animation:lClap 3.2s ease-out .8s infinite; }
   .rhythm.seen .promises > div:nth-child(3)::before { animation:lWave 3.2s ease-out 1.6s infinite; }
@@ -436,18 +456,22 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .rhythm h2 { max-width:12ch; }
 .rhythm h2 span { display:block; color:var(--sage); }
 .promises { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:40px; margin-top:88px; position:relative; z-index:1; }
-.promises > div { border-top:1px solid rgb(169 194 178 / .35); padding-top:18px; display:grid; grid-template-rows:subgrid; grid-row:span 3; align-content:start; }
+.promises > div { padding-top:22px; display:grid; grid-template-rows:subgrid; grid-row:span 3; align-content:start; }
+/* the rule each promise sits under, drawn across as the band comes into view */
+.promises > div::after { content:''; position:absolute; left:0; right:0; top:0; height:1px; background:rgb(169 194 178 / .35); transform-origin:left; }
 .promises { grid-template-rows:auto; row-gap:0; }
-.promises h3 { margin-bottom:8px !important; }
+.promises h3 { margin-bottom:0 !important; }
 .promises p { max-width:none !important; }
-.promises .more-line { display:block; margin-top:12px; font-size:15px; line-height:1.5; color:#CFE0D7; max-width:26em; }
+.promises .key { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:clamp(40px, 3.4vw, 54px); line-height:1; letter-spacing:-0.045em; color:#E4EBE6; white-space:nowrap; margin:14px 0 18px; overflow:hidden; padding-bottom:.1em; }
+.promises .key span { display:inline-block; }
+@media (max-width: 960px) { .promises .key { font-size:clamp(40px, 12.5vw, 54px); } }
+.promises .sub { font-size:16px; line-height:1.55; color:#CFE0D7; max-width:30em !important; }
 .ping.solo { margin:64px auto 0; width:min(100%, 380px); position:relative; z-index:1; }
 @media (max-width: 960px) { .ping.solo { margin:40px 0 0; } }
 .ping .ic.file { font-size:10px; letter-spacing:.04em; }
 .ping i.zero { font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:650; color:var(--paper); align-self:center; }
 @media (max-width: 960px) { .promises > div { grid-row:auto; grid-template-rows:none; } .promises { row-gap:28px; } }
-.promises h3 { font-size:15px; font-weight:600; letter-spacing:0; color:var(--sage); margin-bottom:8px; font-family:'Funnel Sans', sans-serif; }
-.promises p { font-family:'Funnel Display', sans-serif; font-size:24px; line-height:1.2; letter-spacing:-0.015em; max-width:16ch; }
+.promises h3 { font-size:15px; font-weight:600; letter-spacing:0; color:var(--sage); font-family:'Funnel Sans', sans-serif; }
 
 /* showcase reel: one phone, three screens, captions that double as tabs */
 .show { padding:120px 0; }
@@ -711,7 +735,6 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   .hero h1 { font-size:clamp(40px, 12vw, 52px); }
   .rhythm { padding:88px 0 120px; }
   .promises { margin-top:56px; }
-  .promises p { font-size:22px; }
   .show, .features, .pricing { padding:88px 0; }
   .how, .faq { padding:56px 0; }
   .founder { padding:96px 0; }
@@ -841,14 +864,14 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   <div class="tala-note"><svg class="tala-loop" width="132" height="132" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#A9C2B2" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/></svg><p><b>Teentaal:</b> clap, clap, wave, clap. The red beat is sam, where every cycle comes back to.</p></div>
   <h2>taal means rhythm. <span>Keep your studio in sync.</span></h2>
   <div class="promises">
-    <div><h3>Your brand</h3><p>Your name and colours, and your own app on their phones.</p>
-      <span class="more-line">Booking takes seconds, reminders cut no-shows and alerts bring people back when a space opens.</span>
+    <div><h3>Your brand</h3><p class="key"><span>Your app.</span></p>
+      <p class="sub">Your name and colours on their phones. Booking takes seconds, reminders cut no-shows and alerts bring people back when a space opens.</p>
     </div>
-    <div><h3>Your data</h3><p>Kept in your own accounts. If you leave, it goes with you.</p>
-      <span class="more-line">Export members, bookings and payments any time. Nothing sits in a database shared with other studios.</span>
+    <div><h3>Your data</h3><p class="key"><span>Yours to keep.</span></p>
+      <p class="sub">Kept in your own accounts, never in a database shared with other studios. If you leave, it goes with you.</p>
     </div>
-    <div><h3>No monthly fee</h3><p>Pay once and the system is yours, for good.</p>
-      <span class="more-line">Hosting and email are paid straight to those companies. The care plan after year one is optional.</span>
+    <div><h3>No monthly fee</h3><p class="key"><span>£0 a month.</span></p>
+      <p class="sub">Pay once and it's yours for good. Hosting and email are paid straight to those companies, and the care plan after year one is optional.</p>
     </div>
   </div>
   <div class="ping solo" aria-hidden="true"><span class="ic">H</span><div><b>Haven</b><span>A space opened in Reformer at 18:30. Tap to book.</span></div><i>now</i></div>
