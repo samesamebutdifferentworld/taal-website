@@ -152,7 +152,7 @@ async function callRequest(request, env) {
     to: lead.email,
     subject: `A call about ${lead.studio}`,
     replyTo: env.CONTACT_EMAIL,
-    ...callEmail({ first: lead.name.split(' ')[0], studio: lead.studio, call_url: callUrl }),
+    ...callEmail({ first: lead.name.split(' ')[0], studio: lead.studio, call_url: withDetails(callUrl, lead) }),
   });
   await notify(env, `Call request: ${lead.studio}`, [
     ['Name', lead.name], ['Email', lead.email], ['Phone', lead.phone], ['Studio', lead.studio],
@@ -244,6 +244,12 @@ Want to look first? You can build a free demo of your own app in about a minute 
 Tim
 Founder, taal`;
   return { html, text };
+}
+
+// Cal.com and Calendly both fill in name and email from the link.
+function withDetails(link, { name, email }) {
+  if (!link) return '';
+  try { const u = new URL(link); u.searchParams.set('name', name); u.searchParams.set('email', email); return u.toString(); } catch { return link; }
 }
 
 async function notify(env, subject, rows) {
