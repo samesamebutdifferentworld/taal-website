@@ -1481,6 +1481,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     if (name) q.set('name', name);
     const sw = document.querySelector('.swatches [aria-pressed="true"]');
     q.set('colour', sw ? sw.dataset.c : document.getElementById('ownColour').value);
+    const ref = new URLSearchParams(location.search).get('ref'); if (ref) q.set('ref', ref); // the partner who sent them
     a.href = 'demo.html?' + q.toString();
   }));
 })();
@@ -1517,6 +1518,8 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     $('cbPick').append(pick);
     $('cbPick').hidden = false;
     const config = { layout: 'month_view', theme: 'light', notes: 'Looking at: ' + pick };
+    const ref = new URLSearchParams(location.search).get('ref');
+    if (ref && /^[a-z0-9][a-z0-9-]{1,29}$/i.test(ref)) config['metadata[ref]'] = ref.toLowerCase(); // the partner who sent them
     const studio = ($('studioName') && $('studioName').value.trim()) || '';
     if (studio) config.studio = studio;
     const direct = new URL('https://cal.com/' + CAL);

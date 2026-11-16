@@ -34,8 +34,28 @@ emails the studio a link to book a time (`CALL_URL`) or asks them to reply with 
 `CONTACT_EMAIL`. Limits: three an hour per connection and three a day per email address, separate from
 the demo limits.
 
-`/admin.html` lists everyone who built a demo (with links while it lasts) or asked for a call (with
-their phone and what they picked). Sign in with `ADMIN_KEY`.
+## Partners
+
+Each sales partner gets a link: `taal.solutions/r/<code>` (2 to 30 letters, numbers or dashes, e.g.
+`taal.solutions/r/sam`). It goes to the home page as `/?ref=sam`, and the worker adds the code to every
+link on the page, so it follows the studio around the site without cookies or storage. The code is
+saved with any demo they build and passed to Cal.com as `metadata[ref]`, so calls they book carry it too.
+The admin page shows each lead's partner and a count of demos and calls per partner.
+
+## Cal.com bookings
+
+Bookings of the "Call with Tim" event reach `POST /api/cal` through a Cal.com webhook (Booking created,
+rescheduled and cancelled), signed with the webhook's secret, which is set in Cloudflare as
+`CAL_WEBHOOK_SECRET`. Without the secret the address refuses everything.
+
+## Follow-up
+
+Every morning (cron `17 8 * * *`) studios who built a demo 3 to 10 days ago get one short email asking
+if they'd like a call, with the booking link filled in. Anyone who has booked or asked for a call is
+skipped. Each demo is followed up once.
+
+`/admin.html` lists everyone who built a demo (with links while it lasts), asked for a call or booked one
+(with the time, what they picked and the partner, if any). Sign in with `ADMIN_KEY`.
 
 Setup, in Cloudflare (Worker > Settings > Variables and secrets):
 - Secrets: `RESEND_API_KEY`, `ADMIN_KEY`.

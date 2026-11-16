@@ -628,6 +628,7 @@ footer a { color:var(--mute); }
     d.set('kind', state.kind); d.set('colour', state.colour); d.set('accent', state.accent);
     d.set('books', state.books); d.set('gift_cards', $('gift').checked ? 'on' : 'off');
     if (state.books === 'appointments') d.delete('classes');
+    const ref = new URLSearchParams(location.search).get('ref'); if (ref) d.set('ref', ref); // the partner who sent them
     const go = $('go'); go.disabled = true;
     let n = 0;
     const tick = () => { msg.innerHTML = '<span class="building"><svg class="tala-loop" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };

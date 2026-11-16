@@ -16,6 +16,8 @@
   ],
   // The booking app builds the demos. This connection can't be reached from the internet.
   "services": [{ "binding": "BOOKING", "service": "booking", "entrypoint": "DemoBuilder" }],
+  // Every morning at 08:17 UTC: the follow-up email to studios who built a demo three days ago.
+  "triggers": { "crons": ["17 8 * * *"] },
   "vars": {
     // The site's own address: links in emails, and where other addresses redirect.
     "PUBLIC_URL": "https://taal.solutions",
@@ -31,4 +33,5 @@
   // Secrets, set in Cloudflare (Worker > Settings > Variables and secrets), never in this file:
   //   RESEND_API_KEY   sends the emails
   //   ADMIN_KEY        a long random string: signs you in to /admin.html
+  //   CAL_WEBHOOK_SECRET  the secret on the Cal.com webhook to https://taal.solutions/api/cal
 }

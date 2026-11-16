@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demos built: taal</title>
+<title>Leads: taal</title>
 <meta name="robots" content="noindex">
 <style>
 @font-face { font-family:'Funnel Sans'; src:url('fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
@@ -30,12 +30,17 @@ tr.row:hover td { background:#F7F8F4; }
 .sw { display:inline-block; width:14px; height:14px; border-radius:50%; vertical-align:-2px; margin-right:6px; border:1px solid var(--rule); }
 .msg { color:#9B2C1F; margin-top:12px; }
 .mute { color:var(--mute); font-size:13px; }
+.ref { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; background:#E3E9E3; color:var(--green); }
+.partners { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 18px; }
+.partners div { background:#fff; border-radius:14px; padding:10px 14px; font-size:14px; }
+.partners b { font-family:'Funnel Display', sans-serif; font-size:18px; }
+.off { text-decoration:line-through; color:var(--mute); }
 @media (max-width:700px) { .hide-sm { display:none; } .detail dl { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <main>
-  <h1>Demos built</h1>
+  <h1>Leads</h1>
   <form id="login"><input type="password" id="key" placeholder="Admin key" autocomplete="current-password" aria-label="Admin key"> <button>Sign in</button><p class="msg" id="msg"></p></form>
   <div id="list" hidden></div>
 </main>
@@ -57,11 +62,20 @@ tr.row:hover td { background:#F7F8F4; }
     sessionStorage.setItem('taalAdmin', key);
     $('login').hidden = true; $('list').hidden = false;
     const live = x => x.expires_at && new Date(x.expires_at) > new Date();
-    $('list').innerHTML = leads.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Type</th><th class="hide-sm">Name</th><th>Email</th><th>Demo or call</th></tr></thead><tbody>${
-      leads.map(x => `<tr><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(kinds[x.kind] || '')}</td><td class="hide-sm">${esc(x.name)}</td><td><a href="mailto:${esc(x.email)}">${esc(x.email)}</a>${x.phone ? `<br><a href="tel:${esc(x.phone)}">${esc(x.phone)}</a>` : ''}</td><td>${
-        x.type === 'call' ? `<b>Wants a call</b>${x.package ? `<br><span class="mute">${esc(x.package)}</span>` : ''}` : live(x) ? `<a href="${esc(x.member_url)}" target="_blank" rel="noopener">App</a>&nbsp;&nbsp; <a href="${esc(x.admin_url)}" target="_blank" rel="noopener">Back office</a><br><span class="mute">until ${date(x.expires_at)}</span>` : '<span class="mute">Deleted</span>'
-      }</td></tr>`).join('')
-    }</tbody></table>` : '<p>Nobody has built a demo or asked for a call yet.</p>';
+    const when = iso => iso ? new Date(iso).toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+    const what = x => {
+      if (x.type === 'call' && x.booked) return `<b class="${x.cancelled ? 'off' : ''}">Call booked</b>${x.cancelled ? ' <span class="mute">cancelled</span>' : ''}<br><span class="mute">${esc(when(x.call_at))}</span>${x.package ? `<br><span class="mute">${esc(x.package)}</span>` : ''}`;
+      if (x.type === 'call') return `<b>Wants a call</b>${x.package ? `<br><span class="mute">${esc(x.package)}</span>` : ''}`;
+      return (live(x) ? `<a href="${esc(x.member_url)}" target="_blank" rel="noopener">App</a>&nbsp;&nbsp; <a href="${esc(x.admin_url)}" target="_blank" rel="noopener">Back office</a><br><span class="mute">until ${date(x.expires_at)}</span>` : '<span class="mute">Demo deleted</span>') + (x.nudged ? '<br><span class="mute">Follow-up sent</span>' : '');
+    };
+    // per partner: demos built and calls booked
+    const by = {};
+    leads.forEach(x => { if (!x.ref) return; const p = by[x.ref] = by[x.ref] || { demos: 0, calls: 0 }; if (x.type === 'call') { if (!x.cancelled) p.calls++; } else p.demos++; });
+    const partners = Object.entries(by).sort((a, b) => (b[1].demos + b[1].calls) - (a[1].demos + a[1].calls));
+    $('list').innerHTML = (partners.length ? `<div class="partners">${partners.map(([r, p]) => `<div><span class="ref">${esc(r)}</span><br><b>${p.demos}</b> demos &nbsp;<b>${p.calls}</b> calls</div>`).join('')}</div>` : '') +
+      (leads.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Type</th><th class="hide-sm">Name</th><th>Email</th><th>Demo or call</th><th>Partner</th></tr></thead><tbody>${
+      leads.map(x => `<tr><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(kinds[x.kind] || '')}</td><td class="hide-sm">${esc(x.name)}</td><td><a href="mailto:${esc(x.email)}">${esc(x.email)}</a>${x.phone ? `<br><a href="tel:${esc(x.phone)}">${esc(x.phone)}</a>` : ''}</td><td>${what(x)}</td><td>${x.ref ? `<span class="ref">${esc(x.ref)}</span>` : ''}</td></tr>`).join('')
+    }</tbody></table>` : '<p>Nobody has built a demo or booked a call yet.</p>');
   }
 
   $('login').addEventListener('submit', ev => { ev.preventDefault(); key = $('key').value.trim(); load().catch(err => { $('msg').textContent = err.message; }); });

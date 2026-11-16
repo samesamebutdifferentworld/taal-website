@@ -12,8 +12,10 @@
  * {"studio":"SQ Fitness","status":"ended","ended_at":"YYYY-MM-DD"}; set it back to active once paid.
  * The demo builder (studios build their own demo): see src/demos.js.
  * Everything else is the static site in ./public, served on taal.solutions (www and workers.dev redirect).
+ * Partner links: /r/<code> sends people to /?ref=<code>; the code then rides along every link on the site,
+ * and is saved with the demos they build and the calls they book (see src/demos.js).
  */
-import { demos } from './demos.js';
+import { demos, followUps, cleanRef } from './demos.js';
 
 export default {
   async fetch(request, env) {
@@ -23,13 +25,38 @@ export default {
     if (home && url.hostname !== home.hostname && (url.hostname === 'www.' + home.hostname || url.hostname.endsWith('.workers.dev')) && !url.pathname.startsWith('/api/')) {
       return Response.redirect(home.origin + url.pathname + url.search, 301);
     }
+    // Partner links: taal.solutions/r/sam -> the home page, with the partner's code in the address.
+    const short = url.pathname.match(/^\/r\/([^/]+)\/?$/);
+    if (short) {
+      const ref = cleanRef(decodeURIComponent(short[1]));
+      return Response.redirect(url.origin + '/' + (ref ? '?ref=' + ref : ''), 302);
+    }
     if (url.pathname === '/api/licence') return licence(request, env);
     if (url.pathname.startsWith('/api/')) {
       const res = await demos(request, env, url);
       if (res) return res;
     }
     if (url.pathname.startsWith('/api/')) return json({ error: 'Not found' }, 404);
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(request);
+    // A partner's code stays in the address as people move between pages, without cookies or storage:
+    // every link to another page of the site carries it on.
+    const ref = cleanRef(url.searchParams.get('ref'));
+    if (!ref || !(res.headers.get('content-type') || '').includes('text/html') || typeof HTMLRewriter === 'undefined') return res;
+    return new HTMLRewriter().on('a[href]', {
+      element(a) {
+        const href = a.getAttribute('href');
+        if (!href || /^(#|mailto:|tel:|javascript:)/i.test(href)) return;
+        let to; try { to = new URL(href, url); } catch { return; }
+        if (to.origin !== url.origin || to.pathname.startsWith('/api/') || to.searchParams.has('ref')) return;
+        to.searchParams.set('ref', ref);
+        a.setAttribute('href', to.pathname + to.search + to.hash);
+      },
+    }).transform(res);
+  },
+
+  // Once a day: a friendly follow-up to studios who built a demo three days ago.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(followUps(env));
   },
 };
 

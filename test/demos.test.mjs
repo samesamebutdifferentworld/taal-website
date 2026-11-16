@@ -2,12 +2,16 @@
 import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import worker from '../src/worker.js';
+import { followUps } from '../src/demos.js';
+import { createHmac } from 'node:crypto';
 
 function kv() {
   const m = new Map();
   return {
     m,
     async get(k) { return m.get(k)?.value ?? null; },
+    async getWithMetadata(k) { const v = m.get(k); return v ? { value: v.value, metadata: v.metadata } : { value: null, metadata: null }; },
+    async delete(k) { m.delete(k); },
     async put(k, value, o = {}) { m.set(k, { value, metadata: o.metadata }); },
     async list({ prefix }) { return { keys: [...m].filter(([k]) => k.startsWith(prefix)).map(([name, v]) => ({ name, metadata: v.metadata })), list_complete: true }; },
   };
@@ -45,7 +49,7 @@ test('a demo is built, the studio gets its links and you are told', async () => 
   assert.equal(res.status, 200);
   assert.equal(r.member_url, 'https://booking.test/?s=flow-yoga-k3x9p');
   assert.equal(r.admin_url, 'https://booking.test/admin/?s=flow-yoga-k3x9p');
-  assert.equal(r.call_url, 'https://cal.test/tim');
+  assert.match(r.call_url, /^https:\/\/cal\.test\/tim\?name=/); // their details filled in on the booking page
   const req = built[0];
   assert.equal(req.name, 'Flow Yoga');
   assert.equal(req.kind, 'yoga');
@@ -176,4 +180,80 @@ test('arrange a call needs a name, studio and a real email, and ignores bots', a
 test('call requests have their own daily limit, separate from demos', async () => {
   for (let i = 0; i < 3; i++) assert.equal((await build()).status, 200);
   assert.equal((await ask({ name: 'Sam', email: 'sam@flow.test', studio: 'Flow' })).status, 200);
+});
+
+
+/* ---------- partners ---------- */
+
+test('a partner link goes to the home page with their code', async () => {
+  const res = await call('/r/Sam-K');
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), 'https://taal.test/?ref=sam-k');
+  assert.equal((await call('/r/%3Cbad%3E')).headers.get('location'), 'https://taal.test/');
+});
+
+test('the partner code is saved with a demo, from the form or the page it came from', async () => {
+  const fd = new FormData(); fd.set('email', 'sam@flow.test'); fd.set('studio', 'Flow'); fd.set('ref', 'Sam');
+  assert.equal((await call('/api/build', { method: 'POST', body: fd })).status, 200);
+  const fd2 = new FormData(); fd2.set('email', 'jo@core.test'); fd2.set('studio', 'Core');
+  assert.equal((await call('/api/build', { method: 'POST', body: fd2, headers: { referer: 'https://taal.test/demo.html?type=yoga&ref=alex' } })).status, 200);
+  const refs = [...env.ENQUIRIES.m].filter(([k]) => k.startsWith('lead:')).map(([, v]) => v.metadata.ref).sort();
+  assert.deepEqual(refs, ['alex', 'sam']);
+  assert.match(sent[0].text, /metadata%5Bref%5D=sam/);
+});
+
+/* ---------- Cal.com ---------- */
+
+const sign = (body) => createHmac('sha256', env.CAL_WEBHOOK_SECRET || 'unset').update(body).digest('hex');
+const hook = (obj, sig) => { const body = JSON.stringify(obj); return call('/api/cal', { method: 'POST', body, headers: { 'x-cal-signature-256': sig ?? sign(body) } }); };
+const booking = (extra = {}) => ({ triggerEvent: 'BOOKING_CREATED', payload: {
+  uid: 'bk1', startTime: '2026-11-20T10:00:00Z', attendees: [{ name: 'Sam Jones', email: 'Sam@Flow.test' }],
+  responses: { name: { value: 'Sam Jones' }, email: { value: 'Sam@Flow.test' }, studio: { value: 'Flow Yoga' }, notes: { value: 'Looking at: Booking system, paid once. £1,900 once.' } },
+  metadata: { ref: 'sam' }, ...extra } });
+
+test('a Cal.com booking shows up as a lead, with the partner and the call time', async () => {
+  env.CAL_WEBHOOK_SECRET = 'whsec_test';
+  assert.equal((await hook(booking())).status, 200);
+  const { leads } = await (await call('/api/admin/leads', { headers: { authorization: 'Bearer ' + 'a'.repeat(24) } })).json();
+  assert.equal(leads.length, 1);
+  assert.equal(leads[0].studio, 'Flow Yoga'); assert.equal(leads[0].email, 'sam@flow.test');
+  assert.equal(leads[0].ref, 'sam'); assert.equal(leads[0].call_at, '2026-11-20T10:00:00Z');
+  assert.equal(leads[0].package, 'Booking system, paid once. £1,900 once.');
+});
+
+test('cancelled and rescheduled bookings update the lead', async () => {
+  env.CAL_WEBHOOK_SECRET = 'whsec_test';
+  await hook(booking());
+  await hook({ triggerEvent: 'BOOKING_CANCELLED', payload: { uid: 'bk1' } });
+  assert.equal(env.ENQUIRIES.m.get('lead:cal-bk1').metadata.cancelled, true);
+  await hook(booking({ uid: 'bk2', rescheduleUid: 'bk1', startTime: '2026-11-21T10:00:00Z' }));
+  assert.equal(env.ENQUIRIES.m.has('lead:cal-bk1'), false);
+  assert.equal(env.ENQUIRIES.m.get('lead:cal-bk2').metadata.call_at, '2026-11-21T10:00:00Z');
+});
+
+test('the Cal.com webhook needs the right signature, and is off without a secret', async () => {
+  assert.equal((await hook(booking())).status, 503);
+  env.CAL_WEBHOOK_SECRET = 'whsec_test';
+  assert.equal((await hook(booking(), 'bad')).status, 401);
+  assert.equal([...env.ENQUIRIES.m.keys()].filter(k => k.startsWith('lead:')).length, 0);
+});
+
+/* ---------- follow-up ---------- */
+
+test('three days after a demo, one follow-up, unless they booked a call', async () => {
+  const day = 86400000, now = Date.parse('2026-11-20T09:00:00Z');
+  const put = (k, meta) => env.ENQUIRIES.put(k, '{}', { metadata: { type: 'demo', member_url: 'https://booking.test/?s=x', expires_at: '2026-12-15T00:00:00Z', ...meta } });
+  await put('lead:a', { email: 'a@x.test', name: 'Ann Lee', studio: 'A Studio', created_at: new Date(now - 3.2 * day).toISOString(), ref: 'sam' });
+  await put('lead:b', { email: 'b@x.test', studio: 'B', created_at: new Date(now - 1 * day).toISOString() });
+  await put('lead:c', { email: 'c@x.test', studio: 'C', created_at: new Date(now - 4 * day).toISOString() });
+  await put('lead:d', { email: 'd@x.test', studio: 'D', created_at: new Date(now - 20 * day).toISOString() });
+  await env.ENQUIRIES.put('lead:cal-1', '{}', { metadata: { type: 'call', email: 'C@x.test' } });
+  assert.equal(await followUps(env, now), 1);
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sent[0].to, ['a@x.test']);
+  assert.match(sent[0].subject, /A Studio demo/);
+  assert.match(sent[0].text, /cal\.test\/tim\?name=Ann\+Lee&email=a%40x\.test&studio=A\+Studio&metadata%5Bref%5D=sam/);
+  assert.equal(env.ENQUIRIES.m.get('lead:a').metadata.nudged, true);
+  assert.equal(env.ENQUIRIES.m.get('lead:c').metadata.nudged, true); // booked a call: marked, not emailed
+  assert.equal(await followUps(env, now), 0); // never twice
 });

@@ -6,7 +6,16 @@
  *                              a lead, emails them the links and tells you.
  * POST /api/call               "Arrange a call" from the pricing section: saves the studio as a lead, emails
  *                              them how to book a time (CALL_URL, or reply with times) and tells you.
- * GET  /api/admin/leads        everyone who has built a demo or asked for a call (Bearer ADMIN_KEY), for /admin.html.
+ * POST /api/cal                Cal.com webhook (signed with CAL_WEBHOOK_SECRET): bookings, reschedules and
+ *                              cancellations of the "Call with Tim" event, saved as leads.
+ * GET  /api/admin/leads        everyone who has built a demo, asked for or booked a call (Bearer ADMIN_KEY),
+ *                              for /admin.html.
+ * followUps(env)               run daily by the cron: one friendly nudge three days after a demo, unless
+ *                              they have booked a call since.
+ *
+ * Partners: a partner's code (?ref=sam, from taal.solutions/r/sam) is saved with every demo and call it
+ * leads to, so commission is clear. It travels in the page address and the Cal.com booking, never in a
+ * cookie.
  *
  * Leads live in the ENQUIRIES KV namespace and are deleted after a year; the demos themselves are
  * deleted by the booking app after 30 days. Email goes through Resend (RESEND_API_KEY, EMAIL_FROM);
@@ -24,6 +33,7 @@ export async function demos(request, env, url) {
   try {
     if (p === '/api/build' && request.method === 'POST') return await build(request, env, url);
     if (p === '/api/call' && request.method === 'POST') return await callRequest(request, env);
+    if (p === '/api/cal' && request.method === 'POST') return await calWebhook(request, env);
     if (p === '/api/admin/leads' && request.method === 'GET') return await leads(request, env);
   } catch (err) {
     if (err instanceof Reply) return err.res;
@@ -44,6 +54,7 @@ async function build(request, env, url) {
     name: get('name').slice(0, 80),
     email: email(get('email')),
     studio: get('studio').slice(0, 60) || 'Your studio',
+    ref: refFrom(request, get('ref')),
     kind: KINDS[get('kind')] ? get('kind') : 'fitness',
     colour: hex(get('colour')) || '#135855',
     accent: hex(get('accent')) || '#D8BF8C',
@@ -100,13 +111,13 @@ async function build(request, env, url) {
     member_url: `${app}/?s=${made.slug}`,
     admin_url: `${app}/admin/?s=${made.slug}`,
     expires_at: made.expires_at,
-    call_url: callUrl,
+    call_url: withDetails(callUrl, { name: lead.name, email: lead.email, studio: lead.studio, ref: lead.ref }),
   };
   const id = token();
   const rec = { id, ...lead, has_logo: !!logo, ...links, created_at: new Date().toISOString() };
   await env.ENQUIRIES.put(`lead:${id}`, JSON.stringify(rec), {
     expirationTtl: YEAR,
-    metadata: { studio: lead.studio, name: lead.name, email: lead.email, kind: lead.kind, created_at: rec.created_at, member_url: links.member_url, admin_url: links.admin_url, expires_at: links.expires_at },
+    metadata: { type: 'demo', studio: lead.studio, name: lead.name, email: lead.email, kind: lead.kind, ref: lead.ref, created_at: rec.created_at, member_url: links.member_url, admin_url: links.admin_url, expires_at: links.expires_at },
   });
 
   const until = longDate(new Date(made.expires_at));
@@ -118,7 +129,7 @@ async function build(request, env, url) {
   });
   await notify(env, `New demo: ${made.name}`, [
     ['Name', lead.name], ['Email', lead.email], ['Studio', made.name], ['Type', KINDS[lead.kind]],
-    ['Their app', links.member_url], ['Back office', links.admin_url], ['Deleted on', until],
+    ['Their app', links.member_url], ['Back office', links.admin_url], ['Deleted on', until], ['Partner', lead.ref],
   ]);
   return json({ ok: true, name: made.name, emailed, ...links, contact: env.CONTACT_EMAIL && env.CONTACT_EMAIL.includes('@') ? env.CONTACT_EMAIL : '' });
 }
@@ -136,6 +147,7 @@ async function callRequest(request, env) {
     phone: get('phone', 30),
     note: get('note', 1500),
     package: get('package', 200),
+    ref: refFrom(request, get('ref', 40)),
   };
   if (!lead.name) fail(400, 'Add your name.');
   if (!lead.studio) fail(400, "Add your studio's name.");
@@ -146,7 +158,7 @@ async function callRequest(request, env) {
   const rec = { id, ...lead, created_at: new Date().toISOString() };
   await env.ENQUIRIES.put(`lead:${id}`, JSON.stringify(rec), {
     expirationTtl: YEAR,
-    metadata: { type: 'call', studio: lead.studio, name: lead.name, email: lead.email, phone: lead.phone, package: lead.package, created_at: rec.created_at },
+    metadata: { type: 'call', studio: lead.studio, name: lead.name, email: lead.email, phone: lead.phone, package: lead.package, ref: lead.ref, created_at: rec.created_at },
   });
   const emailed = await sendEmail(env, {
     to: lead.email,
@@ -156,9 +168,117 @@ async function callRequest(request, env) {
   });
   await notify(env, `Call request: ${lead.studio}`, [
     ['Name', lead.name], ['Email', lead.email], ['Phone', lead.phone], ['Studio', lead.studio],
-    ['Looking at', lead.package], ['Note', lead.note],
+    ['Looking at', lead.package], ['Note', lead.note], ['Partner', lead.ref],
   ]);
   return json({ ok: true, emailed, call_url: callUrl });
+}
+
+/* ---------- Partners ---------- */
+
+// Partner codes: 2 to 30 letters, numbers or dashes, e.g. "sam" or "sam-k".
+export function cleanRef(v) {
+  const s = String(v || '').trim().toLowerCase();
+  return /^[a-z0-9][a-z0-9-]{1,29}$/.test(s) ? s : '';
+}
+
+// The code comes in the form, or in the address of the page the form was sent from.
+function refFrom(request, given) {
+  if (cleanRef(given)) return cleanRef(given);
+  try { return cleanRef(new URL(request.headers.get('referer') || '').searchParams.get('ref')); } catch { return ''; }
+}
+
+/* ---------- Cal.com bookings ---------- */
+
+async function calWebhook(request, env) {
+  if (!env.CAL_WEBHOOK_SECRET) fail(503, 'Cal.com bookings are not connected yet.');
+  const raw = await request.text();
+  const sig = (request.headers.get('x-cal-signature-256') || '').trim().toLowerCase();
+  if (!sig || !timingSafe(sig, await hmacHex(env.CAL_WEBHOOK_SECRET, raw))) fail(401, 'Bad signature');
+  let body; try { body = JSON.parse(raw); } catch { fail(400, 'Bad JSON'); }
+  const event = body.triggerEvent || '';
+  const p = body.payload || {};
+  if (event === 'PING' || !p.uid) return json({ ok: true });
+  const key = `lead:cal-${String(p.uid).slice(0, 80)}`;
+
+  if (event === 'BOOKING_CANCELLED') {
+    const got = await env.ENQUIRIES.getWithMetadata(key);
+    if (got && got.value) await env.ENQUIRIES.put(key, got.value, { expirationTtl: YEAR, metadata: { ...(got.metadata || {}), cancelled: true } });
+    return json({ ok: true });
+  }
+  if (event !== 'BOOKING_CREATED' && event !== 'BOOKING_RESCHEDULED') return json({ ok: true });
+
+  const val = (x) => (x && typeof x === 'object' ? (x.value ?? '') : (x ?? ''));
+  const r = p.responses || {};
+  const who = (p.attendees && p.attendees[0]) || {};
+  const notes = String(val(r.notes) || p.additionalNotes || p.description || '').slice(0, 600);
+  const lead = {
+    type: 'call',
+    booked: true,
+    name: String(val(r.name) || who.name || '').slice(0, 80),
+    email: String(val(r.email) || who.email || '').toLowerCase().slice(0, 200),
+    studio: String(val(r.studio) || '').slice(0, 60) || String(val(r.name) || who.name || 'Call').slice(0, 60),
+    package: notes.replace(/^Looking at:\s*/i, '').slice(0, 200),
+    ref: cleanRef(p.metadata && p.metadata.ref) || cleanRef((notes.match(/partner:\s*([a-z0-9-]+)/i) || [])[1]),
+    call_at: p.startTime || '',
+    created_at: new Date().toISOString(),
+  };
+  // A reschedule replaces the booking it moved.
+  const old = p.rescheduleUid || p.fromReschedule || (p.rescheduledBy && p.rescheduleId);
+  if (old && typeof old === 'string') await env.ENQUIRIES.delete(`lead:cal-${old.slice(0, 80)}`);
+  await env.ENQUIRIES.put(key, JSON.stringify({ id: key.slice(5), ...lead, notes }), { expirationTtl: YEAR, metadata: lead });
+  return json({ ok: true });
+}
+
+async function hmacHex(secret, data) {
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(data));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* ---------- Follow-up ---------- */
+
+const DAY = 86400 * 1000;
+
+// Three days after a demo, one short nudge to book a call, unless they already have. Sent once, and only
+// in the 3 to 10 day window, so a missed day doesn't pile up old ones.
+export async function followUps(env, now = Date.now()) {
+  if (!env.ENQUIRIES) return 0;
+  const all = [];
+  let cursor;
+  do {
+    const page = await env.ENQUIRIES.list({ prefix: 'lead:', cursor });
+    all.push(...page.keys);
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor && all.length < 5000);
+  const called = new Set(all.filter((k) => k.metadata && k.metadata.type === 'call' && k.metadata.email).map((k) => k.metadata.email.toLowerCase()));
+  let n = 0;
+  for (const k of all) {
+    const m = k.metadata || {};
+    if (m.type === 'call' || m.nudged || !m.email || !m.member_url) continue;
+    const age = now - Date.parse(m.created_at);
+    if (!(age >= 3 * DAY && age < 10 * DAY)) continue;
+    if (m.expires_at && Date.parse(m.expires_at) < now) continue;
+    if (called.has(m.email.toLowerCase())) { await mark(env, k.name, m); continue; }
+    const sentOk = await sendEmail(env, {
+      to: m.email,
+      subject: `How did the ${m.studio} demo look?`,
+      replyTo: env.CONTACT_EMAIL,
+      ...nudgeEmail({
+        first: m.name ? m.name.split(' ')[0] : 'there', studio: m.studio, member_url: m.member_url,
+        until: m.expires_at ? longDate(new Date(m.expires_at)) : '',
+        call_url: withDetails(env.CALL_URL || '', { name: m.name, email: m.email, studio: m.studio, ref: m.ref }),
+      }),
+    });
+    if (sentOk) { await mark(env, k.name, m); n++; }
+  }
+  return n;
+}
+
+async function mark(env, key, meta) {
+  const value = await env.ENQUIRIES.get(key);
+  if (value == null) return;
+  const left = Math.max(60, Math.round((Date.parse(meta.created_at) + YEAR * 1000 - Date.now()) / 1000));
+  await env.ENQUIRIES.put(key, value, { expirationTtl: left, metadata: { ...meta, nudged: true } });
 }
 
 async function leads(request, env) {
@@ -223,6 +343,29 @@ Founder, taal`;
   return { html, text };
 }
 
+export function nudgeEmail({ first, studio, member_url, call_url, until }) {
+  const book = call_url
+    ? `<p style="margin:0 0 28px">${button(call_url, 'Book a 20 minute call')}</p>`
+    : `<p style="margin:0 0 28px">Just reply with a few times that suit you.</p>`;
+  const html = layout(`<p style="margin:0 0 16px">Hi ${esc(first)},</p>
+<p style="margin:0 0 16px">Did you get a chance to try your ${esc(studio)} demo? If you'd like to see it with your real timetable, prices and team, or just ask a few questions, I'm happy to show you on a short video call.</p>
+${book}
+<p style="margin:0 0 6px"><a href="${esc(member_url)}" style="color:${C.green};font-weight:600">Open your demo again</a></p>
+${until ? `<p style="margin:0;color:${C.mute};font-size:14px">It stays up until ${esc(until)}.</p>` : ''}
+<p style="margin:16px 0 0">Tim<br><span style="color:${C.mute}">Founder, taal</span></p>`);
+  const text = `Hi ${first},
+
+Did you get a chance to try your ${studio} demo? If you'd like to see it with your real timetable, prices and team, or just ask a few questions, I'm happy to show you on a short video call.
+
+${call_url ? `Book a 20 minute call: ${call_url}` : 'Just reply with a few times that suit you.'}
+
+Your demo: ${member_url}${until ? `\nIt stays up until ${until}.` : ''}
+
+Tim
+Founder, taal`;
+  return { html, text };
+}
+
 export function callEmail({ first, studio, call_url }) {
   const next = call_url
     ? `<p style="margin:0 0 14px">Pick a time that suits you. It's a short video call: we'll answer your questions and show you how it would work with your real timetable, prices and team.</p><p style="margin:0 0 28px">${button(call_url, 'Book a time')}</p>`
@@ -247,9 +390,16 @@ Founder, taal`;
 }
 
 // Cal.com fills in name, email and the studio question (identifier "studio") from the link.
-function withDetails(link, { name, email, studio }) {
+function withDetails(link, { name, email, studio, ref }) {
   if (!link) return '';
-  try { const u = new URL(link); u.searchParams.set('name', name); u.searchParams.set('email', email); if (studio) u.searchParams.set('studio', studio); return u.toString(); } catch { return link; }
+  try {
+    const u = new URL(link);
+    if (name) u.searchParams.set('name', name);
+    if (email) u.searchParams.set('email', email);
+    if (studio) u.searchParams.set('studio', studio);
+    if (ref) u.searchParams.set('metadata[ref]', ref);
+    return u.toString();
+  } catch { return link; }
 }
 
 async function notify(env, subject, rows) {
