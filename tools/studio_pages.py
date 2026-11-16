@@ -63,7 +63,7 @@ def footer(current=''):
             f'  <div class="foot-col foot-two"><span class="foot-h">For your studio</span>{studios}</div>\n'
             f'  <div class="foot-col"><span class="foot-h">Before you sign</span>{before}</div>\n'
             '</div></footer>\n'
-            "<script>(function () { const EMAIL = 'info@taal.solutions'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });\n"
+            "<script>(function () { const EMAIL = 'hello@taal.solutions'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });\n"
             "  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } }), { threshold: .35 });\n"
             "  document.querySelectorAll('.coda, .line-in').forEach(el => io.observe(el));\n"
             "  if (location.hash) { const d = document.querySelector(location.hash); if (d && d.tagName === 'DETAILS') d.open = true; }\n"
