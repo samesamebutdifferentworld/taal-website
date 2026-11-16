@@ -98,7 +98,7 @@
 
 <header class="head"><div class="wrap">
   <h1>Three years, <span class="tone">side by side.</span></h1>
-  <p class="lede">What you likely pay for booking software now, against taal, from each company's published UK prices. Where taal costs more, this page says so.</p>
+  <p class="lede">What you likely pay for booking software now, against taal, from each company's published prices. Where taal costs more, this page says so. And unlike software everyone shares, taal is built around your studio.</p>
 </div></header>
 
 <section class="band" id="calc"><div class="wrap">
@@ -113,6 +113,8 @@
           <button type="button" data-p="cr1" aria-pressed="false">ClubRight Core</button>
           <button type="button" data-p="cr2" aria-pressed="false">ClubRight Complete</button>
           <button type="button" data-p="mb" aria-pressed="false">Mindbody Starter</button>
+          <button type="button" data-p="mo" aria-pressed="false">Momence</button>
+          <button type="button" data-p="bs" aria-pressed="false">bsport</button>
           <button type="button" data-p="other" aria-pressed="false">Something else</button>
         </div>
         <p class="src" id="src"></p>
@@ -149,6 +151,17 @@
 </div></section>
 
 <section class="band"><div class="wrap">
+  <h2>Built around your studio, not the other way round</h2>
+  <p class="sub">Monthly software gives every studio the same system and asks you to fit in with it. With taal, setup means we build it to work the way you already do, then you try it before you go live.</p>
+  <div class="cols four">
+    <div><h3>Your booking rules</h3><p>Cancellation windows, waitlists, off-peak times, intro offers and credits, set the way you run them now.</p></div>
+    <div><h3>Your memberships</h3><p>Whatever mix of memberships, packs, add-ons and passes you sell, built as you sell them.</p></div>
+    <div><h3>Your team's way of working</h3><p>Rotas, cover, pay splits and who sees what, matched to how your team actually works.</p></div>
+    <div><h3>Your name and voice</h3><p>Your logo, colours, fonts, wording and emails, on the web and in your own app.</p></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
   <h2>Published prices</h2>
   <p class="sub">Checked 16 November 2026. Prices change, so check your own invoice. Where a company doesn't publish a price, we say so rather than guess.</p>
   <table class="prices">
@@ -158,8 +171,9 @@
       <tr><td>ClubRight</td><td data-h="Each month">Core £79, Complete £129, plus VAT</td><td data-h="Branded app">A member app is included</td><td data-h="From">ClubRight's listings on Capterra and FitGap</td></tr>
       <tr><td>Mindbody</td><td data-h="Each month">From £89 per location for Starter. Higher plans are quoted</td><td data-h="Branded app">On top plans only, price not published</td><td data-h="From">Mindbody's UK pricing page</td></tr>
       <tr><td>Glofox</td><td data-h="Each month">Not published. Reviews put it at about $110 to $350 a month</td><td data-h="Branded app">Included</td><td data-h="From">Independent reviews</td></tr>
-      <tr><td>Momence</td><td data-h="Each month">Not clearly published. Reviews cite plans at $60 and $199</td><td data-h="Branded app">$250 a month extra</td><td data-h="From">Momence's US pricing page and reviews</td></tr>
-      <tr class="us"><td>taal</td><td data-h="Each month">Nothing to us. About £30 to hosting and email, from your own accounts<small>£1,900 once for the booking system, £2,900 with your own apps. Prices include VAT.</small></td><td data-h="Branded app">+£1,000 once, under your own developer accounts</td><td data-h="From"><a href="index.html#pricing">Our pricing</a></td></tr>
+      <tr><td>Momence</td><td data-h="Each month">Free, $60 or $199. The cheaper plans add a fee of up to 5% on every payment</td><td data-h="Branded app">$250 a month extra</td><td data-h="From">Momence's pricing page and listings</td></tr>
+      <tr><td>bsport</td><td data-h="Each month">From £150 for studios</td><td data-h="Branded app">Included</td><td data-h="From">bsport's listings on Capterra and GetApp</td></tr>
+      <tr class="us"><td>taal</td><td data-h="Each month">Nothing to us. About £30 to hosting and email, from your own accounts<small>£1,900 once for the booking system, £2,900 with your own apps, built around how your studio works. Prices include VAT.</small></td><td data-h="Branded app">+£1,000 once, under your own developer accounts</td><td data-h="From"><a href="index.html#pricing">Our pricing</a></td></tr>
     </tbody>
   </table>
 </div></section>
@@ -195,6 +209,8 @@
     cr1: { fee: 79, app: 0, vat: true, src: 'ClubRight Core, £79 a month plus VAT. A member app is included.' },
     cr2: { fee: 129, app: 0, vat: true, src: 'ClubRight Complete, £129 a month plus VAT. A member app is included.' },
     mb: { fee: 89, app: 0, vat: false, src: "Mindbody Starter, from £89 a month. Starter doesn't include an app under your own name." },
+    mo: { fee: 150, app: 188, vat: false, src: "Momence's $199 plan, the one without a fee on every payment, and its $250 branded app, at about $1.33 to the pound." },
+    bs: { fee: 150, app: 0, vat: false, src: 'bsport, from £150 a month for studios. A branded app is included.' },
     other: { fee: 150, app: 0, vat: false, src: 'Enter what you pay. Your invoice is the best guide.' },
   };
   const SETUP = 1900, APPS = 1000, RUN = 30, CARE = 400, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
