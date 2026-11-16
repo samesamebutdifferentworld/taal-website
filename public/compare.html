@@ -142,7 +142,7 @@
         <label class="tg"><span><b>Your own apps</b><small>On both sides: their branded app, or taal's apps</small></span><input type="checkbox" id="apps" checked></label>
         <label class="tg"><span><b>Your studio website</b><small>On both sides: your site now, or taal's at £800 once</small></span><input type="checkbox" id="site"></label>
         <label class="tg"><span><b>Their prices are before VAT</b><small>Adds 20%. taal's prices include VAT</small></span><input type="checkbox" id="vat"></label>
-        <label class="tg"><span><b>taal care plan</b><small>£300 a year from year two, optional</small></span><input type="checkbox" id="care"></label>
+        <label class="tg"><span><b>taal care plan</b><small>£30 a month from year two (£40 with your own apps), optional</small></span><input type="checkbox" id="care"></label>
         <label class="tg"><span><b>Founding offer</b><small>30% off setup, for our first three studios</small></span><input type="checkbox" id="found"></label>
       </div>
     </div>
@@ -245,7 +245,7 @@
     bs: { fee: 150, app: 0, vat: false, src: 'bsport, from £150 a month for studios. A branded app is included.' },
     other: { fee: 150, app: 0, vat: false, src: 'Enter what you pay. Your invoice is the best guide.' },
   };
-  const SETUP = 1900, APPS = 1000, SITE = 800, RUN = 30, CARE = 300, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
+  const SETUP = 1900, APPS = 1000, SITE = 800, RUN = 30, CARE = 30, CARE_APPS = 40, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
   const $ = id => document.getElementById(id);
   const fee = $('fee'), appFee = $('appFee'), otherFee = $('otherFee'), siteFee = $('siteFee'), apps = $('apps'), site = $('site'), vat = $('vat'), care = $('care'), found = $('found');
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
@@ -254,7 +254,7 @@
     const withApps = apps.checked;
     let t = (SETUP + (withApps ? APPS : 0) + (site.checked ? SITE : 0)) * (found.checked ? 1 - OFF : 1) + RUN * m;
     if (withApps) t += GOOGLE + APPLE * Math.max(1, Math.ceil(m / 12));
-    if (care.checked && m > 12) t += CARE * Math.floor((m - 1) / 12);
+    if (care.checked && m > 12) t += (withApps ? CARE_APPS : CARE) * (m - 12);
     return t;
   }
   function nowAt(m) {
@@ -314,7 +314,7 @@
     const perMonth = b / N / (vat.checked ? 1.2 : 1);
     if (d >= 0) {
       v.textContent = gbp(d) + ' less over three years with taal.'; v.className = 'verdict';
-      why.textContent = `taal costs more at the start, because of setup. It's cheaper from month ${c}, and after that you save about ${gbp(nowAt(12) - (care.checked ? CARE : 0) - RUN * 12 - (apps.checked ? APPLE : 0))} a year.`;
+      why.textContent = `taal costs more at the start, because of setup. It's cheaper from month ${c}, and after that you save about ${gbp(nowAt(12) - (care.checked ? (apps.checked ? CARE_APPS : CARE) * 12 : 0) - RUN * 12 - (apps.checked ? APPLE : 0))} a year.`;
     } else {
       v.textContent = gbp(-d) + ' more over three years with taal.'; v.className = 'verdict more';
       why.textContent = c ? `At this price taal only catches up in month ${c}. If you pay under about ${gbp(perMonth)} a month now, staying is cheaper over three years.`

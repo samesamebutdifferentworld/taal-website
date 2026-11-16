@@ -1148,7 +1148,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <label class="opt fixed"><span class="opt-text"><b>Booking system</b><small>Web booking, payments, back office</small></span><span class="opt-price" data-item="base">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Your own apps</b><small>App Store and Google Play</small></span><span class="opt-price" data-item="apps">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Care plan</b><small>From year two. Year one is included</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Care plan</b><small>From year two. Year one is included</small></span><span class="opt-price" id="carePrice">£40<small> a month</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-foot">Up to 2,000 active clients. Bigger than that? We'll quote.</p>
     </div>
     <div class="total" aria-live="polite">
@@ -1209,7 +1209,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
     <details><summary>Can you change it when our studio changes?</summary><p>Yes. It's your system, so it changes when you do, not when a supplier gets round to it. Small changes are included for the first 12 months and on the care plan: new class types, prices, wording and how booking works. Bigger features, like a new module or connecting another service, get a fixed quote before we start. And if we ever can't look after it, you get the full source code, so any developer can.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. You can export or delete a member's data when they ask, as UK GDPR requires, and if you ever leave, it all goes with you.</p></details>
-    <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan at £300 a year, or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.</p></details>
+    <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan, paid monthly: £30 a month, or £40 a month with your own apps. Or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.</p></details>
     <details><summary>What if we want to leave?</summary><p>Everything runs in accounts in your studio's name and your licence is permanent, so the system keeps running without us. You can export members, bookings and payments from the back office at any time, and we remove our access and hand over everything we hold. If we ever stop trading or can't support you, you get the full source code, so any developer can look after it. <a href="leaving.html">What you keep, and how</a>.</p></details>
     <details><summary>What about card fees?</summary><p>Stripe charges its standard rates on each payment. We don't add anything on top.</p></details>
   </div>
@@ -1864,7 +1864,9 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     site: { once: 800, spread: { start: 200, monthly: 65 }, spread24: { start: 200, monthly: 35 } },
   };
   const MONTHS = { spread: 12, spread24: 24 };
-  const RUNNING = 30, CARE = 300, OFF = 0.3;
+  // The care plan is paid monthly from year two: £30 a month, or £40 with your own apps. The website makes no difference.
+  const RUNNING = 30, CARE = { base: 30, apps: 40 }, OFF = 0.3;
+  const careMonthly = () => $('optApps').checked ? CARE.apps : CARE.base;
   const founding = () => $('founding').getAttribute('aria-pressed') === 'true';
   const picked = name => document.querySelector('input[name=' + name + ']:checked').value;
   function costs() {
@@ -1876,7 +1878,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     const p = on.reduce((t, k) => ({ once: t.once + cut(ITEMS[k].once), start: t.start + (months ? cut(ITEMS[k][mode].start) : 0), monthly: t.monthly + (months ? cut(ITEMS[k][mode].monthly) : 0) }), { once: 0, start: 0, monthly: 0 });
     const spread = months > 0;
     const setup = spread ? p.start + p.monthly * months : p.once;
-    const care = $('optCare').checked ? CARE : 0;
+    const care = $('optCare').checked ? careMonthly() * 12 : 0;
     // Year one: what they pay us in the first 12 months plus running costs. Over 24 months the payments run into year two.
     const y1 = (spread ? p.start + p.monthly * 12 : p.once) + RUNNING * 12;
     return { p, spread, months, setup, care, y1, later: RUNNING * 12 + care };
@@ -1902,7 +1904,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     const run = RUNNING * 12, after = c.months === 24 ? 'each year after year two' : 'each year after';
     $('tY1Label').textContent = 'year one: ' + gbp(c.y1 - run) + ' to us, ' + gbp(run) + ' hosting and email, updates and support included';
     $('tLaterLabel').textContent = c.care
-      ? after + ': ' + gbp(c.care) + ' care plan to us, ' + gbp(run) + ' hosting and email'
+      ? after + ': ' + gbp(c.care) + ' care plan to us (' + gbp(c.care / 12) + ' a month), ' + gbp(run) + ' hosting and email'
       : after + ': hosting and email only, nothing to us';
     // Each option shows its price for the way they've chosen to pay.
     const mode = picked('pay'), cut = v => Math.round(v * (founding() ? 1 - OFF : 1));
@@ -1912,6 +1914,7 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
         ? plus + gbp(cut(it[mode].monthly)) + '<small> a month</small><em>' + gbp(cut(it[mode].start)) + ' to start</em>'
         : plus + gbp(cut(it.once));
     });
+    $('carePrice').innerHTML = gbp(careMonthly()) + '<small> a month</small>';
     tween($('tY1'), c.y1); tween($('tLater'), c.later);
   }
   $('founding').addEventListener('click', () => { $('founding').setAttribute('aria-pressed', !founding()); price(); });

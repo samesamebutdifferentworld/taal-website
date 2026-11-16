@@ -177,7 +177,7 @@ def studio_page(file, key, label, studio, team, brand, plural=None):
     <div><b>£2,900</b><span>With your own apps</span></div>
     <div><b>£30</b><span>A month to hosting and email, not to us</span></div>
   </div>
-  <p class="note" style="margin-top:18px">Prices include VAT. Built around how your studio works. The care plan after year one is optional, at £300 a year.</p>
+  <p class="note" style="margin-top:18px">Prices include VAT. Built around how your studio works. The care plan after year one is optional, at £30 a month, or £40 with your own apps.</p>
   <div class="links-row"><a href="compare.html">Compare three years</a><a href="index.html#pricing">Build your price</a><a href="leaving.html">What you keep if you leave</a></div>
 </div></section>
 
@@ -199,7 +199,7 @@ def leaving_page():
     folds = '\n'.join([
         fold('export', 'How to export', "You don't need us for this", '<div class="prose"><p>In the back office, open <b>Import &amp; export</b> and download your clients, memberships, bookings, payments for any dates, and a sales journal for Xero, QuickBooks or Sage with VAT split out.</p>\n    <p>They\'re CSV files: they open in Excel, Numbers and Google Sheets, and other booking systems can import them. For the whole database as one file, ask us, or download it from your Cloudflare account.</p></div>'),
         fold('going', 'When you go', 'What we do', '<div class="prose"><ul><li>Remove our access to your accounts, and confirm it in writing.</li><li>Hand over what we hold for you: logins we set up, your brand files, a copy of your data and an up-to-date handover document, so another developer can take over in a day.</li><li>Delete our own copies once you have everything.</li></ul></div>'),
-        fold('care', 'The care plan', 'Stopping it', '<div class="prose"><p>It runs a year at a time. Tell us 30 days before it renews and it stops; there\'s nothing else to cancel. Your system keeps running without it, but without updates or support. If you have your own apps, Apple and Google ask for regular updates, so you\'d need someone to do those.</p></div>'),
+        fold('care', 'The care plan', 'Stopping it', '<div class="prose"><p>It's paid monthly and runs a year at a time. Tell us 30 days before it renews and it stops; there\'s nothing else to cancel. Your system keeps running without it, but without updates or support. If you have your own apps, Apple and Google ask for regular updates, so you\'d need someone to do those.</p></div>'),
     ])
     out = head('Leaving taal: what you keep and how to take it with you',
                "If you stop working with taal, your system, your apps and your data stay yours. Here's what you keep and how to export it.") + nav('leaving.html') + f'''
