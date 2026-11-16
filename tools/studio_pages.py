@@ -80,6 +80,11 @@ def head(title, desc):
 <meta name="description" content="{e(desc)}">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
+<meta property="og:image" content="https://taal.solutions/img/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="taal: your own booking app, in your brand, that you own">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F2F3EE">
 <link rel="icon" href="{FAVICON}">
 <link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
