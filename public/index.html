@@ -496,7 +496,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* yue float, the studio Tim ran: faded right back so the quote reads easily */
 .founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .86) 0%, rgb(242 243 238 / .8) 55%, rgb(242 243 238 / .64) 100%), url('img/yue-float.jpg') center 40%/cover no-repeat; }
 @media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .82), rgb(242 243 238 / .82)), url('img/yue-float-sm.jpg') 0% 30%/auto 125% no-repeat; } }
-.founder .photo-note { margin-left:auto; align-self:flex-end; font-size:12px; color:var(--green); font-weight:600; }
+.founder .photo-note { margin-left:auto; align-self:center; width:auto; height:56px; display:block; }
+@media (max-width: 560px) { .founder .photo-note { height:46px; } }
 .founder blockquote, .founder figcaption, .founder figcaption .mute { color:var(--green); }
 .founder blockquote::before { background:var(--green) !important; }
 .founder .wrap { max-width:980px; }
@@ -988,7 +989,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 <section class="founder" data-beat="3"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
   <figure style="margin:0">
     <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
-    <figcaption><span class="avatar"><img src="img/tim.jpg" alt="Tim Allan" width="112" height="112" onerror="this.remove()"><span aria-hidden="true">TA</span></span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
+    <figcaption><span class="avatar"><img src="img/tim.jpg" alt="Tim Allan" width="112" height="112" onerror="this.remove()"><span aria-hidden="true">TA</span></span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><img class="photo-note" src="img/yue-float.png" alt="yue float" width="44" height="56"></figcaption>
   </figure>
   <div class="aim">
     <h2>For independent studios, not chains.</h2>
