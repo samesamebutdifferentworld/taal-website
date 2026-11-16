@@ -567,12 +567,13 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .opt input:checked + .sw { background:var(--green); }
 .opt input:checked + .sw::after { transform:translateX(16px); }
 .opt input:disabled + .sw { opacity:.55; }
-.seg { display:grid; grid-template-columns:1fr 1fr; padding:4px; border-radius:16px; background:#fff; margin:4px 0; position:relative; }
+.seg { display:grid; grid-template-columns:1fr 1fr 1fr; padding:4px; border-radius:16px; background:#fff; margin:4px 0; position:relative; }
 .seg label { position:relative; cursor:pointer; }
 .seg input { position:absolute; opacity:0; }
 .seg span { display:block; text-align:center; padding:11px 8px; border-radius:12px; font-weight:600; font-size:15px; color:var(--mute); transition:background .25s, color .25s; }
-.seg::before { content:''; position:absolute; top:4px; bottom:4px; left:4px; width:calc(50% - 4px); border-radius:12px; background:var(--ink); transition:transform .4s var(--curve); }
+.seg::before { content:''; position:absolute; top:4px; bottom:4px; left:4px; width:calc((100% - 8px) / 3); border-radius:12px; background:var(--ink); transition:transform .4s var(--curve); }
 .seg:has(input[value=spread]:checked)::before { transform:translateX(100%); }
+.seg:has(input[value=spread24]:checked)::before { transform:translateX(200%); }
 .seg span { position:relative; }
 .seg input:checked + span { color:var(--paper); }
 .seg input:focus-visible + span { outline:2px solid var(--green); outline-offset:2px; }
@@ -582,7 +583,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .t-price { font-family:'Funnel Display', sans-serif; font-size:clamp(56px, 6.4vw, 84px); font-weight:650; letter-spacing:-0.04em; line-height:1; font-variant-numeric:tabular-nums; }
 .t-note { font-size:14px; color:#B9C7C1; min-height:1.5em; }
 .t-stats { display:grid; grid-template-columns:repeat(3, auto); justify-content:start; gap:28px; margin:18px 0 22px; padding-top:18px; border-top:1px solid #33433F; font-size:13px; color:#B9C7C1; }
-.t-stats span { display:grid; gap:2px; }
+.t-stats span { display:grid; gap:2px; align-content:start; }
 .t-stats b { font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:600; color:var(--paper); font-variant-numeric:tabular-nums; }
 .btn.light { background:var(--paper); color:var(--ink); align-self:flex-start; margin-top:auto; }
 .btn.light:hover { background:var(--sage); color:var(--ink); }
@@ -874,7 +875,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   <h2>taal means rhythm. <span>Keep your studio in sync.</span></h2>
   <div class="promises">
     <div><h3>Your brand</h3><p class="key"><span>Your app.</span></p>
-      <p class="sub">Your name and colours on their phones. Booking takes seconds, reminders cut no-shows and alerts bring people back when a space opens.</p>
+      <p class="sub">Your name and colours on their phones, built around how you run things. When your studio changes, it changes with you, with no waiting on a supplier's roadmap.</p>
     </div>
     <div><h3>Your data</h3><p class="key"><span>Yours to keep.</span></p>
       <p class="sub">Kept in your own accounts, never in a database shared with other studios. If you leave, it goes with you.</p>
@@ -976,7 +977,8 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
       <div class="seg" role="radiogroup" aria-label="How to pay">
         <label><input type="radio" name="pay" value="once"><span>Pay once</span></label>
-        <label><input type="radio" name="pay" value="spread" checked><span>Over 12 months</span></label>
+        <label><input type="radio" name="pay" value="spread" checked><span>12 months</span></label>
+        <label><input type="radio" name="pay" value="spread24"><span>24 months</span></label>
       </div>
       <label class="opt"><span class="opt-text"><b>Care plan</b><small>Updates and support</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-foot">Up to 2,000 active clients. Bigger than that? We'll quote.</p>
@@ -988,7 +990,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <div class="t-stats">
         <span><b>£30</b>a month to hosting and email</span>
         <span><b id="tY1">£3,780</b>year one</span>
-        <span><b id="tLater">£360</b>each year after</span>
+        <span><b id="tLater">£360</b><span id="tLaterLabel">each year after</span></span>
       </div>
       <div class="t-go"><button type="button" class="btn btn-seal" id="callOpen" aria-haspopup="dialog">Arrange a call</button><a class="t-demo to-demo" href="demo.html">Or build your demo first</a></div>
     </div>
@@ -1033,9 +1035,10 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   <details class="faq-all"><summary><h2>Questions</h2><small>Costs, moving across and your data</small></summary>
   <div class="faq-list">
     <details><summary>What do we pay after setup?</summary><p>Only the running costs: about £30 a month for hosting and email, paid directly to those companies from your own accounts, not to us. That's about £1 a day. Your system runs on your own accounts so you can see exactly what it costs and nobody adds a mark-up. It covers studios with up to about 2,000 active clients; above that, email costs grow and we quote for your size. There's no monthly fee to us.</p></details>
-    <details><summary>How do we pay for setup?</summary><p>Pay once, in three parts: a third when you sign, a third when we hand over your test version and the rest when you go live. Or spread it over 12 months: £400 to start then £150 a month for the booking system (£2,200 in total). Your own apps add £200 then £85 a month, and the website £200 then £65 a month, so all three come to £800 then £300 a month (£4,400). Our first three studios get 30% off setup, in return for a short case study.</p></details>
+    <details><summary>How do we pay for setup?</summary><p>Pay once, in three parts: a third when you sign, a third when we hand over your test version and the rest when you go live. Or spread it over 12 months: £400 to start then £150 a month for the booking system (£2,200 in total). Your own apps add £200 then £85 a month, and the website £200 then £65 a month, so all three come to £800 then £300 a month (£4,400). Or over 24 months, to keep cash flow easy: £300 to start then £90 a month for the booking system (£2,460), with apps adding £100 then £50 a month and the website £200 then £35 a month, so all three come to £600 then £175 a month (£4,800). Our first three studios get 30% off setup, in return for a short case study.</p></details>
     <details><summary>Who sets up the accounts, and who owns the apps?</summary><p>We set everything up in your studio's name and on your own billing: hosting, email, payments and your Apple and Google developer accounts. The apps are published under your accounts, so they're yours. Apple charges about £79 a year and Google $25 once. Apple asks businesses for a D-U-N-S number, which is free, and we'll help you get one.</p></details>
     <details><summary>How long until we switch?</summary><p>You can build a working demo yourself in about a minute, and we build your full system the way you want it, ready for you to try within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
+    <details><summary>Can you change it when our studio changes?</summary><p>Yes. It's your system, so it changes when you do, not when a supplier gets round to it. Small changes are included for the first 12 months and on the care plan: new class types, prices, wording and how booking works. Bigger features, like a new module or connecting another service, get a fixed quote before we start. You also have the code, so any developer can work on it too.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. You can export or delete a member's data when they ask, as UK GDPR requires, and if you ever leave, it all goes with you.</p></details>
     <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan at £300 a year, or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.</p></details>
@@ -1422,24 +1425,28 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
 (function () {
   const $ = id => document.getElementById(id);
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
-  // The booking system, plus apps and a website as add-ons. Spreading over 12 months: a starting payment, then 12 monthly ones.
+  // The booking system, plus apps and a website as add-ons. Spread over 12 or 24 months: a starting payment, then monthly ones.
   const ITEMS = {
-    base: { once: 1900, start: 400, monthly: 150 },
-    apps: { once: 1000, start: 200, monthly: 85 },
-    site: { once: 800, start: 200, monthly: 65 },
+    base: { once: 1900, spread: { start: 400, monthly: 150 }, spread24: { start: 300, monthly: 90 } },
+    apps: { once: 1000, spread: { start: 200, monthly: 85 }, spread24: { start: 100, monthly: 50 } },
+    site: { once: 800, spread: { start: 200, monthly: 65 }, spread24: { start: 200, monthly: 35 } },
   };
+  const MONTHS = { spread: 12, spread24: 24 };
   const RUNNING = 30, CARE = 300, OFF = 0.3;
   const founding = () => $('founding').getAttribute('aria-pressed') === 'true';
   const picked = name => document.querySelector('input[name=' + name + ']:checked').value;
   function costs() {
     const on = ['base', ...($('optApps').checked ? ['apps'] : []), ...($('optSite').checked ? ['site'] : [])];
-    const p = on.reduce((t, k) => ({ once: t.once + ITEMS[k].once, start: t.start + ITEMS[k].start, monthly: t.monthly + ITEMS[k].monthly }), { once: 0, start: 0, monthly: 0 });
+    const mode = picked('pay'), months = MONTHS[mode] || 0;
+    const p = on.reduce((t, k) => ({ once: t.once + ITEMS[k].once, start: t.start + (months ? ITEMS[k][mode].start : 0), monthly: t.monthly + (months ? ITEMS[k][mode].monthly : 0) }), { once: 0, start: 0, monthly: 0 });
     // The founding offer takes 30% off setup, whichever way they pay. Running costs and the care plan stay the same.
     if (founding()) for (const k in p) p[k] = Math.round(p[k] * (1 - OFF));
-    const spread = picked('pay') === 'spread';
-    const setup = spread ? p.start + p.monthly * 12 : p.once;
+    const spread = months > 0;
+    const setup = spread ? p.start + p.monthly * months : p.once;
     const care = $('optCare').checked ? CARE : 0;
-    return { p, spread, setup, care, y1: setup + RUNNING * 12, later: RUNNING * 12 + care };
+    // Year one: what they pay us in the first 12 months plus running costs. Over 24 months the payments run into year two.
+    const y1 = (spread ? p.start + p.monthly * 12 : p.once) + RUNNING * 12;
+    return { p, spread, months, setup, care, y1, later: RUNNING * 12 + care };
   }
   // Prices count up or down to their new value when an option changes.
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1456,8 +1463,9 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     $('tSetupLabel').textContent = c.spread ? 'To start' : 'Once, to set up';
     tween($('tSetup'), c.spread ? c.p.start : c.p.once);
     $('tSetupNote').textContent = (c.spread
-      ? 'Then ' + gbp(c.p.monthly) + ' a month for a year, ' + gbp(c.setup) + ' in all'
+      ? 'Then ' + gbp(c.p.monthly) + ' a month for ' + (c.months === 24 ? 'two years' : 'a year') + ', ' + gbp(c.setup) + ' in all'
       : 'In three parts as we build') + (founding() ? ', with 30% off' : '');
+    $('tLaterLabel').textContent = c.months === 24 ? 'each year after year two' : 'each year after';
     document.querySelectorAll('[data-item]').forEach(el => {
       const v = Math.round(ITEMS[el.dataset.item].once * (founding() ? 1 - OFF : 1));
       el.textContent = (el.dataset.item === 'base' ? '' : '+') + gbp(v);
@@ -1503,11 +1511,12 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     if ($('optApps').checked) items.push('your own apps');
     if ($('optSite').checked) items.push('a website');
     const list = items.length > 1 ? items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1] : items[0];
-    const spread = (document.querySelector('input[name=pay]:checked') || {}).value === 'spread';
+    const mode = (document.querySelector('input[name=pay]:checked') || {}).value;
+    const spread = mode === 'spread' || mode === 'spread24';
     const care = $('optCare').checked ? ', with the care plan' : '';
     const offer = $('founding').getAttribute('aria-pressed') === 'true' ? ', founding offer' : '';
     const cost = spread ? $('tSetup').textContent + ' to start. ' + $('tSetupNote').textContent : $('tSetup').textContent + ' once';
-    return list + (spread ? ', over 12 months' : ', paid once') + care + offer + '. ' + cost + '.';
+    return list + (mode === 'spread24' ? ', over 24 months' : spread ? ', over 12 months' : ', paid once') + care + offer + '. ' + cost + '.';
   }
   // Cal.com's embed loader (from their docs), loaded only when someone opens the dialog
   function loadCal() {
