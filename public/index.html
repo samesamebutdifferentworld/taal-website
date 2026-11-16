@@ -922,7 +922,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 
 <footer><div class="wrap foot">
   <div class="foot-brand"><a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>
-  <div class="foot-col"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a></div>
+  <div class="foot-col"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="dance.html">Dance</a><a href="saunas.html">Saunas</a><a href="martial-arts.html">Martial arts</a></div>
   <div class="foot-col"><span class="foot-h">Before you sign</span><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
@@ -1069,6 +1069,72 @@ const CONTACT_EMAIL = 'EMAIL';
         s3h: 'Sell at reception', s3: 'Sell passes, grip socks and drinks at the front desk.',
         s4: 'What each class earns after instructor splits.',
         s6: 'Clients, memberships and credits brought across from your current system.',
+      },
+    },
+    dance: {
+      sub: 'Dance', next: ['Next up, Tue 17 Nov 19:00', 'Salsa improvers', 'with Carla'],
+      tiles: [['Classes', 'dance'], ['Courses', 'mat'], ['Privates', 'pt'], ['Workshops', 'yoga']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Class pass', 60, '6 of 10 left'], ['Salsa course', 50, 'Week 3 of 6'], ['Private lesson', 100, '1 of 1 left']],
+      copy: {
+        people: 'dancers', People: 'Dancers', kindName: 'dance studio',
+        show1h: 'Book in two taps', show1: "Drop-in classes, courses and privates, with a waitlist when it's full.",
+        show2h: 'See what each class earns', show2: 'Takings after teacher splits, class by class.',
+        show3h: 'A diary teachers use', show3: "Classes, who's booked and pay in one place. Cover gets sorted without a group chat.",
+        f1h: 'Book anything', f1: 'Drop-ins, multi-week courses, workshops and private lessons, from one app.',
+        f2h: 'Passes and courses', f2: 'Class passes, memberships and courses, with credits counted for them.',
+        f3h: 'Check in by QR', f3: 'They show a QR code at the door, so the register takes care of itself.',
+        f4h: 'Their dance stats', f4: "Every class they've taken, with monthly and yearly stats to keep them coming back.",
+        t3h: 'Dancer notes', t3: 'Injuries and notes, seen only by the teachers you allow.',
+        t4h: 'Class plans', t4: "Add the routine or the week's focus to each class for teachers to see.",
+        s1h: 'Timetable and studios', s1: 'Plan classes, courses and studio space in one place.',
+        s3h: 'Sell at reception', s3: 'Sell passes, shoes and drinks at the front desk.',
+        s4: 'What each class earns after teacher splits.',
+        s6: 'Dancers, passes and credits brought across from your current system.',
+      },
+    },
+    sauna: {
+      sub: 'Sauna', next: ['Next up, Wed 18 Nov 07:00', 'Sauna and plunge', '90 minutes'],
+      tiles: [['Sessions', 'sauna'], ['Cold plunge', 'plunge'], ['Rituals', 'yoga'], ['Treatments', 'deeptissue']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Sauna sessions', 70, '7 of 10 left'], ['Aufguss rituals', 100, 'Unlimited', 1], ['Bring a friend', 100, '1 of 1 left']],
+      copy: {
+        people: 'guests', People: 'Guests', kindName: 'sauna',
+        show1h: 'Book in two taps', show1: 'Timed sessions, rituals and treatments, with no overbooking.',
+        show2h: 'See what every session earns', show2: "Takings by session and by hour, so you know when you're full.",
+        show3h: 'A diary your team uses', show3: 'Sessions, rituals, treatments and pay in one place.',
+        f1h: 'Book a session', f1: 'Sauna and plunge sessions, rituals and treatments, from one app.',
+        f2h: 'Memberships and packs', f2: 'Monthly memberships, session packs and off-peak passes, with credits counted for them.',
+        f3h: 'Check in by QR', f3: 'They scan in at the door. No paper lists at the desk.',
+        f4h: 'Their visits and stats', f4: "Every session they've booked, with monthly and yearly stats.",
+        t3h: 'Guest notes', t3: 'Health forms and notes, seen only by the team you allow.',
+        t4h: 'Ritual plans', t4: 'Add the aufguss scents or the session plan for the whole team to see.',
+        s1h: 'Sessions and capacity', s1: 'Timed sessions with a set number of places, and time to turn around between them.',
+        s3h: 'Sell at reception', s3: 'Sell passes, towels, robes and drinks at the front desk.',
+        s4: 'What each session and treatment earns.',
+        s6: 'Guests, memberships and credits brought across from your current system.',
+      },
+    },
+    martial: {
+      sub: 'Martial arts', next: ['Next up, Thu 19 Nov 19:00', 'Muay Thai', 'with Kai'],
+      tiles: [['Classes', 'martial'], ['Open mat', 'mat'], ['Privates', 'pt'], ['Fundamentals', 'strength']],
+      card: ['Included in your membership', 'Renews 3 Dec'],
+      rows: [['Unlimited classes', 100, 'Unlimited', 1], ['Open mat', 100, 'Unlimited', 1], ['Private session', 100, '1 of 1 left']],
+      copy: {
+        people: 'members', People: 'Members', kindName: 'club',
+        show1h: 'Book in two taps', show1: 'Classes, open mat and privates, then scan in at the door.',
+        show2h: 'See what each class earns', show2: 'Takings after coach splits, class by class.',
+        show3h: 'A diary coaches use', show3: 'Classes, notes and pay in one place. Cover gets sorted without a group chat.',
+        f1h: 'Book anything', f1: 'Classes, open mat, privates and seminars, from one app.',
+        f2h: 'Memberships and packs', f2: 'Monthly memberships, class packs and trial offers, with credits counted for them.',
+        f3h: 'Door entry by QR', f3: 'They scan in with their phone. No fobs or cards to hand out.',
+        f4h: 'Training log', f4: "Every class they've trained, with monthly and yearly stats to keep them coming back.",
+        t3h: 'Member notes', t3: 'Injuries and notes, seen only by the coaches you allow.',
+        t4h: 'Class plans', t4: 'Attach the technique or drill plan to each class so every coach runs it the same way.',
+        s1h: 'Timetable and mats', s1: 'Plan classes, open mat and rooms in one place.',
+        s3h: 'Sell at reception', s3: 'Sell passes, gloves, wraps and drinks at the front desk.',
+        s4: 'What each class earns after coach splits.',
+        s6: 'Members, memberships and credits brought across from your current system.',
       },
     },
   };

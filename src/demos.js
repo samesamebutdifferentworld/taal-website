@@ -14,7 +14,7 @@
 const YEAR = 365 * 86400;
 const DEMO_DAYS = 30;
 const MAX_LOGO = 1.8 * 1024 * 1024;
-const KINDS = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga', pilates: 'Pilates' };
+const KINDS = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga', pilates: 'Pilates', dance: 'Dance', sauna: 'Sauna', martial: 'Martial arts' };
 const FONTS = ['elegant', 'modern', 'bold'];
 
 export async function demos(request, env, url) {

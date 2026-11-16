@@ -68,7 +68,8 @@ textarea { min-height:132px; resize:vertical; }
 
 .seg { grid-template-columns:repeat(3, minmax(0, 1fr)); }
 .kinds, .seg { display:grid; padding:4px; border-radius:999px; background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--rule); }
-.kinds { grid-template-columns:repeat(4, minmax(0, 1fr)); }
+.kinds { display:flex; flex-wrap:wrap; gap:2px; border-radius:24px; }
+.kinds button { flex:1 1 auto; padding:10px 14px; }
 .kinds button, .seg button { font:inherit; font-size:15px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:10px 4px; cursor:pointer; transition:background .2s, color .2s; }
 .kinds button:hover, .seg button:hover { color:var(--ink); }
 .kinds button[aria-checked="true"], .seg button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
@@ -299,6 +300,9 @@ footer a { color:var(--mute); }
           <button type="button" role="radio" aria-checked="false" data-k="wellness" tabindex="-1">Wellness</button>
           <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
           <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
+          <button type="button" role="radio" aria-checked="false" data-k="dance" tabindex="-1">Dance</button>
+          <button type="button" role="radio" aria-checked="false" data-k="sauna" tabindex="-1">Sauna</button>
+          <button type="button" role="radio" aria-checked="false" data-k="martial" tabindex="-1">Martial arts</button>
         </div>
       </div>
       <div class="field"><label for="studio">Studio name <small>optional</small></label><input type="text" id="studio" name="studio" maxlength="40" autocomplete="organization" placeholder="Your studio"></div>
@@ -487,6 +491,24 @@ footer a { color:var(--mute); }
       rows: [['8 reformer classes', 62, '5 of 8 left', 0, 'c'], ['Mat classes', 100, 'Unlimited', 1, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
       books: { classes: 'Reformer, mat and online classes.', appointments: 'Private sessions.', both: 'Reformer, mat and online classes, and private sessions.' },
       classes: 'Reformer, Reformer intermediate, Mat Pilates, Barre and Stretch' },
+    dance: { sub: 'Dance',
+      next: { c: ['Next up, Tue 19:00', 'Salsa improvers', 'with Carla'], p: ['Next up, Tue 13:00', 'Private lesson', 'with Carla'] },
+      tiles: [['Classes', 'dance', 'c'], ['Courses', 'mat', 'c'], ['Privates', 'pt', 'p'], ['Workshops', 'yoga', 'c'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Timetable', 'strength', 'a']],
+      rows: [['Class pass', 60, '6 of 10 left', 0, 'c'], ['Salsa course', 50, 'Week 3 of 6', 0, 'c'], ['Private lesson', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Drop-in classes, courses and workshops.', appointments: 'Private lessons.', both: 'Drop-in classes, courses, workshops and private lessons.' },
+      classes: 'Salsa, Bachata, Contemporary, Ballet fit, Heels and Commercial' },
+    sauna: { sub: 'Sauna',
+      next: { c: ['Next up, Wed 19:00', 'Aufguss ritual', 'with Freya'], p: ['Next up, Wed 07:00', 'Sauna and plunge', '90 minutes'] },
+      tiles: [['Sessions', 'sauna', 'p'], ['Cold plunge', 'plunge', 'p'], ['Rituals', 'yoga', 'c'], ['Treatments', 'deeptissue', 'p'], ['Gift cards', 'gift', 'g'], ['Packs', 'mat', 'a'], ['Timetable', 'opengym', 'a']],
+      rows: [['Sauna sessions', 70, '7 of 10 left', 0, 'p'], ['Aufguss rituals', 100, 'Unlimited', 1, 'c'], ['60 min massage', 100, '1 of 1 left', 0, 'p'], ['Bring a friend', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Rituals like aufguss, breathwork and sound baths.', appointments: 'Timed sauna and plunge sessions, and treatments.', both: 'Sauna and plunge sessions, rituals and treatments.' },
+      classes: 'Aufguss, Breathwork, Sound bath and Cold water' },
+    martial: { sub: 'Martial arts',
+      next: { c: ['Next up, Thu 19:00', 'Muay Thai', 'with Kai'], p: ['Next up, Thu 12:00', 'Private session', 'with Kai'] },
+      tiles: [['Classes', 'martial', 'c'], ['Open mat', 'mat', 'a'], ['Privates', 'pt', 'p'], ['Fundamentals', 'strength', 'c'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Timetable', 'yoga', 'a']],
+      rows: [['Unlimited classes', 100, 'Unlimited', 1, 'c'], ['Open mat', 100, 'Unlimited', 1, 'a'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Classes and open mat.', appointments: 'Private sessions, plus open mat.', both: 'Classes, open mat and private sessions.' },
+      classes: 'Brazilian jiu-jitsu, Muay Thai, Boxing, Kickboxing, No-gi and Fundamentals' },
   };
   Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
   const fit = (tag) => tag === 'a' || (tag === 'g' ? $('gift').checked : state.books === 'both' || (tag === 'c') === (state.books === 'classes'));
