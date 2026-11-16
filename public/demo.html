@@ -256,6 +256,7 @@ footer a { color:var(--mute); }
   legend { font-size:21px; }
   .two { grid-template-columns:1fr; }
   .kinds button, .seg button { font-size:14px; }
+  .kinds button { padding:10px 2px; white-space:nowrap; }
   .seg button { padding:10px 2px; font-size:13.5px; }
   .op-grid { grid-template-columns:1fr 1fr; }
   .op-grid label:last-child { grid-column:1 / -1; }
@@ -298,10 +299,10 @@ footer a { color:var(--mute); }
         <div class="kinds" role="radiogroup" aria-labelledby="kindLabel">
           <button type="button" role="radio" aria-checked="true" data-k="fitness">Fitness</button>
           <button type="button" role="radio" aria-checked="false" data-k="wellness" tabindex="-1">Wellness</button>
-          <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
-          <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
+          <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga &amp; Pilates</button>
           <button type="button" role="radio" aria-checked="false" data-k="dance" tabindex="-1">Dance</button>
           <button type="button" role="radio" aria-checked="false" data-k="martial" tabindex="-1">Martial arts</button>
+          <button type="button" role="radio" aria-checked="false" data-k="climbing" tabindex="-1">Climbing</button>
         </div>
       </div>
       <div class="field"><label for="studio">Studio name <small>optional</small></label><input type="text" id="studio" name="studio" maxlength="40" autocomplete="organization" placeholder="Your studio"></div>
@@ -453,7 +454,7 @@ footer a { color:var(--mute); }
   </section>
 </main>
 
-<footer><div class="wrap"><span>taal, studio software for independent gyms and wellness studios, made in London.</span><span class="flinks"><a href="./">Home</a> <a href="privacy.html">Privacy</a></span></div></footer>
+<footer><div class="wrap"><span>taal, studio software for independent gyms, studios and clubs, made in London.</span><span class="flinks"><a href="./">Home</a> <a href="privacy.html">Privacy</a></span></div></footer>
 
 <script src="js/qrcode.min.js" defer></script>
 <script>
@@ -478,18 +479,12 @@ footer a { color:var(--mute); }
       rows: [['Sauna sessions', 75, '3 of 4 left', 0, 'p'], ['60 min massage', 100, '1 of 1 left', 0, 'p'], ['Breathwork', 100, 'Unlimited', 1, 'c'], ['Workshops', 50, '1 of 2 left', 0, 'c'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
       books: { classes: 'Classes like breathwork and yin, and workshops.', appointments: 'Treatments and sauna sessions.', both: 'Treatments, sauna sessions, classes and workshops.' },
       classes: 'Breathwork, Yin, Sound bath and Mobility' },
-    yoga: { sub: 'Yoga',
+    yoga: { sub: 'Yoga and Pilates',
       next: { c: ['Next up, Tue 07:15', 'Vinyasa flow', 'with Priya'], p: ['Next up, Tue 13:00', 'Private session', 'with Priya'] },
-      tiles: [['Classes', 'yoga', 'c'], ['Workshops', 'pt', 'c'], ['Online', 'mat', 'c'], ['Privates', 'deeptissue', 'p'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Intro offer', 'yoga', 'a'], ['Timetable', 'strength', 'a']],
-      rows: [['Studio classes', 100, 'Unlimited', 1, 'c'], ['Online classes', 100, 'Unlimited', 1, 'c'], ['Workshops', 50, '1 of 2 left', 0, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
-      books: { classes: 'Classes, workshops and online classes.', appointments: 'Private sessions.', both: 'Classes, workshops, online classes and private sessions.' },
-      classes: 'Vinyasa flow, Hatha, Yin, Power yoga, Yoga for beginners and Restorative' },
-    pilates: { sub: 'Pilates',
-      next: { c: ['Next up, Mon 18:30', 'Reformer', 'with Sophie'], p: ['Next up, Mon 12:00', 'Private session', 'with Sophie'] },
-      tiles: [['Reformer', 'reformer', 'c'], ['Mat', 'mat', 'c'], ['Privates', 'pt', 'p'], ['Intro offer', 'deeptissue', 'a'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Timetable', 'yoga', 'a']],
-      rows: [['8 reformer classes', 62, '5 of 8 left', 0, 'c'], ['Mat classes', 100, 'Unlimited', 1, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
-      books: { classes: 'Reformer, mat and online classes.', appointments: 'Private sessions.', both: 'Reformer, mat and online classes, and private sessions.' },
-      classes: 'Reformer, Reformer intermediate, Mat Pilates, Barre and Stretch' },
+      tiles: [['Yoga', 'yoga', 'c'], ['Reformer', 'reformer', 'c'], ['Mat', 'mat', 'c'], ['Privates', 'pt', 'p'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Intro offer', 'deeptissue', 'a'], ['Timetable', 'strength', 'a']],
+      rows: [['Studio classes', 100, 'Unlimited', 1, 'c'], ['8 reformer classes', 62, '5 of 8 left', 0, 'c'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a'], ['Privates pack', 40, '2 of 5 left', 0, 'p']],
+      books: { classes: 'Yoga, reformer, mat and online classes, and workshops.', appointments: 'Private sessions.', both: 'Yoga, reformer, mat and online classes, workshops and private sessions.' },
+      classes: 'Vinyasa flow, Hatha, Yin, Reformer, Mat Pilates and Barre' },
     dance: { sub: 'Dance',
       next: { c: ['Next up, Tue 19:00', 'Salsa improvers', 'with Carla'], p: ['Next up, Tue 13:00', 'Private lesson', 'with Carla'] },
       tiles: [['Classes', 'dance', 'c'], ['Courses', 'mat', 'c'], ['Privates', 'pt', 'p'], ['Workshops', 'yoga', 'c'], ['Gift cards', 'gift', 'g'], ['Passes', 'opengym', 'a'], ['Timetable', 'strength', 'a']],
@@ -502,6 +497,12 @@ footer a { color:var(--mute); }
       rows: [['Unlimited classes', 100, 'Unlimited', 1, 'c'], ['Open mat', 100, 'Unlimited', 1, 'a'], ['Private session', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
       books: { classes: 'Classes and open mat.', appointments: 'Private sessions, plus open mat.', both: 'Classes, open mat and private sessions.' },
       classes: 'Brazilian jiu-jitsu, Muay Thai, Boxing, Kickboxing, No-gi and Fundamentals' },
+    climbing: { sub: 'Climbing',
+      next: { c: ['Next up, Sat 10:00', 'Intro to bouldering', 'with Sam'], p: ['Next up, Sat 12:00', 'Induction', 'with Sam'] },
+      tiles: [['Bouldering', 'climbing', 'a'], ['Classes', 'strength', 'c'], ['Inductions', 'pt', 'p'], ['Yoga', 'yoga', 'c'], ['Gift cards', 'gift', 'g'], ['Passes', 'mat', 'a'], ['Timetable', 'opengym', 'a']],
+      rows: [['Unlimited climbing', 100, 'Unlimited', 1, 'a'], ['Technique classes', 50, '2 of 4 left', 0, 'c'], ['Induction', 100, '1 of 1 left', 0, 'p'], ['Guest pass', 100, '1 of 1 left', 0, 'a']],
+      books: { classes: 'Climbing sessions, technique classes and yoga.', appointments: 'Climbing sessions, inductions and coaching.', both: 'Climbing sessions, classes, inductions and coaching.' },
+      classes: 'Intro to bouldering, Technique, Strength for climbers, Mobility and Yoga for climbers' },
   };
   Object.values(T).forEach(k => k.tiles.forEach(([, img]) => { new Image().src = 'img/app/' + img + '.svg'; }));
   const fit = (tag) => tag === 'a' || (tag === 'g' ? $('gift').checked : state.books === 'both' || (tag === 'c') === (state.books === 'classes'));
@@ -609,6 +610,7 @@ footer a { color:var(--mute); }
   /* Coming from the home page: carry over the type, name and colour they tried there. */
   const q = new URLSearchParams(location.search);
   let kind = q.get('type');
+  if (kind === 'pilates') kind = 'yoga';
   if (!T[kind]) { try { kind = localStorage.getItem('taalKind'); } catch (e) { kind = null; } }
   if (T[kind]) state.kind = kind;
   if (q.get('name')) form.studio.value = q.get('name').slice(0, 40);

@@ -34,11 +34,14 @@ FAVICON = ("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24'
 KINDS = [
     ('gyms.html', 'fitness', 'Gyms', 'your gym', 'coaches', ('Forge', '#24365C')),
     ('wellness.html', 'wellness', 'Wellness', 'your wellness studio', 'therapists', ('Haven', '#155E5A')),
-    ('yoga.html', 'yoga', 'Yoga', 'your yoga studio', 'teachers', ('Still', '#5E2C4E')),
-    ('pilates.html', 'pilates', 'Pilates', 'your Pilates studio', 'instructors', ('Line', '#4D5A2C')),
+    ('yoga-pilates.html', 'yoga', 'Yoga and Pilates', 'your yoga or Pilates studio', 'teachers', ('Still', '#5E2C4E'), 'yoga and Pilates studios'),
     ('dance.html', 'dance', 'Dance', 'your dance studio', 'teachers', ('Pulse', '#8A3324')),
     ('martial-arts.html', 'martial', 'Martial arts', 'your martial arts club', 'coaches', ('Kaizen', '#3B2F2F')),
+    ('climbing.html', 'climbing', 'Climbing', 'your climbing wall', 'staff', ('Crux', '#4D5A2C')),
 ]
+
+# Old addresses that now live on a combined page.
+REDIRECTS = {'yoga.html': 'yoga-pilates.html', 'pilates.html': 'yoga-pilates.html'}
 
 e = html.escape
 
@@ -56,7 +59,7 @@ def footer(current=''):
     studios = ''.join(a(f, label) for f, _, label, *_ in KINDS)
     before = a('compare.html', 'Compare costs') + a('leaving.html', 'Leaving taal') + a('privacy.html', 'Privacy') + '<a class="mail" href="mailto:EMAIL">Contact</a>'
     return (f'<footer><div class="wrap foot">\n'
-            f'  <div class="foot-brand"><a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>\n'
+            f'  <div class="foot-brand"><a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a><p>Studio software made in London for independent gyms, studios and clubs.</p></div>\n'
             f'  <div class="foot-col foot-two"><span class="foot-h">For your studio</span>{studios}</div>\n'
             f'  <div class="foot-col"><span class="foot-h">Before you sign</span>{before}</div>\n'
             '</div></footer>\n'
@@ -132,10 +135,10 @@ def coda(title, text, href, extra=''):
 </section>'''
 
 
-def studio_page(file, key, label, studio, team, brand):
+def studio_page(file, key, label, studio, team, brand, plural=None):
     k = T[key]; c = k['copy']
     people = c['people']
-    plural = studio.replace('your ', '') + 's'
+    plural = plural or studio.replace('your ', '') + 's'
     title = f'Booking app for {plural}: taal'
     desc = f"Your own booking app for {plural}, in your brand. {c['show1']} Pay once from £1,900, with no monthly fee to us."
     others = ''.join(f'<a href="{f}"{" aria-current=\"page\"" if f == file else ""}>{l}</a>' for f, _, l, *_ in KINDS)
@@ -229,6 +232,8 @@ if __name__ == '__main__':
     for row in KINDS:
         studio_page(*row)
     leaving_page()
+    for old, new in REDIRECTS.items():
+        (PUB / old).write_text(f'<!DOCTYPE html>\n<html lang="en-GB"><head><meta charset="utf-8"><title>taal</title><meta name="robots" content="noindex"><link rel="canonical" href="{new}"><meta http-equiv="refresh" content="0; url={new}"></head><body><a href="{new}">Continue</a></body></html>\n')
     for f in ('compare.html', 'privacy.html'):
         if (PUB / f).exists():
             stamp(f)
