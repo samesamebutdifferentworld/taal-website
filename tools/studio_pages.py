@@ -58,7 +58,7 @@ def footer(current=''):
     before = a('compare.html', 'Compare costs') + a('leaving.html', 'Leaving taal') + a('privacy.html', 'Privacy') + '<a class="mail" href="mailto:EMAIL">Contact</a>'
     return (f'<footer><div class="wrap foot">\n'
             f'  <div class="foot-brand"><a class="logo" href="index.html" aria-label="taal home">{MARK.format(s=20, cls='')}taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>\n'
-            f'  <div class="foot-col"><span class="foot-h">For your studio</span>{studios}</div>\n'
+            f'  <div class="foot-col foot-two"><span class="foot-h">For your studio</span>{studios}</div>\n'
             f'  <div class="foot-col"><span class="foot-h">Before you sign</span>{before}</div>\n'
             '</div></footer>\n'
             "<script>(function () { const EMAIL = 'EMAIL'; if (EMAIL.includes('@')) document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; if (a.textContent === 'EMAIL') a.textContent = EMAIL; });\n"

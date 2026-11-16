@@ -104,6 +104,8 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 .cycle { display:none; }
 @media (min-width: 1280px) {
   .cycle { display:flex; flex-direction:column; align-items:center; gap:20px; position:fixed; z-index:9; top:50%; transform:translateY(-50%); left:max(18px, calc((100vw - var(--max)) / 2 - 46px)); padding:14px 0; }
+  .cycle { transition:opacity .4s; }
+  .cycle.away { opacity:0; pointer-events:none; }
   .cycle::before { content:''; position:absolute; top:0; bottom:0; left:50%; width:1px; background:var(--hair); opacity:.6; transform:translateX(-50%); }
   .cycle::after { content:''; position:absolute; top:0; left:50%; width:1px; height:calc(var(--p, 0) * 100%); background:var(--ink); opacity:.35; transform:translateX(-50%); transition:height .25s linear; }
   .cycle button { all:unset; position:relative; z-index:1; cursor:pointer; display:grid; place-items:center; width:22px; padding:3px 0; }
@@ -358,8 +360,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .swatches .own { position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; background:conic-gradient(#e0533d, #e8b43a, #5aa85b, #3a86c8, #8b5cc4, #e0533d); cursor:pointer; }
 .swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
 .switch .note { font-size:13px; color:var(--mute); }
-.kinds { display:grid; grid-template-columns:repeat(4, 1fr); padding:4px; border-radius:999px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--rule); margin-bottom:6px; }
-.kinds button { font:inherit; font-size:14px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:9px 4px; cursor:pointer; transition:background .2s, color .2s; }
+.kinds { display:flex; flex-wrap:wrap; gap:2px; padding:4px; border-radius:22px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--rule); margin-bottom:6px; }
+.kinds button { flex:1 1 auto; font:inherit; font-size:14px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:9px 12px; cursor:pointer; transition:background .2s, color .2s; }
 .kinds button:hover { color:var(--ink); }
 .kinds button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
 .app-tiles, .app-card, .app-next > div { transition:opacity .18s; }
@@ -567,7 +569,9 @@ details p { margin-top:12px; color:var(--mute); max-width:38em; }
 .demo-cta .haven-link { color:var(--paper); font-size:15px; }
 
 footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px solid var(--rule); }
-.foot { display:grid; grid-template-columns:minmax(0,1.6fr) repeat(2, minmax(0,.7fr)); gap:36px 56px; align-items:start; }
+.foot { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1.15fr) minmax(0,.75fr); gap:36px 56px; align-items:start; }
+.foot-two { grid-template-columns:repeat(2, max-content); column-gap:48px; }
+.foot-two .foot-h { grid-column:1 / -1; }
 .foot-brand .logo { font-size:22px; }
 .foot-brand p { margin-top:14px; max-width:21em; font-size:15px; line-height:1.5; }
 .foot-col { display:grid; gap:9px; align-content:start; }
@@ -576,7 +580,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 .foot-col a::after { content:''; position:absolute; left:0; right:0; bottom:-3px; height:1.5px; background:var(--seal); transform:scaleX(0); transform-origin:left; transition:transform .35s var(--curve); }
 .foot-col a:hover, .foot-col a[aria-current] { color:var(--ink); }
 .foot-col a:hover::after, .foot-col a[aria-current]::after { transform:scaleX(1); }
-@media (max-width: 720px) { footer { padding:48px 0 56px; } .foot { grid-template-columns:repeat(2, minmax(0,1fr)); gap:32px 24px; } .foot-brand { grid-column:1 / -1; } }
+@media (max-width: 720px) { footer { padding:48px 0 56px; } .foot { grid-template-columns:minmax(0,1fr); gap:32px; } .foot-two { grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:24px; } .foot-col:not(.foot-two) { grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:24px; } .foot-col:not(.foot-two) .foot-h { grid-column:1 / -1; } }
 
 @media (max-width: 960px) {
   nav ul { display:none; }
@@ -712,6 +716,9 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
         <button type="button" role="radio" aria-checked="false" data-k="wellness" tabindex="-1">Wellness</button>
         <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
         <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
+        <button type="button" role="radio" aria-checked="false" data-k="dance" tabindex="-1">Dance</button>
+        <button type="button" role="radio" aria-checked="false" data-k="sauna" tabindex="-1">Sauna</button>
+        <button type="button" role="radio" aria-checked="false" data-k="martial" tabindex="-1">Martial arts</button>
       </div>
       <label class="name" for="studioName">Try it with your studio</label>
       <input type="text" id="studioName" placeholder="Your studio's name" maxlength="22" autocomplete="organization">
@@ -922,7 +929,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 
 <footer><div class="wrap foot">
   <div class="foot-brand"><a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>
-  <div class="foot-col"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="dance.html">Dance</a><a href="saunas.html">Saunas</a><a href="martial-arts.html">Martial arts</a></div>
+  <div class="foot-col foot-two"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="dance.html">Dance</a><a href="saunas.html">Saunas</a><a href="martial-arts.html">Martial arts</a></div>
   <div class="foot-col"><span class="foot-h">Before you sign</span><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
@@ -1234,6 +1241,9 @@ const CONTACT_EMAIL = 'EMAIL';
     cyc.style.setProperty('--p', Math.min(1, scrollY / Math.max(1, doc.scrollHeight - innerHeight)).toFixed(3));
     const r = cyc.getBoundingClientRect(), y = r.top + r.height / 2;
     cyc.classList.toggle('on-dark', dark.some(d => { const q = d.getBoundingClientRect(); return q.top < y && q.bottom > y; }));
+    // it steps aside once the footer comes up, so it never sits over the footer's links
+    const foot = document.querySelector('footer');
+    cyc.classList.toggle('away', !!foot && foot.getBoundingClientRect().top < r.bottom + 24);
     if (b === beat) return;
     beat = b;
     // after the last clap the cycle comes back round to sam
