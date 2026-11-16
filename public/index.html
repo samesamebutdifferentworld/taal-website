@@ -388,7 +388,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .hero-sign .rule { width:56px; height:1px; background:var(--ink); opacity:.5; }
 /* one entrance on load: the headline lines rise in turn, then the phone settles */
 @keyframes rise { from { opacity:0; transform:translateY(.35em); } to { opacity:1; transform:none; } }
-@keyframes settle { from { opacity:0; transform:translateY(24px) rotate(-1.5deg); } to { opacity:1; transform:none; } }
+/* The phone is visible from the first frame (it counts as the page's main image for load speed); it only settles into place. */
+@keyframes settle { from { transform:translateY(24px) rotate(-1.5deg); } to { transform:none; } }
 .hero h1 span { animation:rise .9s cubic-bezier(.2,.7,.2,1) both; }
 .hero h1 span:nth-child(2) { animation-delay:.08s; } .hero h1 span:nth-child(3) { animation-delay:.16s; }
 .hero .lede { animation:rise .9s cubic-bezier(.2,.7,.2,1) .26s both; }
@@ -670,8 +671,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 /* founder */
 .founder { padding:140px 0; position:relative; isolation:isolate; overflow:hidden; }
 /* yue float, the studio Tim ran: faded right back so the quote reads easily */
-.founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .86) 0%, rgb(242 243 238 / .8) 55%, rgb(242 243 238 / .64) 100%), url('img/yue-float.jpg') center 40%/cover no-repeat; }
-@media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .82), rgb(242 243 238 / .82)), url('img/yue-float-sm.jpg') 0% 30%/auto 125% no-repeat; } }
+.founder-bg { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg, rgb(242 243 238 / .86) 0%, rgb(242 243 238 / .8) 55%, rgb(242 243 238 / .64) 100%), image-set(url('img/yue-float.webp') type('image/webp'), url('img/yue-float.jpg') type('image/jpeg')) center 40%/cover no-repeat; }
+@media (max-width: 960px) { .founder-bg { background:linear-gradient(rgb(242 243 238 / .82), rgb(242 243 238 / .82)), image-set(url('img/yue-float-sm.webp') type('image/webp'), url('img/yue-float-sm.jpg') type('image/jpeg')) 0% 30%/auto 125% no-repeat; } }
 .founder .photo-note { margin-left:auto; align-self:center; width:auto; height:56px; display:block; }
 @media (max-width: 560px) { .founder .photo-note { height:46px; } }
 .founder blockquote, .founder figcaption, .founder figcaption .mute { color:var(--green); }
