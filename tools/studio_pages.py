@@ -179,11 +179,12 @@ def leaving_page():
         ('Your apps', "Published under your own Apple and Google accounts, so they stay in the stores."),
         ('Your web address', 'Registered to you.'),
         ('Your data', 'In a database in your own account, not one shared with other studios.'),
+        ('The code', "If we stop trading or can't support you for 90 days, you get the full source code, and any developer can look after it for you."),
     ]
     rows = ''.join(f'<li><b>{e(a)}</b><span>{e(b)}</span></li>' for a, b in keep)
     folds = '\n'.join([
         fold('export', 'How to export', "You don't need us for this", '<div class="prose"><p>In the back office, open <b>Import &amp; export</b> and download your clients, memberships, bookings, payments for any dates, and a sales journal for Xero, QuickBooks or Sage with VAT split out.</p>\n    <p>They\'re CSV files: they open in Excel, Numbers and Google Sheets, and other booking systems can import them. For the whole database as one file, ask us, or download it from your Cloudflare account.</p></div>'),
-        fold('going', 'When you go', 'What we do', '<div class="prose"><ul><li>Remove our access to your accounts, and confirm it in writing.</li><li>Hand over what we hold for you: logins we set up, your brand files and a copy of your data.</li><li>Delete our own copies once you have everything.</li></ul></div>'),
+        fold('going', 'When you go', 'What we do', '<div class="prose"><ul><li>Remove our access to your accounts, and confirm it in writing.</li><li>Hand over what we hold for you: logins we set up, your brand files, a copy of your data and an up-to-date handover document, so another developer can take over in a day.</li><li>Delete our own copies once you have everything.</li></ul></div>'),
         fold('care', 'The care plan', 'Stopping it', '<div class="prose"><p>It runs a year at a time. Tell us 30 days before it renews and it stops; there\'s nothing else to cancel. Your system keeps running without it, but without updates or support. If you have your own apps, Apple and Google ask for regular updates, so you\'d need someone to do those.</p></div>'),
     ])
     out = head('Leaving taal: what you keep and how to take it with you',
