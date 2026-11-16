@@ -360,7 +360,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .swatches .own { position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; background:conic-gradient(#e0533d, #e8b43a, #5aa85b, #3a86c8, #8b5cc4, #e0533d); cursor:pointer; }
 .swatches .own input { position:absolute; inset:-8px; width:48px; height:48px; opacity:0; cursor:pointer; }
 .switch .note { font-size:13px; color:var(--mute); }
-.kinds { display:flex; flex-wrap:wrap; gap:2px; padding:4px; border-radius:22px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--rule); margin-bottom:6px; }
+.kinds { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:2px; padding:4px; border-radius:22px; background:#fff; box-shadow:inset 0 0 0 1.5px var(--rule); margin-bottom:6px; }
 .kinds button { flex:1 1 auto; font:inherit; font-size:14px; font-weight:600; color:var(--mute); background:none; border:0; border-radius:999px; padding:9px 12px; cursor:pointer; transition:background .2s, color .2s; }
 .kinds button:hover { color:var(--ink); }
 .kinds button[aria-checked="true"] { background:var(--ink); color:var(--paper); }
@@ -570,7 +570,7 @@ details p { margin-top:12px; color:var(--mute); max-width:38em; }
 
 footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px solid var(--rule); }
 .foot { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1.15fr) minmax(0,.75fr); gap:36px 56px; align-items:start; }
-.foot-two { grid-template-columns:repeat(2, max-content); column-gap:48px; }
+.foot-col.foot-two { grid-template-columns:repeat(2, max-content); gap:9px 56px; }
 .foot-two .foot-h { grid-column:1 / -1; }
 .foot-brand .logo { font-size:22px; }
 .foot-brand p { margin-top:14px; max-width:21em; font-size:15px; line-height:1.5; }
@@ -580,7 +580,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 .foot-col a::after { content:''; position:absolute; left:0; right:0; bottom:-3px; height:1.5px; background:var(--seal); transform:scaleX(0); transform-origin:left; transition:transform .35s var(--curve); }
 .foot-col a:hover, .foot-col a[aria-current] { color:var(--ink); }
 .foot-col a:hover::after, .foot-col a[aria-current]::after { transform:scaleX(1); }
-@media (max-width: 720px) { footer { padding:48px 0 56px; } .foot { grid-template-columns:minmax(0,1fr); gap:32px; } .foot-two { grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:24px; } .foot-col:not(.foot-two) { grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:24px; } .foot-col:not(.foot-two) .foot-h { grid-column:1 / -1; } }
+@media (max-width: 720px) { footer { padding:48px 0 56px; } .foot { grid-template-columns:minmax(0,1fr); gap:32px; } .foot-col.foot-two { grid-template-columns:repeat(2, minmax(0,1fr)); gap:9px 24px; } .foot-col:not(.foot-two) { grid-template-columns:repeat(2, minmax(0,1fr)); gap:9px 24px; } .foot-col:not(.foot-two) .foot-h { grid-column:1 / -1; } }
 
 @media (max-width: 960px) {
   nav ul { display:none; }
@@ -717,7 +717,6 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
         <button type="button" role="radio" aria-checked="false" data-k="yoga" tabindex="-1">Yoga</button>
         <button type="button" role="radio" aria-checked="false" data-k="pilates" tabindex="-1">Pilates</button>
         <button type="button" role="radio" aria-checked="false" data-k="dance" tabindex="-1">Dance</button>
-        <button type="button" role="radio" aria-checked="false" data-k="sauna" tabindex="-1">Sauna</button>
         <button type="button" role="radio" aria-checked="false" data-k="martial" tabindex="-1">Martial arts</button>
       </div>
       <label class="name" for="studioName">Try it with your studio</label>
@@ -929,7 +928,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 
 <footer><div class="wrap foot">
   <div class="foot-brand"><a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a><p>Studio software made in London for independent gyms and wellness studios.</p></div>
-  <div class="foot-col foot-two"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="dance.html">Dance</a><a href="saunas.html">Saunas</a><a href="martial-arts.html">Martial arts</a></div>
+  <div class="foot-col foot-two"><span class="foot-h">For your studio</span><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="dance.html">Dance</a><a href="martial-arts.html">Martial arts</a></div>
   <div class="foot-col"><span class="foot-h">Before you sign</span><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
@@ -1098,28 +1097,6 @@ const CONTACT_EMAIL = 'EMAIL';
         s3h: 'Sell at reception', s3: 'Sell passes, shoes and drinks at the front desk.',
         s4: 'What each class earns after teacher splits.',
         s6: 'Dancers, passes and credits brought across from your current system.',
-      },
-    },
-    sauna: {
-      sub: 'Sauna', next: ['Next up, Wed 18 Nov 07:00', 'Sauna and plunge', '90 minutes'],
-      tiles: [['Sessions', 'sauna'], ['Cold plunge', 'plunge'], ['Rituals', 'yoga'], ['Treatments', 'deeptissue']],
-      card: ['Included in your membership', 'Renews 3 Dec'],
-      rows: [['Sauna sessions', 70, '7 of 10 left'], ['Aufguss rituals', 100, 'Unlimited', 1], ['Bring a friend', 100, '1 of 1 left']],
-      copy: {
-        people: 'guests', People: 'Guests', kindName: 'sauna',
-        show1h: 'Book in two taps', show1: 'Timed sessions, rituals and treatments, with no overbooking.',
-        show2h: 'See what every session earns', show2: "Takings by session and by hour, so you know when you're full.",
-        show3h: 'A diary your team uses', show3: 'Sessions, rituals, treatments and pay in one place.',
-        f1h: 'Book a session', f1: 'Sauna and plunge sessions, rituals and treatments, from one app.',
-        f2h: 'Memberships and packs', f2: 'Monthly memberships, session packs and off-peak passes, with credits counted for them.',
-        f3h: 'Check in by QR', f3: 'They scan in at the door. No paper lists at the desk.',
-        f4h: 'Their visits and stats', f4: "Every session they've booked, with monthly and yearly stats.",
-        t3h: 'Guest notes', t3: 'Health forms and notes, seen only by the team you allow.',
-        t4h: 'Ritual plans', t4: 'Add the aufguss scents or the session plan for the whole team to see.',
-        s1h: 'Sessions and capacity', s1: 'Timed sessions with a set number of places, and time to turn around between them.',
-        s3h: 'Sell at reception', s3: 'Sell passes, towels, robes and drinks at the front desk.',
-        s4: 'What each session and treatment earns.',
-        s6: 'Guests, memberships and credits brought across from your current system.',
       },
     },
     martial: {

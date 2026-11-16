@@ -37,7 +37,6 @@ KINDS = [
     ('yoga.html', 'yoga', 'Yoga', 'your yoga studio', 'teachers', ('Still', '#5E2C4E')),
     ('pilates.html', 'pilates', 'Pilates', 'your Pilates studio', 'instructors', ('Line', '#4D5A2C')),
     ('dance.html', 'dance', 'Dance', 'your dance studio', 'teachers', ('Pulse', '#8A3324')),
-    ('saunas.html', 'sauna', 'Saunas', 'your sauna', 'team', ('Ember', '#2A2A2A')),
     ('martial-arts.html', 'martial', 'Martial arts', 'your martial arts club', 'coaches', ('Kaizen', '#3B2F2F')),
 ]
 
