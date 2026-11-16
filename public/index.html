@@ -556,6 +556,40 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .t-stats b { font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:600; color:var(--paper); font-variant-numeric:tabular-nums; }
 .btn.light { background:var(--paper); color:var(--ink); align-self:flex-start; margin-top:auto; }
 .btn.light:hover { background:var(--sage); color:var(--ink); }
+/* arrange a call */
+.t-go { display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:auto; }
+.t-demo { color:var(--paper); font-size:15px; font-weight:500; text-decoration:underline; text-decoration-color:#4A5C57; text-underline-offset:4px; text-decoration-thickness:1px; transition:text-decoration-color .2s; }
+.t-demo:hover { text-decoration-color:currentColor; }
+@media (max-width: 560px) { .t-go { flex-direction:column; align-items:stretch; gap:14px; text-align:center; } .t-go .btn { align-self:stretch !important; } }
+dialog.callbox { border:0; padding:0; border-radius:26px; width:min(480px, calc(100% - 28px)); max-height:calc(100dvh - 28px); background:var(--paper); color:var(--ink); }
+dialog.callbox::backdrop { background:rgb(19 32 30 / .55); }
+@media (prefers-reduced-motion: no-preference) {
+  dialog.callbox[open] { animation:callIn .35s var(--curve, cubic-bezier(.2,.7,.2,1)); }
+  dialog.callbox[open]::backdrop { animation:fadeIn .3s ease; }
+}
+@keyframes callIn { from { opacity:0; transform:translateY(14px) scale(.98); } }
+@keyframes fadeIn { from { opacity:0; } }
+.callbox .cb { padding:30px 30px 28px; display:grid; gap:14px; position:relative; }
+.callbox h2 { font-size:30px; line-height:1.05; letter-spacing:-0.03em; padding-right:40px; }
+.callbox .cb-lede { color:var(--mute); font-size:15px; margin-top:-4px; }
+.callbox .cb-pick { background:var(--tint, #E3E9E3); border-radius:14px; padding:12px 14px; font-size:14px; color:var(--ink); }
+.callbox .cb-pick b { display:block; font-size:12px; font-weight:600; color:var(--green); margin-bottom:2px; }
+.callbox label { display:grid; gap:6px; font-size:14px; font-weight:600; }
+.callbox label small { font-weight:400; color:var(--mute); }
+.callbox input, .callbox textarea { width:100%; font:inherit; font-size:16px; font-weight:400; padding:12px 14px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); }
+.callbox textarea { resize:vertical; min-height:76px; }
+.callbox input:focus, .callbox textarea:focus { border-color:var(--green); outline:none; }
+.callbox .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width: 480px) { .callbox .two { grid-template-columns:1fr; } .callbox .cb { padding:26px 20px 22px; } }
+.callbox [hidden] { display:none !important; }
+.callbox .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.callbox .btn { margin-top:4px; }
+.callbox .cb-msg { font-size:14px; color:var(--seal); min-height:0; }
+.callbox .cb-msg:empty { display:none; }
+.callbox .cb-x { position:absolute; top:20px; right:20px; width:38px; height:38px; border-radius:50%; border:0; background:transparent; color:var(--ink); font-size:26px; line-height:1; cursor:pointer; }
+.callbox .cb-x:hover { background:var(--tint, #E3E9E3); }
+.callbox .cb-done p { color:var(--mute); }
+.callbox .cb-done .btn { justify-self:start; }
 .allin { margin-top:18px; font-size:14px; color:var(--mute); }
 .incl, details.incl:first-of-type { margin-top:8px; border:0; padding:0; }
 .incl summary { font-size:14px; font-weight:600; color:var(--green); justify-content:flex-start; gap:10px; }
@@ -923,7 +957,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
         <span><b id="tY1">£3,780</b>year one</span>
         <span><b id="tLater">£360</b>each year after</span>
       </div>
-      <a class="btn btn-seal to-demo" href="demo.html">Build your demo</a>
+      <div class="t-go"><button type="button" class="btn btn-seal" id="callOpen" aria-haspopup="dialog">Arrange a call</button><a class="t-demo to-demo" href="demo.html">Or build your demo first</a></div>
     </div>
   </div>
   <p class="allin">Setup includes 12 months of updates and support. Prices include VAT.</p>
@@ -995,6 +1029,30 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   <div class="foot-col"><span class="foot-h">Before you sign</span><a href="compare.html">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
+<dialog class="callbox" id="callBox" aria-labelledby="cbTitle">
+  <form class="cb" id="callForm" novalidate>
+    <button type="button" class="cb-x" id="callClose" aria-label="Close">&times;</button>
+    <h2 id="cbTitle">Arrange a call</h2>
+    <p class="cb-lede">A short video call with Tim. Ask anything and see how it would work with your timetable, prices and team.</p>
+    <p class="cb-pick" id="cbPick" hidden></p>
+    <label><span>Your name</span><input name="name" autocomplete="name" required maxlength="80"></label>
+    <label><span>Studio name</span><input name="studio" id="cbStudio" autocomplete="organization" required maxlength="60"></label>
+    <div class="two">
+      <label><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+      <label><span>Phone <small>optional</small></span><input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+    </div>
+    <label><span>Anything we should know? <small>optional</small></span><textarea name="note" maxlength="1500" placeholder="What you use now, how many clients, when you'd like to switch"></textarea></label>
+    <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+    <p class="cb-msg" id="cbMsg" role="alert"></p>
+    <button type="submit" class="btn btn-seal" id="cbSend">Ask for a call</button>
+  </form>
+  <div class="cb cb-done" id="callDone" hidden>
+    <button type="button" class="cb-x" data-close aria-label="Close">&times;</button>
+    <h2 id="cbDoneTitle">Thanks</h2>
+    <p id="cbDoneText"></p>
+    <a class="btn btn-seal" id="cbBook" href="#" target="_blank" rel="noopener" hidden>Book a time</a>
+  </div>
+</dialog>
 <script>
 // Set your contact address here. It is used by the demo form and the footer link.
 const CONTACT_EMAIL = 'EMAIL';
@@ -1411,6 +1469,68 @@ const CONTACT_EMAIL = 'EMAIL';
     q.set('colour', sw ? sw.dataset.c : document.getElementById('ownColour').value);
     a.href = 'demo.html?' + q.toString();
   }));
+})();
+
+/* Arrange a call: a short form in a dialog, with what they picked in the pricing builder */
+(function () {
+  const $ = id => document.getElementById(id);
+  const box = $('callBox'), form = $('callForm');
+  if (!box || !box.showModal) { const b = $('callOpen'); if (b) b.addEventListener('click', () => { location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A call about taal'); }); return; }
+  function picked() {
+    const items = ['Booking system'];
+    if ($('optApps').checked) items.push('their own apps');
+    if ($('optSite').checked) items.push('a website');
+    const list = items.length > 1 ? items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1] : items[0];
+    const spread = (document.querySelector('input[name=pay]:checked') || {}).value === 'spread';
+    const care = $('optCare').checked ? ', with the care plan' : '';
+    const offer = $('founding').getAttribute('aria-pressed') === 'true' ? ', founding offer' : '';
+    const cost = spread ? $('tSetup').textContent + ' to start. ' + $('tSetupNote').textContent : $('tSetup').textContent + ' once';
+    return { text: list + (spread ? ', over 12 months' : ', paid once') + care + offer, cost };
+  }
+  let pick = null;
+  $('callOpen').addEventListener('click', () => {
+    pick = picked();
+    $('cbPick').innerHTML = '<b>You picked</b>' + pick.text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]) + '. ' + pick.cost.replace(/[&<>]/g, '') + '.';
+    $('cbPick').hidden = false;
+    const name = $('studioName').value.trim();
+    if (name && !$('cbStudio').value) $('cbStudio').value = name;
+    form.hidden = false; $('callDone').hidden = true; $('cbMsg').textContent = '';
+    box.showModal();
+  });
+  const close = () => box.close();
+  $('callClose').addEventListener('click', close);
+  box.querySelector('[data-close]').addEventListener('click', close);
+  box.addEventListener('click', e => { if (e.target === box) close(); });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form));
+    if (!d.name.trim()) return say('Add your name.', 'name');
+    if (!d.studio.trim()) return say("Add your studio's name.", 'studio');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email.trim())) return say('Check your email address.', 'email');
+    d.package = pick ? pick.text + '. ' + pick.cost : '';
+    const btn = $('cbSend'); btn.disabled = true; btn.textContent = 'Sending';
+    try {
+      const res = await fetch('/api/call', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
+      const r = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(r.error || 'That did not send. Please try again.');
+      const first = d.name.trim().split(' ')[0];
+      $('cbDoneTitle').textContent = 'Thanks, ' + first;
+      const book = $('cbBook');
+      if (r.call_url) {
+        book.href = r.call_url; book.hidden = false;
+        $('cbDoneText').textContent = "Pick a time that suits you. We've emailed you the link too.";
+      } else {
+        book.hidden = true;
+        $('cbDoneText').textContent = r.emailed
+          ? "We've emailed you. Reply with a few times that suit you and we'll set up the call."
+          : 'Tim will be in touch at ' + d.email.trim() + ' within a day to find a time.';
+      }
+      form.hidden = true; $('callDone').hidden = false;
+      form.reset();
+    } catch (err) { say(err.message); }
+    finally { btn.disabled = false; btn.textContent = 'Ask for a call'; }
+  });
+  function say(msg, field) { $('cbMsg').textContent = msg; if (field) form.elements[field].focus(); }
 })();
 </script>
 </body>

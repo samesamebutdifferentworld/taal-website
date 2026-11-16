@@ -4,7 +4,9 @@
  * POST /api/build              the builder form (multipart, with an optional logo). Builds the demo in
  *                              the booking app through the BOOKING service binding, saves the studio as
  *                              a lead, emails them the links and tells you.
- * GET  /api/admin/leads        everyone who has built a demo (Bearer ADMIN_KEY), for /admin.html.
+ * POST /api/call               "Arrange a call" from the pricing section: saves the studio as a lead, emails
+ *                              them how to book a time (CALL_URL, or reply with times) and tells you.
+ * GET  /api/admin/leads        everyone who has built a demo or asked for a call (Bearer ADMIN_KEY), for /admin.html.
  *
  * Leads live in the ENQUIRIES KV namespace and are deleted after a year; the demos themselves are
  * deleted by the booking app after 30 days. Email goes through Resend (RESEND_API_KEY, EMAIL_FROM);
@@ -21,6 +23,7 @@ export async function demos(request, env, url) {
   const p = url.pathname;
   try {
     if (p === '/api/build' && request.method === 'POST') return await build(request, env, url);
+    if (p === '/api/call' && request.method === 'POST') return await callRequest(request, env);
     if (p === '/api/admin/leads' && request.method === 'GET') return await leads(request, env);
   } catch (err) {
     if (err instanceof Reply) return err.res;
@@ -120,6 +123,44 @@ async function build(request, env, url) {
   return json({ ok: true, name: made.name, emailed, ...links, contact: env.CONTACT_EMAIL && env.CONTACT_EMAIL.includes('@') ? env.CONTACT_EMAIL : '' });
 }
 
+async function callRequest(request, env) {
+  const b = await request.json().catch(() => fail(400, 'Please try sending that again.'));
+  const get = (k, max) => String(b[k] || '').trim().slice(0, max);
+  // A hidden field people never see; bots fill it in.
+  if (get('website', 200)) return json({ ok: true, call_url: '' });
+  const lead = {
+    type: 'call',
+    name: get('name', 80),
+    email: email(get('email', 200)),
+    studio: get('studio', 60),
+    phone: get('phone', 30),
+    note: get('note', 1500),
+    package: get('package', 200),
+  };
+  if (!lead.name) fail(400, 'Add your name.');
+  if (!lead.studio) fail(400, "Add your studio's name.");
+  await limit(request, env, lead.email, "You've already asked for a call today. We'll be in touch soon.", 'rc');
+
+  const callUrl = env.CALL_URL || '';
+  const id = token();
+  const rec = { id, ...lead, created_at: new Date().toISOString() };
+  await env.ENQUIRIES.put(`lead:${id}`, JSON.stringify(rec), {
+    expirationTtl: YEAR,
+    metadata: { type: 'call', studio: lead.studio, name: lead.name, email: lead.email, phone: lead.phone, package: lead.package, created_at: rec.created_at },
+  });
+  const emailed = await sendEmail(env, {
+    to: lead.email,
+    subject: `A call about ${lead.studio}`,
+    replyTo: env.CONTACT_EMAIL,
+    ...callEmail({ first: lead.name.split(' ')[0], studio: lead.studio, call_url: callUrl }),
+  });
+  await notify(env, `Call request: ${lead.studio}`, [
+    ['Name', lead.name], ['Email', lead.email], ['Phone', lead.phone], ['Studio', lead.studio],
+    ['Looking at', lead.package], ['Note', lead.note],
+  ]);
+  return json({ ok: true, emailed, call_url: callUrl });
+}
+
 async function leads(request, env) {
   const auth = request.headers.get('authorization') || '';
   if (!env.ADMIN_KEY || env.ADMIN_KEY.length < 16 || !timingSafe(auth, `Bearer ${env.ADMIN_KEY}`)) return json({ error: 'Not signed in' }, 401);
@@ -182,6 +223,29 @@ Founder, taal`;
   return { html, text };
 }
 
+export function callEmail({ first, studio, call_url }) {
+  const next = call_url
+    ? `<p style="margin:0 0 14px">Pick a time that suits you. It's a short video call: we'll answer your questions and show you how it would work with your real timetable, prices and team.</p><p style="margin:0 0 28px">${button(call_url, 'Book a time')}</p>`
+    : `<p style="margin:0 0 28px">Reply to this email with a few times that suit you and we'll set up a short video call. We'll answer your questions and show you how it would work with your real timetable, prices and team.</p>`;
+  const html = layout(`<p style="margin:0 0 16px">Hi ${esc(first)},</p>
+<p style="margin:0 0 20px">Thanks for asking about a call for ${esc(studio)}.</p>
+${next}
+<p style="margin:0;color:${C.mute};font-size:14px">Want to look first? You can build a free demo of your own app in about a minute on our website.</p>
+<p style="margin:16px 0 0">Tim<br><span style="color:${C.mute}">Founder, taal</span></p>`);
+  const text = `Hi ${first},
+
+Thanks for asking about a call for ${studio}.
+
+${call_url ? `Pick a time that suits you: ${call_url}` : `Reply to this email with a few times that suit you and we'll set up a short video call.`}
+We'll answer your questions and show you how it would work with your real timetable, prices and team.
+
+Want to look first? You can build a free demo of your own app in about a minute on our website.
+
+Tim
+Founder, taal`;
+  return { html, text };
+}
+
 async function notify(env, subject, rows) {
   if (!env.CONTACT_EMAIL || !env.CONTACT_EMAIL.includes('@')) return;
   const list = rows.filter(([, v]) => v);
@@ -231,12 +295,12 @@ const hex = (v) => (/^#[0-9a-f]{6}$/i.test(v) ? v : '');
 const time = (v, d) => (/^([01]\d|2[0-3]):[0-5]\d$/.test(v) ? v : d);
 
 /** Three demos an hour from one connection, and three a day for one email address. */
-async function limit(request, env, address) {
+async function limit(request, env, address, message = "You've built a few demos already today. Use the links in your email, or try again tomorrow.", prefix = 'rl') {
   const ip = request.headers.get('cf-connecting-ip') || 'local';
   const now = new Date().toISOString();
-  const keys = [[`rl:ip:${ip}:${now.slice(0, 13)}`, 3, 3700], [`rl:em:${address}:${now.slice(0, 10)}`, 3, 90000]];
+  const keys = [[`${prefix}:ip:${ip}:${now.slice(0, 13)}`, 3, 3700], [`${prefix}:em:${address}:${now.slice(0, 10)}`, 3, 90000]];
   for (const [k, max] of keys) {
-    if ((Number(await env.ENQUIRIES.get(k)) || 0) >= max) fail(429, "You've built a few demos already today. Use the links in your email, or try again tomorrow.");
+    if ((Number(await env.ENQUIRIES.get(k)) || 0) >= max) fail(429, message);
   }
   for (const [k, , ttl] of keys) await env.ENQUIRIES.put(k, String((Number(await env.ENQUIRIES.get(k)) || 0) + 1), { expirationTtl: ttl });
 }

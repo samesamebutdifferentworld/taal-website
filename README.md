@@ -26,7 +26,16 @@ Each demo has a private web address with a random ending, shows "Book a call" in
 (to `CALL_URL`, or back to the call section of `/demo.html`) and is deleted by the booking app
 after 30 days. Limits: three demos an hour per connection and three a day per email address.
 
-`/admin.html` lists everyone who built a demo, with links while it lasts. Sign in with `ADMIN_KEY`.
+## Arrange a call
+
+The pricing section's "Arrange a call" button opens a short form (name, studio, email, optional phone
+and note) that also sends what they picked in the price builder. `POST /api/call` saves it as a lead,
+emails the studio a link to book a time (`CALL_URL`) or asks them to reply with times, and emails
+`CONTACT_EMAIL`. Limits: three an hour per connection and three a day per email address, separate from
+the demo limits.
+
+`/admin.html` lists everyone who built a demo (with links while it lasts) or asked for a call (with
+their phone and what they picked). Sign in with `ADMIN_KEY`.
 
 Setup, in Cloudflare (Worker > Settings > Variables and secrets):
 - Secrets: `RESEND_API_KEY`, `ADMIN_KEY`.

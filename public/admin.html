@@ -50,18 +50,18 @@ tr.row:hover td { background:#F7F8F4; }
     if (!r.ok) throw new Error('Could not load (' + r.status + ').');
     return type === 'blob' ? r.blob() : r.json();
   });
-  const kinds = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga', pilates: 'Pilates' };
+  const kinds = { fitness: 'Fitness', wellness: 'Wellness', yoga: 'Yoga and Pilates', pilates: 'Pilates', dance: 'Dance', martial: 'Martial arts', climbing: 'Climbing' };
 
   async function load() {
     const { leads } = await call('leads');
     sessionStorage.setItem('taalAdmin', key);
     $('login').hidden = true; $('list').hidden = false;
     const live = x => x.expires_at && new Date(x.expires_at) > new Date();
-    $('list').innerHTML = leads.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Type</th><th class="hide-sm">Name</th><th>Email</th><th>Demo</th></tr></thead><tbody>${
-      leads.map(x => `<tr><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(kinds[x.kind] || '')}</td><td class="hide-sm">${esc(x.name)}</td><td><a href="mailto:${esc(x.email)}">${esc(x.email)}</a></td><td>${
-        live(x) ? `<a href="${esc(x.member_url)}" target="_blank" rel="noopener">App</a>&nbsp;&nbsp; <a href="${esc(x.admin_url)}" target="_blank" rel="noopener">Back office</a><br><span class="mute">until ${date(x.expires_at)}</span>` : '<span class="mute">Deleted</span>'
+    $('list').innerHTML = leads.length ? `<table><thead><tr><th>Date</th><th>Studio</th><th class="hide-sm">Type</th><th class="hide-sm">Name</th><th>Email</th><th>Demo or call</th></tr></thead><tbody>${
+      leads.map(x => `<tr><td>${date(x.created_at)}</td><td><b>${esc(x.studio)}</b></td><td class="hide-sm">${esc(kinds[x.kind] || '')}</td><td class="hide-sm">${esc(x.name)}</td><td><a href="mailto:${esc(x.email)}">${esc(x.email)}</a>${x.phone ? `<br><a href="tel:${esc(x.phone)}">${esc(x.phone)}</a>` : ''}</td><td>${
+        x.type === 'call' ? `<b>Wants a call</b>${x.package ? `<br><span class="mute">${esc(x.package)}</span>` : ''}` : live(x) ? `<a href="${esc(x.member_url)}" target="_blank" rel="noopener">App</a>&nbsp;&nbsp; <a href="${esc(x.admin_url)}" target="_blank" rel="noopener">Back office</a><br><span class="mute">until ${date(x.expires_at)}</span>` : '<span class="mute">Deleted</span>'
       }</td></tr>`).join('')
-    }</tbody></table>` : '<p>Nobody has built a demo yet.</p>';
+    }</tbody></table>` : '<p>Nobody has built a demo or asked for a call yet.</p>';
   }
 
   $('login').addEventListener('submit', ev => { ev.preventDefault(); key = $('key').value.trim(); load().catch(err => { $('msg').textContent = err.message; }); });

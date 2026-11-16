@@ -140,3 +140,40 @@ test('what they offer goes through to the demo', async () => {
   assert.equal(built[1].books, 'both');
   assert.deepEqual(built[1].offpeak, { open: '10:00', close: '16:00', weekends: false, price: 4500 });
 });
+
+const ask = (body) => call('/api/call', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+
+test('arrange a call: saves the lead, emails the studio a booking link and tells Tim', async () => {
+  const res = await ask({ name: 'Sam Jones', email: 'Sam@Flow.test', studio: 'Flow Yoga', phone: '07700 900123', package: 'Booking system and apps, over 12 months', note: 'Moving from Mindbody' });
+  assert.equal(res.status, 200);
+  const r = await res.json();
+  assert.equal(r.ok, true); assert.equal(r.emailed, true); assert.equal(r.call_url, 'https://cal.test/tim');
+  assert.equal(sent.length, 2);
+  assert.deepEqual(sent[0].to, ['sam@flow.test']);
+  assert.match(sent[0].html, /Book a time/); assert.match(sent[0].text, /cal\.test\/tim/);
+  assert.deepEqual(sent[1].to, ['tim@taal.test']);
+  assert.match(sent[1].text, /Looking at: Booking system and apps, over 12 months/);
+  const res2 = await call('/api/admin/leads', { headers: { authorization: 'Bearer ' + 'a'.repeat(24) } });
+  const { leads } = await res2.json();
+  assert.equal(leads.length, 1); assert.equal(leads[0].type, 'call'); assert.equal(leads[0].phone, '07700 900123');
+});
+
+test('arrange a call without a booking link asks them to reply with times', async () => {
+  env.CALL_URL = '';
+  const r = await (await ask({ name: 'Sam', email: 'sam@flow.test', studio: 'Flow' })).json();
+  assert.equal(r.call_url, '');
+  assert.match(sent[0].text, /Reply to this email with a few times/);
+});
+
+test('arrange a call needs a name, studio and a real email, and ignores bots', async () => {
+  assert.equal((await ask({ email: 'sam@flow.test', studio: 'Flow' })).status, 400);
+  assert.equal((await ask({ name: 'Sam', email: 'sam@flow.test' })).status, 400);
+  assert.equal((await ask({ name: 'Sam', email: 'nope', studio: 'Flow' })).status, 400);
+  const bot = await (await ask({ name: 'Sam', email: 'sam@flow.test', studio: 'Flow', website: 'x' })).json();
+  assert.equal(bot.ok, true); assert.equal(sent.length, 0);
+});
+
+test('call requests have their own daily limit, separate from demos', async () => {
+  for (let i = 0; i < 3; i++) assert.equal((await build()).status, 200);
+  assert.equal((await ask({ name: 'Sam', email: 'sam@flow.test', studio: 'Flow' })).status, 200);
+});
