@@ -125,6 +125,7 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
   .cycle b span { font-weight:400; margin-left:6px; opacity:0; transition:opacity .3s; }
   .cycle button:hover b, .cycle button:focus-visible b { background:var(--paper); padding:4px 8px; margin-left:-8px; border-radius:999px; box-shadow:0 0 0 1px var(--hair); }
   .cycle.on-dark button:hover b, .cycle.on-dark button:focus-visible b { background:var(--deep); box-shadow:none; }
+  .cycle.on-dark::before { opacity:.9; }
   .cycle button:hover b span, .cycle button:focus-visible b span { opacity:1; }
   /* on the green bands the column reads in paper colours */
   .cycle.on-dark::before { background:#3E7A73; }
@@ -223,8 +224,31 @@ summary::after { transition:transform .3s var(--curve); }
 /* the demo button sits under the sample phone, with its note */
 .hero-go.under { display:flex; flex-direction:column; align-items:stretch; gap:10px; margin-top:10px; width:100%; text-align:center; }
 
-.save-line { margin-top:22px; padding-top:18px; border-top:1px solid var(--rule); font-family:'Funnel Display', sans-serif; font-weight:600; font-size:clamp(19px, 2vw, 24px); letter-spacing:-0.02em; }
-.save-line a { color:var(--green); }
+/* One place for it all: the ink band */
+section.features { background:var(--ink); color:var(--paper); }
+.features .place > p { color:#B9C6BF; }
+.features .instead span { color:#B9C6BF; box-shadow:inset 0 0 0 1px rgb(242 243 238 / .22); text-decoration-color:rgb(229 154 140 / .9); }
+.features .instead b { color:var(--paper); }
+.features .instead svg .ts { fill:#E59A8C; }
+.features .instead svg .t2, .features .instead svg .t3 { fill:#F2F3EE; }
+.features .instead svg .tk { stroke:#F2F3EE; }
+.features .tabs { background:rgb(242 243 238 / .08); }
+.features .tabs button { color:#B9C6BF; }
+.features .tabs button[aria-selected=true] { background:var(--paper); color:var(--ink); }
+@media (hover:hover) { .features .tabs button:hover:not([aria-selected="true"]) { background:rgb(242 243 238 / .12); color:var(--paper); } .features .grid6 > div:hover h3 { color:#CFE0D7; } }
+.features .grid6 > div { border-top-color:rgb(242 243 238 / .18); }
+.features .grid6 h3 { color:var(--paper); }
+.features .grid6 h3 svg { color:var(--sage); }
+section.features .grid6 .plain h3::before { background:var(--sage); }
+.features .grid6 p, .features .grid6 small { color:#B9C6BF; }
+.features a { color:var(--paper); }
+.features ::selection { background:rgb(229 154 140 / .35); }
+/* the one red band: where the saving is */
+.save-band { background:var(--seal); color:#FBF3EF; padding:44px 0; }
+.save-band p { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:clamp(24px, 3.2vw, 40px); line-height:1.1; letter-spacing:-0.03em; max-width:28em; }
+.save-band a { color:#FBF3EF; text-decoration-thickness:2px; text-underline-offset:5px; white-space:normal; }
+.save-band a:hover { color:#fff; text-decoration-thickness:3px; }
+.save-band ::selection { background:rgb(255 255 255 / .25); }
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
@@ -849,8 +873,9 @@ footer .made { display:flex; align-items:center; gap:12px; }
       <li>A handover document, so another developer could take over if you ever needed one</li>
     </ul></details>
 
-  <p class="save-line">Most studios save from year two. <a href="compare.html">Compare three years against what you use now</a></p>
 </div></section>
+
+<section class="save-band" data-beat="3"><div class="wrap"><p>Most studios save from year two. <a href="compare.html">Compare three years against what you use now</a></p></div></section>
 
 <section class="how" id="how" data-beat="3"><div class="wrap">
   <details class="faq-all how-all"><summary><h2>How it works</h2><small>See it, try it, then switch</small></summary>
@@ -1127,7 +1152,7 @@ const CONTACT_EMAIL = 'EMAIL';
   const cyc = document.querySelector('.cycle'); if (!cyc) return;
   const btns = [...cyc.querySelectorAll('button')];
   const parts = [...document.querySelectorAll('[data-beat]')];
-  const dark = [...document.querySelectorAll('.rhythm, .demo')];
+  const dark = [...document.querySelectorAll('.rhythm, .demo, .features, .save-band')];
   let beat = -1;
   function update() {
     const mid = innerHeight * 0.45;
