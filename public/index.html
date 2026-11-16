@@ -232,6 +232,14 @@ summary::after { transition:transform .3s var(--curve); }
 .reel-phone, .phone { transition:transform .6s var(--curve); }
 .grid6 > div::before { transition:height .25s, top .25s, opacity .25s; }
 
+/* phones: the demo button moves under the sample phone and replaces the text link */
+.hero-go.m-only { display:none; }
+@media (max-width: 960px) {
+  .hero .wrap > div:first-child .hero-go { display:none; }
+  .hero-go.m-only { display:flex; flex-direction:column; align-items:stretch; gap:10px; margin-top:10px; width:100%; text-align:center; }
+  #demoLink { display:none; }
+}
+
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
@@ -254,7 +262,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .hero .wrap { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:56px; align-items:center; }
 .hero h1 { font-size:clamp(46px, 6vw, 84px); letter-spacing:-0.045em; line-height:.96; font-weight:650; }
 .hero h1 span { display:block; }
-.hero h1 .h1-tag { color:var(--seal); }
+.hero h1 .h1-tag { color:var(--green); }
 .m-br { display:none; }
 .hero .lede { font-size:18px; max-width:25em; margin:32px 0 0; color:var(--mute); }
 .ctas { display:flex; gap:12px; flex-wrap:wrap; }
@@ -648,7 +656,6 @@ footer .made { display:flex; align-items:center; gap:12px; }
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">That you own.</span></h1>
     <p class="lede">Bookings, memberships and payments for independent gyms and wellness studios, under your own name. Pay once from £1,900, with no monthly fee to us.</p>
     <div class="hero-go"><a class="btn btn-seal to-demo" href="demo.html">Try your demo today</a><span>Free, in about a minute, with just your email</span></div>
-    <p class="hero-sign"><span class="rule" aria-hidden="true"></span>Made in London for independent studios</p>
   </div>
 
   <div class="try">
@@ -710,6 +717,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
       </div>
       <p class="note">Your real app gets your logo and fonts too.</p>
       <a class="demo-link to-demo" href="demo.html" id="demoLink">Build a demo in your brand</a>
+      <div class="hero-go m-only"><a class="btn btn-seal to-demo" href="demo.html">Try your demo today</a><span>Free, in about a minute, with just your email</span></div>
     </div>
   </div>
 </div></header>
@@ -931,7 +939,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
 
 <footer><div class="wrap">
   <a class="logo" href="#top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
-  <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software for independent gyms and wellness studios, made in London.</p>
+  <p class="made"><span class="seal sm" aria-hidden="true">taal</span>Studio software made in London for independent gyms and wellness studios.</p>
   <div class="links"><a href="privacy.html">Privacy</a><a id="footMail" href="mailto:EMAIL">Contact</a></div>
 </div></footer>
 
