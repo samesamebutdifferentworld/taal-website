@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Three years of costs, side by side: taal</title>
+<meta name="description" content="An honest three-year cost comparison between taal and the booking software UK studios use now, from published prices. Where taal costs more, it says so.">
+<meta property="og:title" content="Three years of costs, side by side: taal">
+<meta property="og:description" content="taal against TeamUp, ClubRight, Mindbody and others, from published UK prices.">
+<meta name="theme-color" content="#F2F3EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='24' height='24' rx='5.76' fill='%230F5C57'/%3E%3Cg transform='translate(3.5 3.5) scale(0.7083)'%3E%3Crect x='2.5' y='4' width='3' height='16' rx='1.5' fill='%23E59A8C'/%3E%3Crect x='8.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3Ccircle cx='15.5' cy='12' r='2.1' fill='none' stroke='%23F2F3EE' stroke-width='1.8'/%3E%3Crect x='19.5' y='7' width='3' height='10' rx='1.5' fill='%23F2F3EE'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preload" href="fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="page.css">
+<style>
+.cmp { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:40px 64px; margin-top:44px; align-items:start; }
+.ctl { display:grid; gap:26px; }
+.ctl h3 { font-size:15px; font-family:'Funnel Sans', sans-serif; font-weight:600; margin-bottom:10px; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chips button { font:inherit; font-size:14.5px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--hair); background:transparent; color:var(--ink); cursor:pointer; transition:border-color .2s, background .2s, color .2s; }
+.chips button:hover { border-color:var(--ink); }
+.chips button[aria-pressed="true"] { background:var(--ink); border-color:var(--ink); color:var(--paper); }
+.money-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.money-row label { display:grid; gap:6px; font-size:14px; color:var(--mute); }
+.money { display:flex; align-items:center; border:1.5px solid var(--rule); border-radius:12px; background:#fff; padding:0 12px; }
+.money:focus-within { border-color:var(--green); }
+.money span { color:var(--mute); }
+.money input { border:0; outline:0; background:transparent; font:inherit; font-size:18px; font-weight:600; color:var(--ink); padding:11px 6px; width:100%; min-width:0; }
+.money input:disabled { color:var(--hair); }
+.src { font-size:13.5px; color:var(--mute); margin-top:10px; min-height:2.6em; }
+.toggles { display:grid; border-top:1px solid var(--rule); }
+.tg { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:13px 0; border-bottom:1px solid var(--rule); cursor:pointer; }
+.tg span { display:grid; }
+.tg b { font-weight:600; font-size:16px; }
+.tg small { color:var(--mute); font-size:13.5px; }
+.tg input { appearance:none; -webkit-appearance:none; width:44px; height:26px; border-radius:999px; background:var(--hair); position:relative; cursor:pointer; flex-shrink:0; transition:background .2s; margin:0; }
+.tg input::after { content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:transform .2s var(--curve); }
+.tg input:checked { background:var(--green); }
+.tg input:checked::after { transform:translateX(18px); }
+.tg input:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+
+.res { border-top:2px solid var(--ink); padding-top:22px; }
+.verdict { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:clamp(34px, 4.4vw, 58px); line-height:.98; letter-spacing:-0.04em; }
+.verdict.more { color:var(--ink); }
+.why { color:var(--mute); margin-top:12px; max-width:32em; }
+.totals { display:grid; grid-template-columns:1fr 1fr; margin-top:26px; border-top:1px solid var(--rule); }
+.totals > div { padding:16px 0 0; }
+.totals > div + div { padding-left:22px; border-left:1px solid var(--rule); }
+.totals small { display:flex; align-items:center; gap:8px; color:var(--mute); font-size:14px; }
+.totals small i { width:18px; height:0; border-top:2.5px solid var(--c-now); }
+.totals small i.solid { border-top-style:solid; border-color:var(--c-taal); }
+.totals small i.dash { border-top-style:dashed; }
+.totals b { display:block; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:30px; letter-spacing:-0.03em; margin-top:4px; }
+.chart { position:relative; margin-top:26px; }
+.chart svg { width:100%; height:auto; display:block; overflow:visible; }
+.chart .grid line { stroke:var(--rule); stroke-width:1; }
+.chart .axis text { fill:var(--mute); font-size:11px; font-family:'Funnel Sans', sans-serif; }
+.chart .l-now { fill:none; stroke:var(--c-now); stroke-width:2; stroke-dasharray:6 5; stroke-linecap:round; }
+.chart .l-taal { fill:none; stroke:var(--c-taal); stroke-width:2; stroke-linejoin:round; }
+.chart .lab { font-size:12px; font-weight:600; font-family:'Funnel Sans', sans-serif; fill:var(--ink); }
+.chart .cross circle { fill:var(--seal); stroke:var(--paper); stroke-width:2; }
+.chart .cross text { fill:var(--ink); font-size:12px; font-family:'Funnel Sans', sans-serif; }
+.chart .hair { stroke:var(--ink); stroke-width:1; opacity:0; }
+.chart .dot { stroke:var(--paper); stroke-width:2; opacity:0; }
+.chart.on .hair { opacity:.35; } .chart.on .dot { opacity:1; }
+.tip { position:absolute; top:0; pointer-events:none; background:var(--ink); color:var(--paper); border-radius:10px; padding:8px 11px; font-size:13px; line-height:1.4; white-space:nowrap; opacity:0; transform:translate(-50%, -8px); transition:opacity .12s; }
+.chart.on .tip { opacity:1; }
+.tip b { font-weight:600; }
+.yrs { margin-top:18px; font-size:14px; }
+.yrs summary { cursor:pointer; color:var(--green); font-weight:600; }
+.yrs table { width:100%; border-collapse:collapse; margin-top:10px; font-variant-numeric:tabular-nums; }
+.yrs th, .yrs td { text-align:right; padding:8px 0; border-bottom:1px solid var(--rule); }
+.yrs th:first-child, .yrs td:first-child { text-align:left; }
+.yrs th { color:var(--mute); font-weight:500; }
+
+.prices { width:100%; border-collapse:collapse; margin-top:40px; font-size:15.5px; }
+.prices th, .prices td { text-align:left; vertical-align:top; padding:16px 18px 16px 0; border-bottom:1px solid var(--rule); }
+.prices thead th { color:var(--mute); font-weight:500; font-size:14px; border-bottom:2px solid var(--ink); }
+.prices td:first-child { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:18px; white-space:nowrap; }
+.prices td small { display:block; color:var(--mute); font-size:13px; margin-top:4px; }
+.prices tr.us td:first-child { color:var(--green); }
+@media (max-width: 900px) { .cmp { grid-template-columns:minmax(0,1fr); } }
+@media (max-width: 720px) {
+  .prices thead { display:none; }
+  .prices tr { display:grid; grid-template-columns:1fr; padding:14px 0; border-bottom:1px solid var(--rule); }
+  .prices td { border:0; padding:3px 0; }
+  .prices td[data-h]::before { content:attr(data-h) ': '; color:var(--mute); }
+  .money-row { grid-template-columns:1fr; }
+  .totals b { font-size:24px; }
+}
+</style>
+</head>
+<body>
+<!--nav--><nav><div class="wrap">
+  <a class="logo" href="index.html" aria-label="taal home"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <ul><li><a href="compare.html" aria-current="page">Compare costs</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="leaving.html">Leaving taal</a></li></ul>
+  <a class="btn btn-seal" href="demo.html">Build your demo</a>
+</div></nav><!--/nav-->
+
+<header class="head"><div class="wrap">
+  <h1>Three years, <span class="tone">side by side.</span></h1>
+  <p class="lede">What you likely pay for booking software now, against taal, from each company's published UK prices. Where taal costs more, this page says so.</p>
+</div></header>
+
+<section class="band" id="calc"><div class="wrap">
+  <h2>Your three years</h2>
+  <div class="cmp">
+    <div class="ctl">
+      <div>
+        <h3 id="useLbl">What do you use now?</h3>
+        <div class="chips" role="group" aria-labelledby="useLbl" id="chips">
+          <button type="button" data-p="teamup1" aria-pressed="true">TeamUp</button>
+          <button type="button" data-p="teamup2" aria-pressed="false">TeamUp, 101 to 200</button>
+          <button type="button" data-p="cr1" aria-pressed="false">ClubRight Core</button>
+          <button type="button" data-p="cr2" aria-pressed="false">ClubRight Complete</button>
+          <button type="button" data-p="mb" aria-pressed="false">Mindbody Starter</button>
+          <button type="button" data-p="other" aria-pressed="false">Something else</button>
+        </div>
+        <p class="src" id="src"></p>
+      </div>
+      <div class="money-row">
+        <label>Software, each month<span class="money"><span>£</span><input type="number" id="fee" inputmode="decimal" min="0" step="1"></span></label>
+        <label>Branded app, each month<span class="money"><span>£</span><input type="number" id="appFee" inputmode="decimal" min="0" step="1"></span></label>
+      </div>
+      <div class="toggles">
+        <label class="tg"><span><b>Your own apps</b><small>On both sides: their branded app, or taal's apps</small></span><input type="checkbox" id="apps" checked></label>
+        <label class="tg"><span><b>Their prices are before VAT</b><small>Adds 20%. taal's prices include VAT</small></span><input type="checkbox" id="vat"></label>
+        <label class="tg"><span><b>taal care plan</b><small>£400 a year from year two, optional</small></span><input type="checkbox" id="care" checked></label>
+        <label class="tg"><span><b>Founding offer</b><small>30% off setup, for our first three studios</small></span><input type="checkbox" id="found"></label>
+      </div>
+    </div>
+
+    <div class="res" aria-live="polite">
+      <div class="verdict" id="verdict"></div>
+      <p class="why" id="why"></p>
+      <div class="totals">
+        <div><small><i class="dash"></i>What you pay now</small><b id="totNow"></b></div>
+        <div><small><i class="solid"></i>taal</small><b id="totTaal"></b></div>
+      </div>
+      <div class="chart" id="chart">
+        <svg viewBox="0 0 640 280" role="img" aria-labelledby="chartTitle"><title id="chartTitle">Running total over 36 months, now against taal</title><g id="plot"></g></svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <details class="yrs"><summary>See it year by year</summary>
+        <table><thead><tr><th>Running total</th><th>Year one</th><th>Year two</th><th>Year three</th></tr></thead><tbody id="yrBody"></tbody></table>
+      </details>
+    </div>
+  </div>
+  <p class="note" style="margin-top:36px">taal's side counts setup paid at the start, about £30 a month for hosting and email, and, with apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20). Card fees, your website and SMS aren't counted on either side.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>Published prices</h2>
+  <p class="sub">Checked 16 November 2026. Prices change, so check your own invoice. Where a company doesn't publish a price, we say so rather than guess.</p>
+  <table class="prices">
+    <thead><tr><th>Software</th><th>Each month</th><th>Your own branded app</th><th>Where from</th></tr></thead>
+    <tbody>
+      <tr><td>TeamUp</td><td data-h="Each month">£99 up to 100 active customers, £139 for 101 to 200, rising as you grow</td><td data-h="Branded app">£79 a month extra</td><td data-h="From">TeamUp's pricing and branded app pages</td></tr>
+      <tr><td>ClubRight</td><td data-h="Each month">Core £79, Complete £129, plus VAT</td><td data-h="Branded app">A member app is included</td><td data-h="From">ClubRight's listings on Capterra and FitGap</td></tr>
+      <tr><td>Mindbody</td><td data-h="Each month">From £89 per location for Starter. Higher plans are quoted</td><td data-h="Branded app">On top plans only, price not published</td><td data-h="From">Mindbody's UK pricing page</td></tr>
+      <tr><td>Glofox</td><td data-h="Each month">Not published. Reviews put it at about $110 to $350 a month</td><td data-h="Branded app">Included</td><td data-h="From">Independent reviews</td></tr>
+      <tr><td>Momence</td><td data-h="Each month">Not clearly published. Reviews cite plans at $60 and $199</td><td data-h="Branded app">$250 a month extra</td><td data-h="From">Momence's US pricing page and reviews</td></tr>
+      <tr class="us"><td>taal</td><td data-h="Each month">Nothing to us. About £30 to hosting and email, from your own accounts<small>£1,900 once for the booking system, £2,900 with your own apps. Prices include VAT.</small></td><td data-h="Branded app">+£1,000 once, under your own developer accounts</td><td data-h="From"><a href="index.html#pricing">Our pricing</a></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>Where staying might suit you better</h2>
+  <div class="cols two">
+    <div><h3>Nothing up front</h3><p>Monthly software has no setup fee, so year one costs less. With taal you pay for setup before you see a saving, which usually comes in year two.</p></div>
+    <div><h3>Leave any month</h3><p>Most are month to month. taal's setup is paid whether you use it for one year or ten, though it keeps running if you stop working with us.</p></div>
+    <div><h3>Finding new clients</h3><p>Mindbody's consumer app can bring you people who've never heard of you. taal doesn't list you anywhere. It's your own app, for the people who already know you.</p></div>
+    <div><h3>A bigger company</h3><p>The larger platforms have big support teams, a long track record and many integrations. taal is a small London business.</p></div>
+  </div>
+</div></section>
+
+<section class="close"><div class="wrap">
+  <h2>See your studio in it first.</h2>
+  <p>A working version of your app, with your name and colours. It takes about a minute and stays live for 30 days.</p>
+  <div class="go"><a class="btn btn-seal" href="demo.html">Try your free demo</a><a href="leaving.html">What you keep if you leave</a></div>
+</div></section>
+
+<!--foot--><footer><div class="wrap">
+  <a class="logo" href="index.html" aria-label="taal home"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <p>Studio software made in London for independent gyms and wellness studios.</p>
+  <div class="links"><a href="gyms.html">Gyms</a><a href="wellness.html">Wellness</a><a href="yoga.html">Yoga</a><a href="pilates.html">Pilates</a><a href="compare.html" aria-current="page">Compare costs</a><a href="leaving.html">Leaving taal</a><a href="privacy.html">Privacy</a><a class="mail" href="mailto:EMAIL">Contact</a></div>
+</div></footer>
+<script>(function () { const EMAIL = 'EMAIL'; if (!EMAIL.includes('@')) return; document.querySelectorAll('a.mail').forEach(a => { a.href = 'mailto:' + EMAIL; }); })();</script><!--/foot-->
+
+<script>
+(function () {
+  const P = {
+    teamup1: { fee: 99, app: 79, vat: false, src: 'TeamUp, up to 100 active customers a month. Its branded app is £79 a month on top.' },
+    teamup2: { fee: 139, app: 79, vat: false, src: 'TeamUp, 101 to 200 active customers a month. Its branded app is £79 a month on top.' },
+    cr1: { fee: 79, app: 0, vat: true, src: 'ClubRight Core, £79 a month plus VAT. A member app is included.' },
+    cr2: { fee: 129, app: 0, vat: true, src: 'ClubRight Complete, £129 a month plus VAT. A member app is included.' },
+    mb: { fee: 89, app: 0, vat: false, src: "Mindbody Starter, from £89 a month. Starter doesn't include an app under your own name." },
+    other: { fee: 150, app: 0, vat: false, src: 'Enter what you pay. Your invoice is the best guide.' },
+  };
+  const SETUP = 1900, APPS = 1000, RUN = 30, CARE = 400, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
+  const $ = id => document.getElementById(id);
+  const fee = $('fee'), appFee = $('appFee'), apps = $('apps'), vat = $('vat'), care = $('care'), found = $('found');
+  const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+
+  function taalAt(m) { // total paid by the end of month m (0 = the day you start)
+    const withApps = apps.checked;
+    let t = (SETUP + (withApps ? APPS : 0)) * (found.checked ? 1 - OFF : 1) + RUN * m;
+    if (withApps) t += GOOGLE + APPLE * Math.max(1, Math.ceil(m / 12));
+    if (care.checked && m > 12) t += CARE * Math.floor((m - 1) / 12);
+    return t;
+  }
+  function nowAt(m) {
+    const monthly = (+fee.value || 0) + (apps.checked ? (+appFee.value || 0) : 0);
+    return monthly * (vat.checked ? 1.2 : 1) * m;
+  }
+  function crossMonth() { for (let m = 1; m <= 120; m++) if (taalAt(m) <= nowAt(m)) return m; return null; }
+
+  function draw() {
+    const box = $('chart').clientWidth || 640;
+    const W = Math.round(Math.max(320, Math.min(640, box))), H = W < 480 ? 240 : 280, L = 44, R = W < 480 ? 92 : 112, T = 14, B = 30;
+    $('plot').ownerSVGElement.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const max = Math.max(taalAt(N), nowAt(N), 1000);
+    const step = max > 12000 ? 4000 : max > 6000 ? 2000 : 1000;
+    const top = Math.ceil(max / step) * step;
+    const x = m => L + (m / N) * (W - L - R), y = v => T + (1 - v / top) * (H - T - B);
+    let g = '<g class="grid axis">';
+    for (let v = 0; v <= top; v += step) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v ? '£' + (v / 1000) + 'k' : '£0'}</text>`;
+    [0, 12, 24, 36].forEach(m => g += `<text x="${x(m)}" y="${H - 8}" text-anchor="middle">${m ? 'Year ' + m / 12 : 'Start'}</text>`);
+    g += '</g>';
+    const pts = f => Array.from({ length: N + 1 }, (_, m) => `${x(m).toFixed(1)},${y(f(m)).toFixed(1)}`).join(' ');
+    g += `<polyline class="l-now" points="${pts(nowAt)}"/><polyline class="l-taal" points="${pts(taalAt)}"/>`;
+    // direct labels at the line ends, nudged apart if they meet
+    let yn = y(nowAt(N)), yt = y(taalAt(N));
+    if (Math.abs(yn - yt) < 16) { const mid = (yn + yt) / 2, s = yn > yt ? 1 : -1; yn = mid + 8 * s; yt = mid - 8 * s; }
+    g += `<text class="lab" x="${W - R + 8}" y="${yn + 4}">Now ${gbp(nowAt(N))}</text><text class="lab" x="${W - R + 8}" y="${yt + 4}">taal ${gbp(taalAt(N))}</text>`;
+    const c = crossMonth();
+    if (c && c <= N) g += `<g class="cross"><circle cx="${x(c)}" cy="${y(taalAt(c))}" r="5"/><text x="${x(c)}" y="${y(taalAt(c)) + 22}" text-anchor="middle">Month ${c}</text></g>`;
+    g += `<line class="hair" id="hair" x1="0" x2="0" y1="${T}" y2="${H - B}"/><circle class="dot" id="dNow" r="4.5" fill="var(--c-now)"/><circle class="dot" id="dTaal" r="4.5" fill="var(--c-taal)"/>`;
+    g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" id="hit"/>`;
+    $('plot').innerHTML = g;
+
+    const svg = $('plot').ownerSVGElement, chart = $('chart'), tip = $('tip');
+    const move = ev => {
+      const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * (W / r.width);
+      const m = Math.max(0, Math.min(N, Math.round((px - L) / (W - L - R) * N)));
+      $('hair').setAttribute('x1', x(m)); $('hair').setAttribute('x2', x(m));
+      $('dNow').setAttribute('cx', x(m)); $('dNow').setAttribute('cy', y(nowAt(m)));
+      $('dTaal').setAttribute('cx', x(m)); $('dTaal').setAttribute('cy', y(taalAt(m)));
+      tip.innerHTML = `<b>${m ? 'Month ' + m : 'Start'}</b><br>Now ${gbp(nowAt(m))}<br>taal ${gbp(taalAt(m))}`;
+      tip.style.left = (x(m) / W * r.width) + 'px';
+      tip.style.top = (Math.min(y(nowAt(m)), y(taalAt(m))) / H * r.height - 64) + 'px';
+      chart.classList.add('on');
+    };
+    const hit = $('hit');
+    hit.addEventListener('pointermove', move); hit.addEventListener('pointerdown', move);
+    hit.addEventListener('pointerleave', () => chart.classList.remove('on'));
+  }
+
+  function render() {
+    appFee.disabled = !apps.checked;
+    const a = nowAt(N), b = taalAt(N), d = a - b, c = crossMonth();
+    $('totNow').textContent = gbp(a); $('totTaal').textContent = gbp(b);
+    const v = $('verdict'), why = $('why');
+    // what you'd need to be paying now for taal to break even over the three years
+    const perMonth = b / N / (vat.checked ? 1.2 : 1);
+    if (d >= 0) {
+      v.textContent = gbp(d) + ' less over three years with taal.'; v.className = 'verdict';
+      why.textContent = `taal costs more at the start, because of setup. It's cheaper from month ${c}, and after that you save about ${gbp(nowAt(12) - (care.checked ? CARE : 0) - RUN * 12 - (apps.checked ? APPLE : 0))} a year.`;
+    } else {
+      v.textContent = gbp(-d) + ' more over three years with taal.'; v.className = 'verdict more';
+      why.textContent = c ? `At this price taal only catches up in month ${c}. If you pay under about ${gbp(perMonth)} a month now, staying is cheaper over three years.`
+        : `At this price staying is cheaper. taal saves money once you pay over about ${gbp(perMonth)} a month now.`;
+    }
+    $('yrBody').innerHTML = [['Now', nowAt], ['taal', taalAt]].map(([n, f]) => `<tr><td>${n}</td><td>${gbp(f(12))}</td><td>${gbp(f(24))}</td><td>${gbp(f(36))}</td></tr>`).join('');
+    draw();
+  }
+
+  function pick(k) {
+    document.querySelectorAll('#chips button').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === k));
+    const p = P[k]; fee.value = p.fee; appFee.value = p.app; vat.checked = p.vat; $('src').textContent = p.src;
+    render();
+  }
+  document.querySelectorAll('#chips button').forEach(b => b.addEventListener('click', () => pick(b.dataset.p)));
+  [fee, appFee].forEach(i => i.addEventListener('input', render));
+  [apps, vat, care, found].forEach(i => i.addEventListener('change', render));
+  pick('teamup1');
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(draw, 120); });
+})();
+</script>
+</body>
+</html>
