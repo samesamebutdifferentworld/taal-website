@@ -344,6 +344,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .hero-go { display:flex; align-items:center; gap:18px; margin-top:32px; flex-wrap:wrap; }
 .hero-go .btn { font-size:17px; padding:16px 28px; }
 .hero-go span { font-size:14px; color:var(--mute); }
+.hero-go .to-price { font-size:14px; color:var(--ink); text-decoration:underline; text-decoration-color:var(--rule); text-underline-offset:4px; text-decoration-thickness:1px; transition:text-decoration-color .2s; }
+.hero-go .to-price:hover { text-decoration-color:currentColor; }
 .hero .hero-go { animation:rise .9s cubic-bezier(.2,.7,.2,1) .34s both; }
 @media (max-width: 560px) { .hero-go { flex-direction:column; gap:10px; } .hero-go .btn { align-self:stretch; } }
 .hero-sign { display:flex; align-items:center; gap:14px; margin-top:32px; font-size:13px; color:var(--mute); }
@@ -726,7 +728,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 <div class="cycle" role="navigation" aria-label="Page sections, set out as one cycle of teentaal">
   <button type="button" class="b-sam" data-go="0" aria-label="Sam: your own app"><i></i><b>X<span>sam, your app</span></b></button>
   <button type="button" class="b-clap" data-go="1" aria-label="Clap: inside the app"><i></i><b>2<span>clap, inside</span></b></button>
-  <button type="button" class="b-wave" data-go="2" aria-label="Wave: why taal"><i></i><b>0<span>wave, why taal</span></b></button>
+  <button type="button" class="b-wave" data-go="2" aria-label="Wave: one place for it all"><i></i><b>0<span>wave, all in one</span></b></button>
   <button type="button" class="b-clap" data-go="3" aria-label="Clap: price and how it works"><i></i><b>3<span>clap, one price</span></b></button>
 </div>
 
@@ -795,7 +797,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
         <label class="own" title="Pick your own colour"><span class="sr">Pick your own colour</span><input type="color" id="ownColour" value="#155E5A"></label>
       </div>
       <p class="note">Your real app gets your logo and fonts too.</p>
-      <div class="hero-go under"><a class="btn btn-seal to-demo" href="demo.html">Try your free demo</a><span>Ready in about a minute, with just your email</span></div>
+      <div class="hero-go under"><a class="btn btn-seal to-demo" href="demo.html">Try your free demo</a><span>Ready in about a minute, with just your email</span><a class="to-price" href="#pricing">Or see pricing</a></div>
     </div>
   </div>
 </div></header>
@@ -837,7 +839,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   </div>
 </div></section>
 
-<section class="features" id="features" data-beat="1"><div class="wrap">
+<section class="features" id="features" data-beat="2"><div class="wrap">
   <h2>One place for it all</h2>
   <div class="place">
     <p>Bookings, payments, the timetable, the rota, cover, staff pay and messages, in one system your whole team uses.</p>
@@ -889,17 +891,6 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg><span>Enquiries and leads</span></h3></div>
       <div><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Emails, alerts and team inbox</span></h3></div>
     </div>
-  </div>
-</div></section>
-
-<section class="founder" data-beat="2"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
-  <figure style="margin:0">
-    <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
-    <figcaption><span class="avatar"><img src="img/tim.jpg" alt="Tim Allan" width="112" height="112" onerror="this.remove()"><span aria-hidden="true">TA</span></span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
-  </figure>
-  <div class="aim">
-    <h2>For independent studios, not chains.</h2>
-    <p>taal is made for small studios run by the people who teach in them. The aim is to give them software as good as the big chains have, at a price they can own outright, so more of what members pay stays in the studio.</p>
   </div>
 </div></section>
 
@@ -958,6 +949,17 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
     <li><div class="step-card"><svg class="beat-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg><span class="when">Switch</span><span class="step-text">Go live when your current contract ends. Your apps follow a few weeks later.</span></div></li>
   </ol>
   </details>
+</div></section>
+
+<section class="founder" data-beat="3"><div class="founder-bg" aria-hidden="true"></div><div class="wrap">
+  <figure style="margin:0">
+    <blockquote>“I ran a wellness studio in London for seven years. The software was built for chains, cost more every year and put its name in front of mine. taal is the one I wanted.”</blockquote>
+    <figcaption><span class="avatar"><img src="img/tim.jpg" alt="Tim Allan" width="112" height="112" onerror="this.remove()"><span aria-hidden="true">TA</span></span><span><b>Tim Allan</b><span class="mute">Founder, taal</span></span><span class="photo-note">yue float</span></figcaption>
+  </figure>
+  <div class="aim">
+    <h2>For independent studios, not chains.</h2>
+    <p>taal is made for small studios run by the people who teach in them. The aim is to give them software as good as the big chains have, at a price they can own outright, so more of what members pay stays in the studio.</p>
+  </div>
 </div></section>
 
 <section class="faq" id="questions" data-beat="3"><div class="wrap">
