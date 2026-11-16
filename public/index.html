@@ -694,6 +694,8 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .opt-text small { color:var(--mute); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .opt-price { font-family:'Funnel Display', sans-serif; font-size:19px; font-weight:650; white-space:nowrap; }
 .opt-price small { font-size:13px; font-weight:500; color:var(--mute); }
+.opt-price { text-align:right; }
+.opt-price em { display:block; font-family:inherit; font-style:normal; font-size:12px; font-weight:500; color:var(--mute); margin-top:1px; }
 .opt input { position:absolute; opacity:0; width:1px; height:1px; }
 .opt:has(input:focus-visible) { outline:2px solid var(--green); outline-offset:3px; }
 .sw { width:42px; height:26px; border-radius:999px; background:#C9D1CA; position:relative; transition:background .2s; flex-shrink:0; }
@@ -701,7 +703,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .opt input:checked + .sw { background:var(--green); }
 .opt input:checked + .sw::after { transform:translateX(16px); }
 .opt input:disabled + .sw { opacity:.55; }
-.seg { display:grid; grid-template-columns:1fr 1fr 1fr; padding:4px; border-radius:16px; background:#fff; margin:4px 0; position:relative; }
+.seg { display:grid; grid-template-columns:1fr 1fr 1fr; padding:4px; border-radius:16px; background:#fff; margin:0 0 6px; position:relative; }
 .seg label { position:relative; cursor:pointer; }
 .seg input { position:absolute; opacity:0; }
 .seg span { display:block; text-align:center; padding:11px 8px; border-radius:12px; font-weight:600; font-size:15px; color:var(--mute); transition:background .25s, color .25s; }
@@ -891,7 +893,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   .pricing .intro .copy { font-size:15px; }
   .opt { padding:11px 12px 11px 16px; gap:10px; border-radius:14px; }
   .opt-text b { font-size:16.5px; }
-  .opt-text small { font-size:12.5px; }
+  .opt-text small { font-size:12.5px; white-space:normal; line-height:1.3; }
   .opt-price { font-size:17px; }
   .opts { gap:6px; }
   .seg span { padding:10px 6px; font-size:14.5px; }
@@ -1118,14 +1120,14 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
   </div>
   <div class="builder">
     <div class="opts">
-      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><small>Web booking, payments, back office</small></span><span class="opt-price" data-item="base">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Your own apps</b><small>App Store and Google Play</small></span><span class="opt-price" data-item="apps">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
-      <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
       <div class="seg" role="radiogroup" aria-label="How to pay">
         <label><input type="radio" name="pay" value="once"><span>Pay once</span></label>
         <label><input type="radio" name="pay" value="spread" checked><span>12 months</span></label>
         <label><input type="radio" name="pay" value="spread24"><span>24 months</span></label>
       </div>
+      <label class="opt fixed"><span class="opt-text"><b>Booking system</b><small>Web booking, payments, back office</small></span><span class="opt-price" data-item="base">£1,900</span><input type="checkbox" role="switch" checked disabled aria-label="Booking system, always included"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Your own apps</b><small>App Store and Google Play</small></span><span class="opt-price" data-item="apps">+£1,000</span><input type="checkbox" role="switch" id="optApps" checked aria-label="Your own apps"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Studio website</b><small>Your full site, live timetable built in</small></span><span class="opt-price" data-item="site">+£800</span><input type="checkbox" role="switch" id="optSite" aria-label="Full studio website"><i class="sw" aria-hidden="true"></i></label>
       <label class="opt"><span class="opt-text"><b>Care plan</b><small>Updates and support</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-foot">Up to 2,000 active clients. Bigger than that? We'll quote.</p>
     </div>
@@ -1874,9 +1876,13 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
       ? 'Then ' + gbp(c.p.monthly) + ' a month for ' + (c.months === 24 ? 'two years' : 'a year') + ', ' + gbp(c.setup) + ' in all'
       : 'In three parts as we build') + (founding() ? ', with 30% off' : '');
     $('tLaterLabel').textContent = c.months === 24 ? 'each year after year two' : 'each year after';
+    // Each option shows its price for the way they've chosen to pay.
+    const mode = picked('pay'), cut = v => Math.round(v * (founding() ? 1 - OFF : 1));
     document.querySelectorAll('[data-item]').forEach(el => {
-      const v = Math.round(ITEMS[el.dataset.item].once * (founding() ? 1 - OFF : 1));
-      el.textContent = (el.dataset.item === 'base' ? '' : '+') + gbp(v);
+      const it = ITEMS[el.dataset.item], plus = el.dataset.item === 'base' ? '' : '+';
+      el.innerHTML = c.spread
+        ? plus + gbp(cut(it[mode].monthly)) + '<small> a month</small><em>' + gbp(cut(it[mode].start)) + ' to start</em>'
+        : plus + gbp(cut(it.once));
     });
     tween($('tY1'), c.y1); tween($('tLater'), c.later);
   }
