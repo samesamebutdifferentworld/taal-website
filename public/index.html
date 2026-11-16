@@ -920,11 +920,22 @@ const CONTACT_EMAIL = 'EMAIL';
     for (const [k, v] of [['--ink', 'color-mix(in srgb, ' + hex + ' 40%, #1d2220)'], ['--accent', 'color-mix(in srgb, ' + hex + ' 40%, #1d2220)'], ['--qr-fg', '#ffffff']])
       light ? app.style.setProperty(k, v) : app.style.removeProperty(k);
   }
-  sw.forEach(btn => btn.addEventListener('click', () => {
+  function pick(btn) {
     sw.forEach(b => b.setAttribute('aria-pressed', b === btn));
     setColour(btn.dataset.c); own.value = btn.dataset.c;
-  }));
-  own.addEventListener('input', () => { sw.forEach(b => b.setAttribute('aria-pressed', false)); setColour(own.value); });
+  }
+  // Until someone picks a colour or types a name, the phone moves through the colours every 5 seconds,
+  // starting with the second. It waits while the phone is off screen or the tab is hidden.
+  let i = 0, auto = true, onScreen = true;
+  const tick = setInterval(() => {
+    if (!auto || !onScreen || document.hidden) return;
+    i = (i + 1) % sw.length; pick(sw[i]);
+  }, 5000);
+  const stop = () => { auto = false; clearInterval(tick); };
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(app);
+  sw.forEach(btn => btn.addEventListener('click', () => { stop(); pick(btn); }));
+  own.addEventListener('input', () => { stop(); sw.forEach(b => b.setAttribute('aria-pressed', false)); setColour(own.value); });
+  nameIn.addEventListener('focus', stop);
   const appSub = document.getElementById('appSub');
   nameIn.addEventListener('input', () => {
     const v = nameIn.value.trim();
