@@ -20,7 +20,9 @@
 .chips button:hover { border-color:var(--ink); }
 .chips button[aria-pressed="true"] { background:var(--ink); border-color:var(--ink); color:var(--paper); }
 .money-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.money-row label { display:grid; gap:6px; font-size:14px; color:var(--mute); }
+.money-row label { display:grid; gap:6px; font-size:14px; color:var(--mute); align-content:start; }
+.money-row small { font-size:12.5px; color:var(--mute); line-height:1.35; }
+.money-row label.off .money { opacity:.45; }
 .money { display:flex; align-items:center; border:1.5px solid var(--rule); border-radius:12px; background:#fff; padding:0 12px; }
 .money:focus-within { border-color:var(--green); }
 .money span { color:var(--mute); }
@@ -122,11 +124,14 @@
       <div class="money-row">
         <label>Software, each month<span class="money"><span>£</span><input type="number" id="fee" inputmode="decimal" min="0" step="1"></span></label>
         <label>Branded app, each month<span class="money"><span>£</span><input type="number" id="appFee" inputmode="decimal" min="0" step="1"></span></label>
+        <label>Other tools taal replaces<span class="money"><span>£</span><input type="number" id="otherFee" inputmode="decimal" min="0" step="1" value="0"></span><small>A marketing or email system, a rota app, staff messaging</small></label>
+        <label id="siteLbl">Website builder and hosting<span class="money"><span>£</span><input type="number" id="siteFee" inputmode="decimal" min="0" step="1" value="0"></span><small>Squarespace, Wix or similar, each month</small></label>
       </div>
       <div class="toggles">
         <label class="tg"><span><b>Your own apps</b><small>On both sides: their branded app, or taal's apps</small></span><input type="checkbox" id="apps" checked></label>
+        <label class="tg"><span><b>Your studio website</b><small>On both sides: your site now, or taal's at £800 once</small></span><input type="checkbox" id="site"></label>
         <label class="tg"><span><b>Their prices are before VAT</b><small>Adds 20%. taal's prices include VAT</small></span><input type="checkbox" id="vat"></label>
-        <label class="tg"><span><b>taal care plan</b><small>£400 a year from year two, optional</small></span><input type="checkbox" id="care" checked></label>
+        <label class="tg"><span><b>taal care plan</b><small>£300 a year from year two, optional</small></span><input type="checkbox" id="care"></label>
         <label class="tg"><span><b>Founding offer</b><small>30% off setup, for our first three studios</small></span><input type="checkbox" id="found"></label>
       </div>
     </div>
@@ -147,7 +152,7 @@
       </details>
     </div>
   </div>
-  <p class="note" style="margin-top:36px">taal's side counts setup paid at the start, about £30 a month for hosting and email, and, with apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20). Card fees, your website and SMS aren't counted on either side.</p>
+  <p class="note" style="margin-top:36px">taal's side counts setup paid at the start, about £30 a month for hosting and email, and, with apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20). Card fees and SMS aren't counted on either side. Most studios also pay for tools taal replaces, so add those for the full picture.</p>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -213,20 +218,20 @@
     bs: { fee: 150, app: 0, vat: false, src: 'bsport, from £150 a month for studios. A branded app is included.' },
     other: { fee: 150, app: 0, vat: false, src: 'Enter what you pay. Your invoice is the best guide.' },
   };
-  const SETUP = 1900, APPS = 1000, RUN = 30, CARE = 400, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
+  const SETUP = 1900, APPS = 1000, SITE = 800, RUN = 30, CARE = 300, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
   const $ = id => document.getElementById(id);
-  const fee = $('fee'), appFee = $('appFee'), apps = $('apps'), vat = $('vat'), care = $('care'), found = $('found');
+  const fee = $('fee'), appFee = $('appFee'), otherFee = $('otherFee'), siteFee = $('siteFee'), apps = $('apps'), site = $('site'), vat = $('vat'), care = $('care'), found = $('found');
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
 
   function taalAt(m) { // total paid by the end of month m (0 = the day you start)
     const withApps = apps.checked;
-    let t = (SETUP + (withApps ? APPS : 0)) * (found.checked ? 1 - OFF : 1) + RUN * m;
+    let t = (SETUP + (withApps ? APPS : 0) + (site.checked ? SITE : 0)) * (found.checked ? 1 - OFF : 1) + RUN * m;
     if (withApps) t += GOOGLE + APPLE * Math.max(1, Math.ceil(m / 12));
     if (care.checked && m > 12) t += CARE * Math.floor((m - 1) / 12);
     return t;
   }
   function nowAt(m) {
-    const monthly = (+fee.value || 0) + (apps.checked ? (+appFee.value || 0) : 0);
+    const monthly = (+fee.value || 0) + (apps.checked ? (+appFee.value || 0) : 0) + (+otherFee.value || 0) + (site.checked ? (+siteFee.value || 0) : 0);
     return monthly * (vat.checked ? 1.2 : 1) * m;
   }
   function crossMonth() { for (let m = 1; m <= 120; m++) if (taalAt(m) <= nowAt(m)) return m; return null; }
@@ -274,6 +279,7 @@
 
   function render() {
     appFee.disabled = !apps.checked;
+    $('siteLbl').classList.toggle('off', !site.checked);
     const a = nowAt(N), b = taalAt(N), d = a - b, c = crossMonth();
     $('totNow').textContent = gbp(a); $('totTaal').textContent = gbp(b);
     const v = $('verdict'), why = $('why');
@@ -297,8 +303,9 @@
     render();
   }
   document.querySelectorAll('#chips button').forEach(b => b.addEventListener('click', () => pick(b.dataset.p)));
-  [fee, appFee].forEach(i => i.addEventListener('input', render));
-  [apps, vat, care, found].forEach(i => i.addEventListener('change', render));
+  [fee, appFee, otherFee].forEach(i => i.addEventListener('input', render));
+  siteFee.addEventListener('input', () => { if (+siteFee.value > 0) site.checked = true; render(); });
+  [apps, site, vat, care, found].forEach(i => i.addEventListener('change', render));
   pick('teamup1');
   let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(draw, 120); });
 })();

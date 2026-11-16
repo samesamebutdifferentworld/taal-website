@@ -223,6 +223,8 @@ summary::after { transition:transform .3s var(--curve); }
 /* the demo button sits under the sample phone, with its note */
 .hero-go.under { display:flex; flex-direction:column; align-items:stretch; gap:10px; margin-top:10px; width:100%; text-align:center; }
 
+.save-line { margin-top:22px; padding-top:18px; border-top:1px solid var(--rule); font-family:'Funnel Display', sans-serif; font-weight:600; font-size:clamp(19px, 2vw, 24px); letter-spacing:-0.02em; }
+.save-line a { color:var(--green); }
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
@@ -821,7 +823,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
         <label><input type="radio" name="pay" value="once" checked><span>Pay once</span></label>
         <label><input type="radio" name="pay" value="spread"><span>Over 12 months</span></label>
       </div>
-      <label class="opt"><span class="opt-text"><b>Care plan</b><small>Updates and support</small></span><span class="opt-price">£400<small> a year</small></span><input type="checkbox" role="switch" id="optCare" checked aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
+      <label class="opt"><span class="opt-text"><b>Care plan</b><small>Updates and support</small></span><span class="opt-price">£300<small> a year</small></span><input type="checkbox" role="switch" id="optCare" checked aria-label="Care plan from year two"><i class="sw" aria-hidden="true"></i></label>
       <p class="opt-foot">Up to 2,000 <span data-t="people">members</span>. Bigger than that? We'll quote.</p>
     </div>
     <div class="total" aria-live="polite">
@@ -831,12 +833,12 @@ footer .made { display:flex; align-items:center; gap:12px; }
       <div class="t-stats">
         <span><b>£30</b>a month to hosting and email</span>
         <span><b id="tY1">£4,060</b>year one</span>
-        <span><b id="tLater">£760</b>each year after</span>
+        <span><b id="tLater">£660</b>each year after</span>
       </div>
       <a class="btn btn-seal to-demo" href="demo.html">Build your demo</a>
     </div>
   </div>
-  <p class="allin">Setup includes 12 months of updates and support. Prices include VAT. <a href="compare.html">Compare three years against what you use now</a></p>
+  <p class="allin">Setup includes 12 months of updates and support. Prices include VAT.</p>
   <details class="incl"><summary>What's included in setup?</summary>
     <ul class="incl-list">
       <li>Hosting, email and app store accounts in your studio's name, on your own billing</li>
@@ -846,29 +848,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
       <li>12 months of updates, fixes and support</li>
     </ul></details>
 
-  <details class="calc-box" id="calculator"><summary><span>Work out your saving</span><small>Compare with what you pay now</small></summary>
-  <div class="calc">
-    <div>
-      <div class="field">
-        <label for="current">What you pay for software now, each month</label>
-        <div class="money"><span>£</span><input type="number" id="current" inputmode="decimal" min="0" step="5" value="200"></div>
-      </div>
-      <p class="fine">Uses the options, way of paying and care plan you picked above.</p>
-    </div>
-    <div class="result" aria-live="polite">
-      <div>
-        <div class="big" id="saveBig">£1,680 a year</div>
-        <p class="sub" id="saveSub">saved from year two</p>
-      </div>
-      <div class="compare">
-        <div class="cbar"><span>What you pay now</span><div class="track"><i id="barNow"></i></div><b id="nowYr">£2,400</b></div>
-        <div class="cbar taal"><span>taal, year one</span><div class="track"><i id="barY1"></i></div><b id="y1">£1,620</b></div>
-        <div class="cbar taal"><span>taal, after that</span><div class="track"><i id="barLater"></i></div><b id="later">£720</b></div>
-      </div>
-      <p class="fine" id="perMember"></p>
-    </div>
-  </div>
-  </details>
+  <p class="save-line">Most studios save from year two. <a href="compare.html">Compare three years against what you use now</a></p>
 </div></section>
 
 <section class="how" id="how" data-beat="3"><div class="wrap">
@@ -890,7 +870,7 @@ footer .made { display:flex; align-items:center; gap:12px; }
     <details><summary>How long until we switch?</summary><p>You can build a working demo yourself in about a minute, and we build your full system the way you want it, ready for you to try within four weeks of signing. You go live when you're happy with it and your current contract allows, usually after a notice period. Existing card and Direct Debit details can't always be transferred from your current provider. If they can't, we email your members a simple link to set up payment again and follow up with anyone who hasn't.</p></details>
     <details><summary>Can you move us from our current system?</summary><p>Yes. We bring across your members, memberships and credits as part of setup, so your members carry on where they left off.</p></details>
     <details><summary>How do you look after our members' data?</summary><p>Your system runs on your own hosting account, not a database shared with other studios. Health and injury notes are only visible to the staff you choose. Cards and Direct Debits are handled by Stripe, so card details never touch your system. You can export or delete a member's data when they ask, as UK GDPR requires, and if you ever leave, it all goes with you.</p></details>
-    <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan at £400 a year, or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.</p></details>
+    <details><summary>What happens after the first year?</summary><p>Your licence is permanent, so the system is yours to keep using. Setup includes 12 months of updates, fixes and support. After that you can take the care plan at £300 a year, or ask us for updates when you need them. If you have your own apps we recommend it, because Apple and Google require regular updates. App updates that Apple or Google require are £150 each without the care plan.</p></details>
     <details><summary>What if we want to leave?</summary><p>Everything runs in accounts in your studio's name and your licence is permanent, so the system keeps running without us. You can export members, bookings and payments from the back office at any time, and we remove our access and hand over everything we hold. <a href="leaving.html">What you keep, and how</a>.</p></details>
     <details><summary>What about card fees?</summary><p>Stripe charges its standard rates on each payment. We don't add anything on top.</p></details>
   </div>
@@ -1198,7 +1178,7 @@ const CONTACT_EMAIL = 'EMAIL';
   });
 })();
 
-/* saving calculator */
+/* pricing builder */
 (function () {
   const $ = id => document.getElementById(id);
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
@@ -1208,7 +1188,7 @@ const CONTACT_EMAIL = 'EMAIL';
     apps: { once: 1000, start: 200, monthly: 85 },
     site: { once: 800, start: 200, monthly: 65 },
   };
-  const RUNNING = 30, CARE = 400, OFF = 0.3;
+  const RUNNING = 30, CARE = 300, OFF = 0.3;
   const founding = () => $('founding').getAttribute('aria-pressed') === 'true';
   const picked = name => document.querySelector('input[name=' + name + ']:checked').value;
   function costs() {
@@ -1220,22 +1200,6 @@ const CONTACT_EMAIL = 'EMAIL';
     const setup = spread ? p.start + p.monthly * 12 : p.once;
     const care = $('optCare').checked ? CARE : 0;
     return { p, spread, setup, care, y1: setup + RUNNING * 12, later: RUNNING * 12 + care };
-  }
-  function run() {
-    const c = costs(), now = Math.max(0, +$('current').value || 0) * 12;
-    const save = now - c.later, save1 = now - c.y1;
-    $('nowYr').textContent = gbp(now); $('y1').textContent = gbp(c.y1); $('later').textContent = gbp(c.later);
-    const max = Math.max(now, c.y1, 1);
-    $('barNow').style.width = (now / max * 100) + '%'; $('barY1').style.width = (c.y1 / max * 100) + '%'; $('barLater').style.width = (c.later / max * 100) + '%';
-    const big = $('saveBig');
-    if (save > 0) {
-      big.className = 'big'; big.textContent = gbp(save) + ' a year';
-      $('saveSub').textContent = 'saved from year two' + (save1 > 0 ? ', and ' + gbp(save1) + ' in year one' : '. Year one costs ' + gbp(-save1) + ' more while you set up.');
-    } else {
-      big.className = 'big neg'; big.textContent = 'About the same';
-      $('saveSub').textContent = 'taal costs ' + gbp(-save) + ' more a year than you pay now, with your own brand and data.';
-    }
-    $('perMember').textContent = 'From year two you pay about ' + gbp(RUNNING) + ' a month in running costs' + (c.care ? ', plus the care plan at ' + gbp(CARE) + ' a year.' : '.');
   }
   // Prices count up or down to their new value when an option changes.
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1260,14 +1224,13 @@ const CONTACT_EMAIL = 'EMAIL';
     });
     tween($('tY1'), c.y1); tween($('tLater'), c.later);
   }
-  $('current').addEventListener('input', run);
-  $('founding').addEventListener('click', () => { $('founding').setAttribute('aria-pressed', !founding()); price(); run(); });
-  document.querySelectorAll('input[name=pay], #optApps, #optSite, #optCare').forEach(el => el.addEventListener('change', () => { price(); run(); }));
-  price(); run();
+  $('founding').addEventListener('click', () => { $('founding').setAttribute('aria-pressed', !founding()); price(); });
+  document.querySelectorAll('input[name=pay], #optApps, #optSite, #optCare').forEach(el => el.addEventListener('change', price));
+  price();
   // Links to a closed section open it.
-  const closed = { '#calculator': '#calculator', '#questions': '.faq .faq-all', '#how': '.how-all' };
+  const closed = { '#questions': '.faq .faq-all', '#how': '.how-all' };
   function openFor(hash) { const d = closed[hash] && document.querySelector(closed[hash]); if (d) d.open = true; }
-  document.querySelectorAll('a[href="#calculator"], a[href="#questions"], a[href="#how"]').forEach(a => a.addEventListener('click', () => openFor(a.getAttribute('href'))));
+  document.querySelectorAll('a[href="#questions"], a[href="#how"]').forEach(a => a.addEventListener('click', () => openFor(a.getAttribute('href'))));
   openFor(location.hash);
 })();
 
