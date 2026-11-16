@@ -278,7 +278,7 @@ footer a { color:var(--mute); }
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="logo" href="./" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+  <a class="logo" href="./" aria-label="taal home"><svg class="beat" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
   <div class="links"><a class="haven-link hide-sm" href="#" target="_blank" rel="noopener">Look around Haven</a><a href="./#pricing">Pricing</a></div>
 </div></nav>
 
@@ -613,7 +613,7 @@ footer a { color:var(--mute); }
     if (state.books === 'appointments') d.delete('classes');
     const go = $('go'); go.disabled = true;
     let n = 0;
-    const tick = () => { msg.innerHTML = '<span class="building"><svg class="tala-loop" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
+    const tick = () => { msg.innerHTML = '<span class="building"><svg class="tala-loop" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>' + esc(steps[Math.min(n++, steps.length - 1)]) + '</span>'; };
     tick(); const timer = setInterval(tick, 2200);
     try {
       const res = await fetch('/api/build', { method: 'POST', body: d });
