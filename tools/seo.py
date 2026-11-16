@@ -31,6 +31,10 @@ PAGES = [
     ('compare.html', '/compare', '0.7'),
     ('demo.html', '/demo', '0.7'),
     ('leaving.html', '/leaving', '0.5'),
+    ('guides/index.html', '/guides/', '0.6'),
+    ('guides/booking-software-cost.html', '/guides/booking-software-cost', '0.6'),
+    ('guides/move-from-mindbody.html', '/guides/move-from-mindbody', '0.6'),
+    ('guides/branded-app.html', '/guides/branded-app', '0.6'),
 ]
 STUDIO = {
     'gyms.html': ('Gyms', 'gyms'),
@@ -147,6 +151,18 @@ def graph(file, path, s, index_html, P):
                    'description': desc, 'offers': offers(P)}
         page['about'] = {'@id': SITE + path + '#service'}
         return [page, service, crumbs(label, path)]
+    if file.startswith('guides/'):
+        if file == 'guides/index.html':
+            return [page, crumbs('Guides', path)]
+        art = {'@type': 'Article', '@id': SITE + path + '#article', 'headline': title.replace(': taal', ''), 'description': desc,
+               'inLanguage': 'en-GB', 'mainEntityOfPage': {'@id': SITE + path + '#page'},
+               'author': {'@type': 'Person', 'name': 'Tim Allan', 'jobTitle': 'Founder, taal'}, 'publisher': {'@id': SITE + '/#org'},
+               'datePublished': re.search(r'datetime="([^"]+)"', s).group(1), 'dateModified': re.search(r'datetime="([^"]+)"', s).group(1)}
+        bc = {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'taal', 'item': SITE + '/'},
+            {'@type': 'ListItem', 'position': 2, 'name': 'Guides', 'item': SITE + '/guides/'},
+            {'@type': 'ListItem', 'position': 3, 'name': title.replace(': taal', ''), 'item': SITE + path}]}
+        return [page, art, bc, ORG]
     names = {'compare.html': 'Compare costs', 'demo.html': 'Build your demo', 'leaving.html': 'Leaving taal', 'privacy.html': 'Privacy'}
     return [page, crumbs(names.get(file, title), path)]
 
@@ -227,6 +243,9 @@ Independent gyms, wellness studios, yoga and Pilates studios, dance studios, mar
 - [Build your demo]({SITE}/demo): a private working demo in your studio's brand
 - [Compare costs]({SITE}/compare): three years of taal against Mindbody, TeamUp, ClubRight and others, from published UK prices
 - [Leaving taal]({SITE}/leaving): what you keep and how to export your data
+- [Guide: how much studio booking software costs in the UK]({SITE}/guides/booking-software-cost)
+- [Guide: how to move from Mindbody without losing members]({SITE}/guides/move-from-mindbody)
+- [Guide: do you need your own branded app?]({SITE}/guides/branded-app)
 - [Gyms]({SITE}/gyms), [Wellness]({SITE}/wellness), [Yoga and Pilates]({SITE}/yoga-pilates), [Dance]({SITE}/dance), [Martial arts]({SITE}/martial-arts), [Climbing]({SITE}/climbing)
 
 ## Questions
@@ -238,7 +257,7 @@ Independent gyms, wellness studios, yoga and Pilates studios, dance studios, mar
 def main():
     index_html = (PUB / 'index.html').read_text()
     P = prices(index_html)
-    for f in sorted(p.name for p in PUB.glob('*.html')):
+    for f in sorted([p.name for p in PUB.glob('*.html')] + ['guides/' + p.name for p in (PUB / 'guides').glob('*.html')]):
         if f == 'admin.html':
             continue
         p = PUB / f

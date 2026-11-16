@@ -42,6 +42,9 @@ Independent gyms, wellness studios, yoga and Pilates studios, dance studios, mar
 - [Build your demo](https://taal.solutions/demo): a private working demo in your studio's brand
 - [Compare costs](https://taal.solutions/compare): three years of taal against Mindbody, TeamUp, ClubRight and others, from published UK prices
 - [Leaving taal](https://taal.solutions/leaving): what you keep and how to export your data
+- [Guide: how much studio booking software costs in the UK](https://taal.solutions/guides/booking-software-cost)
+- [Guide: how to move from Mindbody without losing members](https://taal.solutions/guides/move-from-mindbody)
+- [Guide: do you need your own branded app?](https://taal.solutions/guides/branded-app)
 - [Gyms](https://taal.solutions/gyms), [Wellness](https://taal.solutions/wellness), [Yoga and Pilates](https://taal.solutions/yoga-pilates), [Dance](https://taal.solutions/dance), [Martial arts](https://taal.solutions/martial-arts), [Climbing](https://taal.solutions/climbing)
 
 ## Questions

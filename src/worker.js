@@ -27,6 +27,8 @@ export default {
     }
     // One address per page, for search engines: old pages and .html addresses move for good.
     if (/^\/(yoga|pilates)(\.html)?\/?$/.test(url.pathname)) return Response.redirect(url.origin + '/yoga-pilates' + url.search, 301);
+    const guide = url.pathname.match(/^\/guides\/([a-z-]+)\.html$/);
+    if (guide) return Response.redirect(url.origin + (guide[1] === 'index' ? '/guides/' : '/guides/' + guide[1]) + url.search, 301);
     const page = url.pathname.match(/^\/([a-z-]+)\.html$/);
     if (page && page[1] !== 'admin') return Response.redirect(url.origin + (page[1] === 'index' ? '/' : '/' + page[1]) + url.search, 301);
     // Partner links: taal.solutions/r/sam -> the home page, with the partner's code in the address.
