@@ -169,6 +169,30 @@ svg .ts, svg .t2, svg .t3, svg .tk { transform-box:fill-box; transform-origin:ce
 .aim p { color:var(--green); font-size:17px; max-width:34em; }
 @media (max-width: 760px) { .aim { grid-template-columns:minmax(0,1fr); margin-top:48px; } }
 
+/* why it matters: one place, and their own app */
+.why { padding:24px 0 120px; }
+.why .wrap { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px; }
+.why-card { border-radius:28px; padding:36px 36px 32px; display:flex; flex-direction:column; gap:16px; }
+.why-card h2 { font-size:clamp(32px, 3.6vw, 48px); line-height:1; letter-spacing:-0.035em; }
+.why-card > p { font-size:17px; max-width:30em; }
+.why-card.one { background:#fff; }
+.why-card.one > p { color:var(--mute); }
+.why-card.own { background:var(--green); color:var(--paper); }
+.why-card.own > p { color:#CFE0D7; }
+.instead { margin-top:auto; padding-top:18px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.instead span { font-size:14px; color:var(--mute); padding:7px 12px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--hair); text-decoration:line-through; text-decoration-color:rgb(168 56 43 / .7); text-decoration-thickness:1.5px; }
+.instead b { display:inline-flex; align-items:center; gap:8px; font-family:'Funnel Display', sans-serif; font-size:20px; font-weight:650; letter-spacing:-0.02em; color:var(--ink); padding:6px 4px; }
+.lock { margin-top:auto; padding-top:18px; display:grid; gap:8px; max-width:420px; }
+.note { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px; align-items:center; padding:12px 14px; border-radius:18px; background:rgb(242 243 238 / .14); backdrop-filter:blur(6px); color:var(--paper); font-size:13.5px; line-height:1.35; }
+.note .ic { width:34px; height:34px; border-radius:9px; background:#F2F3EE; color:var(--green); display:grid; place-items:center; font-family:'Funnel Display', sans-serif; font-weight:700; font-size:17px; }
+.note b { display:block; font-size:13.5px; }
+.note div span { color:#DCE8E2; }
+.note i { font-style:normal; font-size:12px; color:#B9CEC5; align-self:start; }
+.note.dim { opacity:.6; transform:scale(.97); transform-origin:top; }
+.why.seen .note:not(.dim) { animation:noteIn .8s var(--curve) .2s both; }
+@keyframes noteIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
+@media (max-width: 860px) { .why .wrap { grid-template-columns:minmax(0,1fr); } .why-card { padding:28px 24px; } .why { padding:8px 0 88px; } }
+
 /* nav */
 /* solid, and padded into the phone's status bar area, so nothing shows above it when scrolling */
 nav { position:fixed; top:0; left:0; right:0; z-index:10; background:#F2F3EE; border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top); }
@@ -681,6 +705,25 @@ footer .made { display:flex; align-items:center; gap:12px; }
   </div>
 </div></section>
 
+<section class="why" data-beat="1"><div class="wrap">
+  <div class="why-card one">
+    <h2>One place for all of it</h2>
+    <p>Bookings, payments, the timetable, the rota, cover, staff pay and messages, in one system your whole team uses.</p>
+    <div class="instead" aria-label="What it replaces">
+      <span>Booking software</span><span>Rota spreadsheet</span><span>Pay calculations</span><span>Staff group chat</span>
+      <b><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#0F5C57" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>one app</b>
+    </div>
+  </div>
+  <div class="why-card own">
+    <h2>Your app on their phone</h2>
+    <p>Your icon on members' home screens, so you're one tap away. Booking takes seconds, reminders cut no-shows and alerts bring people back when a space opens.</p>
+    <div class="lock" aria-hidden="true">
+      <div class="note"><span class="ic">H</span><div><b>Haven</b><span>A space opened in Reformer at 18:30. Tap to book.</span></div><i>now</i></div>
+      <div class="note dim"><span class="ic">H</span><div><b>Haven</b><span>See you at Strength tomorrow, 07:00.</span></div><i>2h</i></div>
+    </div>
+  </div>
+</div></section>
+
 <section class="features" id="features" data-beat="1"><div class="wrap">
   <h2>Everything else is included</h2>
   <div class="tabs" role="tablist" aria-label="Features by who uses them">
@@ -1106,6 +1149,11 @@ const CONTACT_EMAIL = 'EMAIL';
   // the big sam bar in the closing band rises once when it comes into view
   const demo = document.querySelector('.demo');
   if (demo) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { demo.classList.add('seen'); o.disconnect(); } }, { threshold: .4 }).observe(demo);
+})();
+
+(function () {
+  const why = document.querySelector('.why'); if (!why) return;
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { why.classList.add('seen'); o.disconnect(); } }, { threshold: .35 }).observe(why);
 })();
 
 /* the ensō circles draw once each as they come into view, and hairlines draw across */
