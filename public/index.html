@@ -251,6 +251,10 @@ section.features .grid6 .plain h3::before { background:var(--sage); }
 .features a { color:var(--paper); }
 .features ::selection { background:rgb(229 154 140 / .35); }
 /* the one red band: where the saving is */
+/* Line breaks: short, centred or display text balances its lines; longer text avoids a lone last word. */
+h1, h2, h3, h4, .lede, .hero-go span, .save-band p, .tala-note p, .note, .tap-hint, blockquote, figcaption { text-wrap:balance; }
+p, li, summary, small, .step-text { text-wrap:pretty; }
+.save-band a { display:inline-block; }
 .save-band { background:var(--seal); color:#FBF3EF; padding:44px 0; }
 .save-band p { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:clamp(24px, 3.2vw, 40px); line-height:1.1; letter-spacing:-0.03em; max-width:28em; }
 .save-band a { color:#FBF3EF; text-decoration-thickness:2px; text-underline-offset:5px; white-space:normal; }
@@ -369,6 +373,7 @@ nav .btn { padding:10px 18px; font-size:15px; }
 .hero-go { display:flex; align-items:center; gap:18px; margin-top:32px; flex-wrap:wrap; }
 .hero-go .btn { font-size:17px; padding:16px 28px; }
 .hero-go span { font-size:14px; color:var(--mute); }
+.hero-go .go-note > span { display:block; text-wrap:balance; }
 .hero-go .to-price { font-size:14px; color:var(--ink); text-decoration:underline; text-decoration-color:var(--rule); text-underline-offset:4px; text-decoration-thickness:1px; transition:text-decoration-color .2s; }
 .hero-go .to-price:hover { text-decoration-color:currentColor; }
 .hero .hero-go { animation:rise .9s cubic-bezier(.2,.7,.2,1) .34s both; }
@@ -941,7 +946,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 <header class="hero" id="top" data-beat="0"><div class="wrap">
   <div>
     <h1><span>Your own<br class="m-br"> booking app.</span><span>In your brand.</span><span class="h1-tag">That you own.</span></h1>
-    <p class="lede">Bookings, memberships and payments for independent gyms, studios and clubs, under your own name. Pay once from £1,900, with no monthly fee to us.</p>
+    <p class="lede">Bookings, memberships and payments for independent gyms, studios and clubs, under your own name. Pay once from £1,900, with no monthly fee&nbsp;to&nbsp;us.</p>
   </div>
 
   <div class="try">
@@ -1015,13 +1020,13 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
         <label class="own" title="Pick your own colour"><span class="sr">Pick your own colour</span><input type="color" id="ownColour" value="#155E5A"></label>
       </div>
       <p class="note">Your real app gets your logo and fonts too.</p>
-      <div class="hero-go under"><a class="btn btn-seal to-demo" href="demo.html">Try your free demo</a><span>Your custom demo has more features, plus the staff and owner side. Ready in about a minute, with just your email.</span><a class="to-price" href="#pricing">Or see pricing</a></div>
+      <div class="hero-go under"><a class="btn btn-seal to-demo" href="demo.html">Try your free demo</a><span class="go-note"><span>Your custom demo has more features, plus the staff and owner&nbsp;side.</span> <span>Ready in about a minute, with just your&nbsp;email.</span></span><a class="to-price" href="#pricing">Or see pricing</a></div>
     </div>
   </div>
 </div></header>
 
 <section class="rhythm" data-beat="0"><div class="wrap">
-  <div class="tala-note"><svg class="tala-loop" width="132" height="132" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#A9C2B2" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/></svg><p><b>Teentaal:</b> clap, clap, wave, clap. The red beat is sam, where every cycle comes back to.</p></div>
+  <div class="tala-note"><svg class="tala-loop" width="132" height="132" viewBox="0 0 24 24" aria-hidden="true"><rect class="ts" x="2.5" y="4" width="3" height="16" rx="1.5" fill="#E59A8C"/><rect class="t2" x="8.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/><circle class="tk" cx="15.5" cy="12" r="2.1" fill="none" stroke="#A9C2B2" stroke-width="1.6"/><rect class="t3" x="19.5" y="7" width="3" height="10" rx="1.5" fill="#A9C2B2"/></svg><p><b>Teentaal:</b> clap, clap, wave, clap. The red beat is sam, where every cycle comes back&nbsp;to.</p></div>
   <h2>taal means rhythm. <span>Keep your studio in sync.</span></h2>
   <div class="promises">
     <div><h3>Your brand</h3><p class="key"><span>Your app.</span></p>
@@ -1158,7 +1163,7 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 
 </div></section>
 
-<section class="save-band" data-beat="3"><div class="wrap"><p>Most studios save significantly from year two. <a href="compare.html">Compare three years against what you use now</a></p></div></section>
+<section class="save-band" data-beat="3"><div class="wrap"><p>Most studios save significantly from year two. <a href="compare.html">Compare three years against what you use&nbsp;now</a></p></div></section>
 
 <section class="how" id="how" data-beat="3"><div class="wrap">
   <details class="faq-all how-all"><summary><h2>How it works</h2><small>See it, try it, then switch</small></summary>
