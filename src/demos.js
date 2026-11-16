@@ -50,7 +50,7 @@ async function build(request, env, url) {
   if (get('website')) return json({ error: 'Please try again.' }, 400);
 
   const lead = {
-    // Only the email is required; everything else has a sensible default.
+    // The email and a first name are asked for; everything else has a sensible default.
     name: get('name').slice(0, 80),
     email: email(get('email')),
     studio: get('studio').slice(0, 60) || 'Your studio',
@@ -59,7 +59,6 @@ async function build(request, env, url) {
     colour: hex(get('colour')) || '#135855',
     accent: hex(get('accent')) || '#D8BF8C',
     font: FONTS.includes(get('font')) ? get('font') : 'modern',
-    classes: get('classes').split('\n').map((l) => l.trim().slice(0, 40)).filter(Boolean).slice(0, 12),
     books: ['classes', 'appointments', 'both'].includes(get('books')) ? get('books') : 'both',
     gift_cards: get('gift_cards') !== 'off',
     offpeak: get('offpeak') === 'on' ? {
@@ -91,12 +90,14 @@ async function build(request, env, url) {
     brand_color: lead.colour,
     accent_color: lead.accent,
     font: lead.font,
-    classes: lead.classes,
+    // Class names come from the studio type; the demo greets them by their first name.
+    first_name: lead.name.split(/\s+/)[0] || undefined,
     books: lead.books,
     offpeak: lead.offpeak,
     gift_cards: lead.gift_cards,
     logo,
-    cta_url: callUrl || `${base}/demo.html#call`,
+    // The demo's own Book a call button, with their details filled in.
+    cta_url: callUrl ? withDetails(callUrl, { name: lead.name, email: lead.email, studio: lead.studio, ref: lead.ref }) : `${base}/demo.html#call`,
     days: DEMO_DAYS,
     });
   } catch (err) {

@@ -55,8 +55,14 @@ test('a demo is built, the studio gets its links and you are told', async () => 
   assert.equal(req.kind, 'yoga');
   assert.equal(req.brand_color, '#5E2C4E');
   assert.equal(req.font, 'elegant');
-  assert.deepEqual(req.classes, ['Vinyasa', 'Yin']);
-  assert.equal(req.cta_url, 'https://cal.test/tim');
+  // Class names come from the studio type now, and the demo greets them by first name.
+  assert.equal(req.classes, undefined);
+  assert.equal(req.first_name, 'Sam');
+  // The demo's Book a call button carries their details.
+  const cta = new URL(req.cta_url);
+  assert.equal(cta.origin + cta.pathname, 'https://cal.test/tim');
+  assert.equal(cta.searchParams.get('name'), 'Sam Jones');
+  assert.equal(cta.searchParams.get('email'), 'sam@flow.test');
   assert.equal(req.days, 30);
   assert.equal(req.books, 'both');
   assert.equal(req.gift_cards, true);

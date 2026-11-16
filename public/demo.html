@@ -415,15 +415,10 @@ footer a { color:var(--mute); }
       <p>A preview as you choose. Your demo has every screen, your lettering and sample bookings.</p>
     </div>
 
-    <fieldset class="step" id="classStep">
-      <legend><span class="n" aria-hidden="true">4</span>Your classes <small>optional</small></legend>
-      <div class="field"><label for="classes">Your class names, one per line <small id="classesHint"></small></label><textarea id="classes" name="classes" maxlength="600" spellcheck="true"></textarea></div>
-    </fieldset>
-
     <fieldset class="step">
-      <legend><span class="n" aria-hidden="true">5</span>Where to send it</legend>
+      <legend><span class="n" aria-hidden="true">4</span>Where to send it</legend>
       <div class="two">
-        <div class="field"><label for="name">Your name <small>optional</small></label><input type="text" id="name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="name">First name <small>so your demo greets you</small></label><input type="text" id="name" name="name" autocomplete="given-name" maxlength="40" required></div>
         <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" maxlength="200" required></div>
       </div>
       <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
@@ -544,9 +539,6 @@ footer a { color:var(--mute); }
     document.querySelectorAll('.kinds [role=radio]').forEach(b => { const on = b.dataset.k === state.kind; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
     document.querySelectorAll('.seg [role=radio]').forEach(b => { const on = b.dataset.b === state.books; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
     $('booksHint').textContent = k.books[state.books];
-    $('classesHint').textContent = 'Leave it empty to use: ' + k.classes + '.';
-    form.classes.placeholder = k.classes.replace(/, | and /g, '\n');
-    $('classStep').hidden = state.books === 'appointments';
     const op = $('offpeak').checked;
     $('opBox').hidden = !op;
     const paint = () => {
@@ -627,12 +619,11 @@ footer a { color:var(--mute); }
   form.addEventListener('submit', async ev => {
     ev.preventDefault();
     msg.classList.remove('err');
-    const missing = $('offpeak').checked && $('opOpen').value >= $('opClose').value ? 'Off-peak needs to start before it ends.' : !/^\S+@\S+\.\S{2,}$/.test(form.email.value.trim()) ? 'Check your email address.' : '';
+    const missing = $('offpeak').checked && $('opOpen').value >= $('opClose').value ? 'Off-peak needs to start before it ends.' : !form.name.value.trim() ? 'Add your first name.' : !/^\S+@\S+\.\S{2,}$/.test(form.email.value.trim()) ? 'Check your email address.' : '';
     if (missing) { msg.classList.add('err'); msg.textContent = missing; return; }
     const d = new FormData(form);
     d.set('kind', state.kind); d.set('colour', state.colour); d.set('accent', state.accent);
     d.set('books', state.books); d.set('gift_cards', $('gift').checked ? 'on' : 'off');
-    if (state.books === 'appointments') d.delete('classes');
     const ref = new URLSearchParams(location.search).get('ref'); if (ref) d.set('ref', ref); // the partner who sent them
     const go = $('go'); go.disabled = true;
     let n = 0;
