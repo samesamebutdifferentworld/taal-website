@@ -246,10 +246,10 @@ Founder, taal`;
   return { html, text };
 }
 
-// Cal.com and Calendly both fill in name and email from the link.
-function withDetails(link, { name, email }) {
+// Cal.com fills in name, email and the studio question (identifier "studio") from the link.
+function withDetails(link, { name, email, studio }) {
   if (!link) return '';
-  try { const u = new URL(link); u.searchParams.set('name', name); u.searchParams.set('email', email); return u.toString(); } catch { return link; }
+  try { const u = new URL(link); u.searchParams.set('name', name); u.searchParams.set('email', email); if (studio) u.searchParams.set('studio', studio); return u.toString(); } catch { return link; }
 }
 
 async function notify(env, subject, rows) {

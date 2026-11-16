@@ -150,7 +150,7 @@ test('arrange a call: saves the lead, emails the studio a booking link and tells
   assert.equal(r.ok, true); assert.equal(r.emailed, true); assert.equal(r.call_url, 'https://cal.test/tim');
   assert.equal(sent.length, 2);
   assert.deepEqual(sent[0].to, ['sam@flow.test']);
-  assert.match(sent[0].html, /Book a time/); assert.match(sent[0].text, /cal\.test\/tim\?name=Sam\+Jones&email=sam%40flow\.test/);
+  assert.match(sent[0].html, /Book a time/); assert.match(sent[0].text, /cal\.test\/tim\?name=Sam\+Jones&email=sam%40flow\.test&studio=Flow\+Yoga/);
   assert.deepEqual(sent[1].to, ['tim@taal.test']);
   assert.match(sent[1].text, /Looking at: Booking system and apps, over 12 months/);
   const res2 = await call('/api/admin/leads', { headers: { authorization: 'Bearer ' + 'a'.repeat(24) } });

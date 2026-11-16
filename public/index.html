@@ -1554,9 +1554,9 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     } catch (err) { say(err.message); }
     finally { btn.disabled = false; btn.textContent = 'Ask for a call'; }
   });
-  // Cal.com and Calendly both fill in name and email from the link, so they don't type them twice.
+  // Cal.com fills in name, email and the studio question from the link, so they don't type them twice.
   function withDetails(link, d) {
-    try { const u = new URL(link); u.searchParams.set('name', d.name.trim()); u.searchParams.set('email', d.email.trim()); return u.toString(); } catch { return link; }
+    try { const u = new URL(link); u.searchParams.set('name', d.name.trim()); u.searchParams.set('email', d.email.trim()); if (d.studio) u.searchParams.set('studio', d.studio.trim()); return u.toString(); } catch { return link; }
   }
   function say(msg, field) { $('cbMsg').textContent = msg; if (field) form.elements[field].focus(); }
 })();
