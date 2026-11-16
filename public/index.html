@@ -599,13 +599,12 @@ dialog.callbox::backdrop { background:rgb(19 32 30 / .55); }
 .callbox .cb-lede { color:var(--mute); font-size:15px; margin-top:-4px; }
 .callbox .cb-pick { background:var(--tint, #E3E9E3); border-radius:14px; padding:12px 14px; font-size:14px; color:var(--ink); }
 .callbox .cb-pick b { display:block; font-size:12px; font-weight:600; color:var(--green); margin-bottom:2px; }
-.callbox label { display:grid; gap:6px; font-size:14px; font-weight:600; }
-.callbox label small { font-weight:400; color:var(--mute); }
-.callbox input, .callbox textarea { width:100%; font:inherit; font-size:16px; font-weight:400; padding:12px 14px; border-radius:12px; border:1.5px solid var(--rule); background:#fff; color:var(--ink); }
-.callbox textarea { resize:vertical; min-height:76px; }
-.callbox input:focus, .callbox textarea:focus { border-color:var(--green); outline:none; }
-.callbox .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-@media (max-width: 480px) { .callbox .two { grid-template-columns:1fr; } .callbox .cb { padding:26px 20px 22px; } }
+.callbox .cb-cal { min-height:420px; margin:0 -10px; position:relative; }
+.callbox .cb-wait { position:absolute; inset:0; display:grid; place-items:center; color:var(--mute); font-size:14px; }
+.callbox .cb-cal iframe { position:relative; z-index:1; }
+.callbox .cb-alt { font-size:13px; color:var(--mute); }
+.callbox .cb-alt a { color:var(--green); text-decoration:underline; text-underline-offset:3px; }
+dialog.callbox { width:min(820px, calc(100% - 28px)); }
 .callbox [hidden] { display:none !important; }
 .callbox h2:focus { outline:none; }
 .callbox .cb-x:focus:not(:focus-visible) { outline:none; box-shadow:none; }
@@ -615,19 +614,11 @@ dialog.callbox::backdrop { background:rgb(19 32 30 / .55); }
   .callbox h2 { font-size:26px; }
   .callbox .cb-lede { font-size:14px; }
   .callbox .cb-pick { font-size:13px; padding:10px 12px; }
-  .callbox label { gap:5px; font-size:13.5px; }
-  .callbox input, .callbox textarea { padding:10px 12px; }
-  .callbox textarea { min-height:60px; }
+  .callbox .cb-cal { margin:0 -14px; min-height:480px; }
   .callbox .cb-x { top:14px; right:12px; }
 }
-.callbox .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
-.callbox .btn { margin-top:4px; }
-.callbox .cb-msg { font-size:14px; color:var(--seal); min-height:0; }
-.callbox .cb-msg:empty { display:none; }
 .callbox .cb-x { position:absolute; top:20px; right:20px; width:38px; height:38px; border-radius:50%; border:0; background:transparent; color:var(--ink); font-size:26px; line-height:1; cursor:pointer; }
 .callbox .cb-x:hover { background:var(--tint, #E3E9E3); }
-.callbox .cb-done p { color:var(--mute); }
-.callbox .cb-done .btn { justify-self:start; }
 .allin { margin-top:18px; font-size:14px; color:var(--mute); }
 .incl, details.incl:first-of-type { margin-top:8px; border:0; padding:0; }
 .incl summary { font-size:14px; font-weight:600; color:var(--green); justify-content:flex-start; gap:10px; }
@@ -1067,27 +1058,13 @@ footer { padding:64px 0 72px; font-size:14px; color:var(--mute); border-top:1px 
 </div></footer>
 
 <dialog class="callbox" id="callBox" aria-labelledby="cbTitle">
-  <form class="cb" id="callForm" novalidate>
+  <div class="cb">
     <button type="button" class="cb-x" id="callClose" aria-label="Close">&times;</button>
     <h2 id="cbTitle" tabindex="-1">Arrange a call</h2>
-    <p class="cb-lede">A short video call with Tim. Ask anything and see how it would work with your timetable, prices and team.</p>
+    <p class="cb-lede">A short video call with Tim. Ask anything and see how it would work with your timetable, prices and team. Pick a time that suits you.</p>
     <p class="cb-pick" id="cbPick" hidden></p>
-    <label><span>Your name</span><input name="name" autocomplete="name" required maxlength="80"></label>
-    <label><span>Studio name</span><input name="studio" id="cbStudio" autocomplete="organization" required maxlength="60"></label>
-    <div class="two">
-      <label><span>Email</span><input name="email" type="email" autocomplete="email" required maxlength="200"></label>
-      <label><span>Phone <small>optional</small></span><input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
-    </div>
-    <label><span>Anything we should know? <small>optional</small></span><textarea name="note" maxlength="1500" placeholder="What you use now, how many clients, when you'd like to switch"></textarea></label>
-    <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
-    <p class="cb-msg" id="cbMsg" role="alert"></p>
-    <button type="submit" class="btn btn-seal" id="cbSend">Ask for a call</button>
-  </form>
-  <div class="cb cb-done" id="callDone" hidden>
-    <button type="button" class="cb-x" data-close aria-label="Close">&times;</button>
-    <h2 id="cbDoneTitle">Thanks</h2>
-    <p id="cbDoneText"></p>
-    <a class="btn btn-seal" id="cbBook" href="#" target="_blank" rel="noopener" hidden>Book a time</a>
+    <div class="cb-cal" id="cbCal"><p class="cb-wait">Loading times…</p></div>
+    <p class="cb-alt">Calendar not showing? <a id="cbDirect" href="https://cal.com/tim-taal/call" target="_blank" rel="noopener">Open the booking page</a></p>
   </div>
 </dialog>
 <script>
@@ -1508,11 +1485,13 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
   }));
 })();
 
-/* Arrange a call: a short form in a dialog, with what they picked in the pricing builder */
+/* Arrange a call: your Cal.com booking page inside the dialog, with what they picked in the pricing builder as the booking notes */
 (function () {
   const $ = id => document.getElementById(id);
-  const box = $('callBox'), form = $('callForm');
-  if (!box || !box.showModal) { const b = $('callOpen'); if (b) b.addEventListener('click', () => { location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A call about taal'); }); return; }
+  const CAL = 'tim-taal/call';
+  const box = $('callBox'), open = $('callOpen');
+  if (!box || !open) return;
+  if (!box.showModal) { open.addEventListener('click', () => window.open('https://cal.com/' + CAL, '_blank', 'noopener')); return; }
   function picked() {
     const items = ['Booking system'];
     if ($('optApps').checked) items.push('your own apps');
@@ -1522,57 +1501,38 @@ const CONTACT_EMAIL = 'hello@taal.solutions';
     const care = $('optCare').checked ? ', with the care plan' : '';
     const offer = $('founding').getAttribute('aria-pressed') === 'true' ? ', founding offer' : '';
     const cost = spread ? $('tSetup').textContent + ' to start. ' + $('tSetupNote').textContent : $('tSetup').textContent + ' once';
-    return { text: list + (spread ? ', over 12 months' : ', paid once') + care + offer, cost };
+    return list + (spread ? ', over 12 months' : ', paid once') + care + offer + '. ' + cost + '.';
   }
-  let pick = null;
-  $('callOpen').addEventListener('click', () => {
-    pick = picked();
-    $('cbPick').innerHTML = '<b>You picked</b>' + pick.text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]) + '. ' + pick.cost.replace(/[&<>]/g, '') + '.';
+  // Cal.com's embed loader (from their docs), loaded only when someone opens the dialog
+  function loadCal() {
+    if (window.Cal) return;
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    Cal('init', 'call', { origin: 'https://cal.com' });
+    Cal.ns.call('ui', { theme: 'light', hideEventTypeDetails: true, layout: 'month_view', cssVarsPerTheme: { light: { 'cal-brand': '#0F5C57' } } });
+  }
+  let n = 0;
+  open.addEventListener('click', () => {
+    const pick = picked();
+    $('cbPick').innerHTML = '<b>You picked</b>';
+    $('cbPick').append(pick);
     $('cbPick').hidden = false;
-    const name = $('studioName').value.trim();
-    if (name && !$('cbStudio').value) $('cbStudio').value = name;
-    form.hidden = false; $('callDone').hidden = true; $('cbMsg').textContent = '';
+    const config = { layout: 'month_view', theme: 'light', notes: 'Looking at: ' + pick };
+    const studio = ($('studioName') && $('studioName').value.trim()) || '';
+    if (studio) config.studio = studio;
+    const direct = new URL('https://cal.com/' + CAL);
+    Object.entries(config).forEach(([k, v]) => { if (k !== 'layout' && k !== 'theme') direct.searchParams.set(k, v); });
+    $('cbDirect').href = direct.toString();
+    // a fresh calendar each time, so the notes match what they picked now
+    const holder = document.createElement('div'); holder.id = 'cbCal' + (++n);
+    $('cbCal').innerHTML = '<p class="cb-wait">Loading times…</p>'; $('cbCal').append(holder);
     box.showModal();
     box.scrollTop = 0; $('cbTitle').focus({ preventScroll: true });
+    loadCal();
+    Cal.ns.call('inline', { elementOrSelector: '#' + holder.id, calLink: CAL, config });
   });
   const close = () => box.close();
   $('callClose').addEventListener('click', close);
-  box.querySelector('[data-close]').addEventListener('click', close);
   box.addEventListener('click', e => { if (e.target === box) close(); });
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const d = Object.fromEntries(new FormData(form));
-    if (!d.name.trim()) return say('Add your name.', 'name');
-    if (!d.studio.trim()) return say("Add your studio's name.", 'studio');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email.trim())) return say('Check your email address.', 'email');
-    d.package = pick ? pick.text + '. ' + pick.cost : '';
-    const btn = $('cbSend'); btn.disabled = true; btn.textContent = 'Sending';
-    try {
-      const res = await fetch('/api/call', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
-      const r = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(r.error || 'That did not send. Please try again.');
-      const first = d.name.trim().split(' ')[0];
-      $('cbDoneTitle').textContent = 'Thanks, ' + first;
-      const book = $('cbBook');
-      if (r.call_url) {
-        book.href = withDetails(r.call_url, d); book.hidden = false;
-        $('cbDoneText').textContent = "Pick a time that suits you. We've emailed you the link too.";
-      } else {
-        book.hidden = true;
-        $('cbDoneText').textContent = r.emailed
-          ? "We've emailed you. Reply with a few times that suit you and we'll set up the call."
-          : 'Tim will be in touch at ' + d.email.trim() + ' within a day to find a time.';
-      }
-      form.hidden = true; $('callDone').hidden = false;
-      form.reset();
-    } catch (err) { say(err.message); }
-    finally { btn.disabled = false; btn.textContent = 'Ask for a call'; }
-  });
-  // Cal.com fills in name, email and the studio question from the link, so they don't type them twice.
-  function withDetails(link, d) {
-    try { const u = new URL(link); u.searchParams.set('name', d.name.trim()); u.searchParams.set('email', d.email.trim()); if (d.studio) u.searchParams.set('studio', d.studio.trim()); return u.toString(); } catch { return link; }
-  }
-  function say(msg, field) { $('cbMsg').textContent = msg; if (field) form.elements[field].focus(); }
 })();
 </script>
 </body>
