@@ -26,7 +26,7 @@
     // The sender, on a domain verified in Resend, e.g. "Tim at Taal <hello@yourdomain.com>".
     "EMAIL_FROM": "Tim at taal <hello@taal.solutions>",
     // Booking link for a call (Calendly, Cal.com or Zoom Scheduler). Empty: "reply to book a call".
-    "CALL_URL": ""
+    "CALL_URL": "https://cal.com/tim-taal/call"
   }
   // Secrets, set in Cloudflare (Worker > Settings > Variables and secrets), never in this file:
   //   RESEND_API_KEY   sends the emails
