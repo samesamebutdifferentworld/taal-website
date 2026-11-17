@@ -64,3 +64,15 @@ Setup, in Cloudflare (Worker > Settings > Variables and secrets):
 Without an email key, demos still build and the page shows the links on screen.
 
 Tests: `node --test test/*.test.mjs`
+
+## From call to go-live (src/clients.js)
+
+1. **After a booked call**, about an hour after it starts, the studio gets a summary email with the overview PDF (`public/taal-overview.pdf`, from `tools/overview.py`), then a nudge 5 days later and a last one at 12, unless they're offered an agreement or marked "not going ahead". Open the lead in admin to add a personal note to the summary or hold it.
+2. **New agreement** (admin) makes the studio's private portal, `taal.solutions/client/<token>`, and emails the link.
+3. **They sign in the portal**: legal name, address, care plan, typed signature. The exact text they signed is kept with a SHA-256 fingerprint, their IP and the time (`/agreement/<token>` prints it). The first invoice goes out (Stripe, if `STRIPE_SECRET_KEY` is set; otherwise it's listed in admin to send by hand) and they get the welcome email. You countersign in admin.
+4. **They upload their details** in the portal (saves as they type): brand, photos, classes, timetable, treatments, prices, team, website copy, member export. Reminders go 3 and 8 days after signing if nothing's sent.
+5. **They set up their accounts** with the guides at `/setup/` (`tools/setup_guides.py`; add screenshots as `public/img/setup/<guide>-<step>.png`).
+6. **Build demo from their details** (admin) calls the booking app's `DemoBuilder.createFromBrief`. Change anything by hand, then **Send for review**. They approve or ask for changes in the portal.
+7. **Mark live** sends the second half invoice, or the Direct Debit link for monthly plans (stops itself after the agreed payments), and the care plan Direct Debit if they chose it.
+
+The agreement's words are in `src/agreement.js`; prices in `src/prices.js` (keep in step with the website). Stripe webhook: `https://taal.solutions/api/stripe`, events `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`.

@@ -22,6 +22,8 @@
  * without a key nothing is sent and the page shows the links on screen.
  */
 
+import { C, layout, button, esc, sendEmail, notify } from './mail.js';
+
 const YEAR = 365 * 86400;
 const DEMO_DAYS = 30;
 const MAX_LOGO = 1.8 * 1024 * 1024;
@@ -298,22 +300,6 @@ async function leads(request, env) {
 
 /* ---------- Emails ---------- */
 
-const C = { paper: '#F2F3EE', ink: '#13201E', mute: '#55625F', green: '#0F5C57' };
-
-function layout(inner) {
-  return `<!doctype html><html><body style="margin:0;background:${C.paper};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:${C.ink}">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.paper}"><tr><td align="center" style="padding:32px 16px">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff;border-radius:20px"><tr><td style="padding:36px 32px;font-size:16px;line-height:1.55">
-<p style="margin:0 0 24px;font-weight:700;font-size:18px;color:${C.green}">taal</p>
-${inner}
-</td></tr></table>
-<p style="margin:20px 0 0;font-size:12px;color:${C.mute}">taal, studio software made in London.</p>
-</td></tr></table></body></html>`;
-}
-
-const button = (href, label, solid = true) =>
-  `<a href="${esc(href)}" style="display:inline-block;padding:13px 22px;border-radius:999px;text-decoration:none;font-weight:600;${solid ? `background:${C.green};color:#fff` : `color:${C.green};border:1.5px solid ${C.green}`}">${esc(label)}</a>`;
-
 export function readyEmail({ first, studio, member_url, admin_url, call_url, until }) {
   const call = call_url
     ? `<p style="margin:0 0 14px">When you've had a look, book a short call. We'll show you how it would work with your real timetable, prices and team.</p><p style="margin:0 0 28px">${button(call_url, 'Book a call', false)}</p>`
@@ -403,36 +389,6 @@ function withDetails(link, { name, email, studio, ref }) {
   } catch { return link; }
 }
 
-async function notify(env, subject, rows) {
-  if (!env.CONTACT_EMAIL || !env.CONTACT_EMAIL.includes('@')) return;
-  const list = rows.filter(([, v]) => v);
-  await sendEmail(env, {
-    to: env.CONTACT_EMAIL,
-    subject,
-    html: layout(list.map(([k, v]) => `<p style="margin:0 0 12px"><b>${esc(k)}</b><br>${esc(v)}</p>`).join('')),
-    text: list.map(([k, v]) => `${k}: ${v}`).join('\n'),
-  });
-}
-
-async function sendEmail(env, { to, subject, html, text: plain, replyTo }) {
-  if (!env.RESEND_API_KEY || !env.EMAIL_FROM) {
-    console.log(`[email not sent: no key] to=${to} subject="${subject}"`);
-    return false;
-  }
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: env.EMAIL_FROM, to: [to], subject, html, text: plain, reply_to: replyTo && replyTo.includes('@') ? replyTo : undefined }),
-    });
-    if (!res.ok) console.error('resend', res.status, await res.text());
-    return res.ok;
-  } catch (err) {
-    console.error('resend', err);
-    return false;
-  }
-}
-
 /* ---------- Helpers ---------- */
 
 class Reply { constructor(res) { this.res = res; } }
@@ -479,8 +435,4 @@ function timingSafe(a, b) {
 
 function longDate(d) {
   return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' });
-}
-
-function esc(s) {
-  return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 }

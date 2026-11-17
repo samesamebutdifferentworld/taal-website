@@ -19,11 +19,19 @@ User-agent: meta-externalagent
 User-agent: MistralAI-User
 Allow: /
 Disallow: /admin.html
+Disallow: /admin
 Disallow: /api/
+Disallow: /client/
+Disallow: /agreement/
+Disallow: /setup/
 
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /admin
 Disallow: /api/
+Disallow: /client/
+Disallow: /agreement/
+Disallow: /setup/
 
 Sitemap: https://taal.solutions/sitemap.xml

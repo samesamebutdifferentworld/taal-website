@@ -16,6 +16,7 @@
  * and is saved with the demos they build and the calls they book (see src/demos.js).
  */
 import { demos, followUps, cleanRef } from './demos.js';
+import { clients, clientJobs, agreementPage } from './clients.js';
 
 export default {
   async fetch(request, env) {
@@ -38,8 +39,18 @@ export default {
       return Response.redirect(url.origin + '/' + (ref ? '?ref=' + ref : ''), 302);
     }
     if (url.pathname === '/api/licence') return licence(request, env);
+    // A studio's private portal and its agreement: taal.solutions/client/<token>, /agreement/<token>.
+    const portal = url.pathname.match(/^\/(client|agreement)\/([a-f0-9]{32})\/?$/);
+    if (portal) {
+      if (portal[1] === 'agreement') return agreementPage(env, portal[2]);
+      const page = await env.ASSETS.fetch(new Request(new URL('/client', url), request));
+      const res = new Response(page.body, page);
+      res.headers.set('x-robots-tag', 'noindex');
+      res.headers.set('referrer-policy', 'no-referrer');
+      return res;
+    }
     if (url.pathname.startsWith('/api/')) {
-      const res = await demos(request, env, url);
+      const res = (await clients(request, env, url)) || (await demos(request, env, url));
       if (res) return res;
     }
     if (url.pathname.startsWith('/api/')) return json({ error: 'Not found' }, 404);
@@ -60,9 +71,12 @@ export default {
     }).transform(res);
   },
 
-  // Once a day: a friendly follow-up to studios who built a demo three days ago.
+  // Every hour: call summaries and follow-ups (src/clients.js). At 08:17 UTC, the nudge to studios who
+  // built a demo three days ago; at 09:17, reminders about details and reviews.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(followUps(env));
+    const hour = new Date(event.scheduledTime || Date.now()).getUTCHours();
+    if (hour === 8) ctx.waitUntil(followUps(env));
+    ctx.waitUntil(clientJobs(env, event.scheduledTime || Date.now()));
   },
 };
 

@@ -276,7 +276,7 @@ def main():
     (PUB / 'favicon.svg').write_text(FAVICON_SVG)
     urls = '\n'.join(f'  <url><loc>{SITE}{path}</loc><lastmod>{lastmod(f)}</lastmod><priority>{pr}</priority></url>' for f, path, pr in PAGES)
     (PUB / 'sitemap.xml').write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n')
-    rules = 'Allow: /\nDisallow: /admin.html\nDisallow: /api/\n'
+    rules = 'Allow: /\nDisallow: /admin.html\nDisallow: /admin\nDisallow: /api/\nDisallow: /client/\nDisallow: /agreement/\nDisallow: /setup/\n'
     named = ''.join(f'User-agent: {b}\n' for b in BOTS)
     (PUB / 'robots.txt').write_text(f'# Search engines and AI assistants are welcome to read and cite this site.\n{named}{rules}\nUser-agent: *\n{rules}\nSitemap: {SITE}/sitemap.xml\n')
     (PUB / 'llms.txt').write_text(llms((PUB / 'index.html').read_text(), P))

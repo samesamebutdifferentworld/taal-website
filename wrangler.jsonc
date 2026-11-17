@@ -12,12 +12,15 @@
   "kv_namespaces": [
     { "binding": "LICENCES", "id": "fc1426bc38504f78b52e0bf054e18250" },
     // People who built a demo (kept for a year).
-    { "binding": "ENQUIRIES", "id": "8420623ed9644cc58548c5131084201f" }
+    { "binding": "ENQUIRIES", "id": "8420623ed9644cc58548c5131084201f" },
+    // Studios who've been offered an agreement: their record, uploads and signed copy (kept for good).
+    { "binding": "CLIENTS", "id": "655e2f0848c4410b934d99297ab6b6d9" }
   ],
   // The booking app builds the demos. This connection can't be reached from the internet.
   "services": [{ "binding": "BOOKING", "service": "booking", "entrypoint": "DemoBuilder" }],
-  // Every morning at 08:17 UTC: the follow-up email to studios who built a demo three days ago.
-  "triggers": { "crons": ["17 8 * * *"] },
+  // Hourly at :17: call summaries and their follow-ups; at 08:17 UTC the demo follow-up, at 09:17 the
+  // reminders to studios about their details and reviews (src/worker.js, scheduled).
+  "triggers": { "crons": ["17 * * * *"] },
   "vars": {
     // The site's own address: links in emails, and where other addresses redirect.
     "PUBLIC_URL": "https://taal.solutions",
@@ -28,10 +31,20 @@
     // The sender, on a domain verified in Resend, e.g. "Tim at Taal <hello@yourdomain.com>".
     "EMAIL_FROM": "Tim at taal <hello@taal.solutions>",
     // Booking link for a call (Calendly, Cal.com or Zoom Scheduler). Empty: "reply to book a call".
-    "CALL_URL": "https://cal.com/tim-taal/call"
+    "CALL_URL": "https://cal.com/tim-taal/call",
+    // Who taal is in the agreement. Change to the company's registered name and number once it exists,
+    // e.g. "taal Ltd (company number 12345678), of [registered office]".
+    "COMPANY_NAME": "Tim Allan, trading as taal",
+    // Who countersigns, and the day rate for extra work, in the agreement.
+    "SIGNER_NAME": "Tim Allan",
+    "DAY_RATE": "£400"
   }
   // Secrets, set in Cloudflare (Worker > Settings > Variables and secrets), never in this file:
   //   RESEND_API_KEY   sends the emails
   //   ADMIN_KEY        a long random string: signs you in to /admin.html
   //   CAL_WEBHOOK_SECRET  the secret on the Cal.com webhook to https://taal.solutions/api/cal
+  //   STRIPE_SECRET_KEY   taal's own Stripe account (sk_live_...): invoices and Direct Debits to studios.
+  //                       Without it, invoices are listed in admin for you to send by hand.
+  //   STRIPE_WEBHOOK_SECRET  the signing secret of the Stripe webhook to https://taal.solutions/api/stripe
+  //                       (events: checkout.session.completed, invoice.paid, invoice.payment_failed)
 }

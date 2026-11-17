@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your taal portal</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#F2F3EE">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/funnel-display.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face { font-family:'Funnel Display'; src:url('/fonts/funnel-display.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+@font-face { font-family:'Funnel Sans'; src:url('/fonts/funnel-sans.woff2') format('woff2'); font-weight:300 800; font-display:swap; }
+:root { --paper:#F2F3EE; --ink:#13201E; --mute:#55625F; --rule:#D3DAD3; --green:#0F5C57; --deep:#0A3F3B; --tint:#E3E9E3; --seal:#A8382B; --amber:#F3E7C9; --curve:cubic-bezier(.2,.7,.2,1); }
+* { box-sizing:border-box; }
+html { background:var(--paper); scroll-behavior:smooth; scroll-padding-top:20px; }
+body { margin:0; color:var(--ink); font-family:'Funnel Sans', system-ui, sans-serif; font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+a { color:var(--green); text-underline-offset:3px; }
+:focus-visible { outline:2px solid var(--green); outline-offset:3px; border-radius:6px; }
+h1, h2, h3 { font-family:'Funnel Display', sans-serif; font-weight:650; margin:0; letter-spacing:-0.02em; }
+p { margin:0; }
+.wrap { max-width:880px; margin:0 auto; padding:0 20px; }
+header.top { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:22px 0; }
+.logo { display:inline-flex; align-items:center; gap:8px; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:22px; letter-spacing:-0.03em; color:var(--ink); text-decoration:none; }
+.top .help { font-size:14px; color:var(--mute); text-align:right; }
+
+/* opening: who it's for and where they are */
+.hello { padding:28px 0 8px; }
+.hello h1 { font-size:clamp(34px, 6vw, 54px); line-height:1; letter-spacing:-0.04em; }
+.hello .next { margin-top:14px; font-size:18px; color:#33403D; max-width:620px; }
+.track { list-style:none; display:grid; grid-template-columns:repeat(5, 1fr); gap:6px; padding:0; margin:28px 0 8px; counter-reset:s; }
+.track li { counter-increment:s; position:relative; padding-top:14px; font-size:13.5px; color:var(--mute); }
+.track li::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; border-radius:3px; background:var(--rule); }
+.track li.done::before { background:var(--green); }
+.track li.now::before { background:linear-gradient(90deg, var(--green) 50%, var(--rule) 50%); }
+.track li.now { color:var(--ink); font-weight:600; }
+.track a { color:inherit; text-decoration:none; }
+
+/* sections */
+section.card { background:#fff; border-radius:22px; padding:28px 28px 26px; margin:18px 0; }
+.card > h2 { font-size:26px; margin-bottom:6px; }
+.card > .lede { color:var(--mute); margin-bottom:18px; max-width:640px; }
+.card.locked { opacity:.55; }
+.card.locked .body { display:none; }
+.chip { display:inline-block; font-size:12.5px; font-weight:600; padding:3px 10px; border-radius:999px; background:var(--tint); color:var(--green); vertical-align:3px; margin-left:8px; font-family:'Funnel Sans', sans-serif; letter-spacing:0; }
+.chip.wait { background:var(--amber); color:#6B4B12; }
+.chip.off { background:var(--paper); color:var(--mute); }
+
+/* summary rows */
+dl.sum { display:grid; grid-template-columns:200px 1fr; gap:0; margin:0 0 18px; border-top:1px solid var(--rule); }
+dl.sum dt, dl.sum dd { margin:0; padding:10px 0; border-bottom:1px solid var(--rule); }
+dl.sum dt { color:var(--mute); font-size:14px; padding-right:12px; }
+
+/* the agreement */
+.doc { max-height:420px; overflow:auto; border:1px solid var(--rule); border-radius:16px; padding:22px 22px 10px; background:#FBFBF9; margin-bottom:20px; }
+.doc:focus-visible { outline-offset:2px; }
+
+/* the agreement's own styles (same as src/agreement.js AGREEMENT_CSS) */
+.agreement { font-size:15px; line-height:1.6; color:#33403D; }
+.agreement h2 { font-family:'Funnel Display', sans-serif; font-size:24px; letter-spacing:-0.02em; color:#13201E; margin:32px 0 10px; }
+.agreement h2:first-child { margin-top:0; }
+.agreement h3 { font-family:'Funnel Display', sans-serif; font-size:17px; color:#13201E; margin:22px 0 6px; }
+.agreement p { margin:0 0 10px; }
+.agreement ul, .agreement ol { margin:0 0 10px; padding-left:20px; }
+.agreement li { margin:4px 0; }
+.agreement table { width:100%; border-collapse:collapse; margin:6px 0 12px; font-size:14px; }
+.agreement th, .agreement td { text-align:left; vertical-align:top; padding:8px 10px 8px 0; border-bottom:1px solid #D3DAD3; }
+.agreement thead th { color:#55625F; font-size:13px; font-weight:600; border-bottom:2px solid #13201E; }
+.agreement tbody th { color:#55625F; font-weight:600; width:32%; }
+.agreement .sigs { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0 8px; }
+.agreement .sig { border-top:2px solid #13201E; padding-top:8px; }
+.agreement .sig p { margin:0; font-size:13px; color:#55625F; }
+.agreement .sig .sig-name { font-family:'Funnel Display', sans-serif; font-size:22px; color:#13201E; font-style:italic; margin-bottom:2px; }
+.agreement .sig-empty { border-top-style:dashed; border-color:#C9CFC6; }
+.agreement .version { margin-top:22px; font-size:13px; color:#55625F; }
+@media (max-width:600px) { .agreement .sigs { grid-template-columns:1fr; } }
+
+/* forms */
+label.f { display:block; margin:0 0 14px; }
+label.f > span, .lbl { display:block; font-size:14px; font-weight:600; margin-bottom:6px; }
+label.f > small, .hint { display:block; font-size:13px; color:var(--mute); margin-top:5px; }
+input[type=text], input[type=email], input[type=tel], input[type=number], input[type=time], input[type=url], select, textarea {
+  width:100%; font:inherit; font-size:16px; color:var(--ink); background:#fff; border:1.5px solid var(--rule); border-radius:12px; padding:11px 13px; transition:border-color .2s; }
+input:focus, select:focus, textarea:focus { outline:0; border-color:var(--green); }
+textarea { min-height:96px; resize:vertical; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
+.check { display:flex; gap:10px; align-items:flex-start; margin:6px 0 14px; cursor:pointer; }
+.check input { width:20px; height:20px; margin:2px 0 0; accent-color:var(--green); flex:none; }
+.sigline { font-family:'Funnel Display', sans-serif; font-style:italic; font-size:30px; min-height:44px; border-bottom:2px solid var(--ink); padding:0 4px 4px; margin:-4px 0 6px; color:var(--deep); }
+.btn { display:inline-flex; align-items:center; gap:8px; font:inherit; font-weight:600; font-size:16px; border:0; border-radius:999px; padding:13px 22px; cursor:pointer; text-decoration:none; background:var(--green); color:#fff; transition:background .2s, transform .15s; }
+.btn:hover { background:var(--deep); color:#fff; }
+.btn:active { transform:scale(.97); }
+.btn.ghost { background:transparent; color:var(--green); box-shadow:inset 0 0 0 1.5px var(--green); }
+.btn.ghost:hover { background:var(--tint); }
+.btn.small { padding:8px 14px; font-size:14px; }
+.btn[disabled] { opacity:.5; cursor:default; }
+.msg { margin-top:12px; font-size:14.5px; color:#9B2C1F; min-height:1em; }
+.ok { color:var(--green); }
+
+/* details */
+details.part { border-top:1px solid var(--rule); }
+details.part:last-of-type { border-bottom:1px solid var(--rule); }
+details.part > summary { list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px 2px; font-family:'Funnel Display', sans-serif; font-weight:650; font-size:19px; }
+details.part > summary::-webkit-details-marker { display:none; }
+details.part > summary::after { content:''; width:10px; height:10px; border:solid var(--mute); border-width:0 2px 2px 0; transform:rotate(45deg); margin:-4px 6px 0 0; transition:transform .3s var(--curve); flex:none; }
+details.part[open] > summary::after { transform:rotate(225deg); margin-top:4px; }
+summary .st { font-family:'Funnel Sans', sans-serif; font-size:13px; font-weight:600; color:var(--mute); margin-left:auto; }
+summary .st.done { color:var(--green); }
+.partbody { padding:2px 2px 22px; }
+.partbody > .hint { margin:-4px 0 16px; font-size:14px; }
+.rows { display:grid; gap:10px; margin-bottom:10px; }
+.row { display:grid; gap:8px; align-items:start; background:var(--paper); border-radius:14px; padding:12px; }
+.row .x { width:34px; height:34px; border-radius:50%; border:0; background:#fff; color:var(--mute); cursor:pointer; font-size:18px; line-height:1; align-self:center; }
+.row .x:hover { color:var(--seal); }
+.row input, .row select, .row textarea { padding:9px 11px; font-size:15px; border-radius:10px; }
+.row textarea { min-height:60px; }
+.row .full { grid-column:1 / -2; }
+.rowhead { display:none; }
+.add { font:inherit; font-weight:600; font-size:14.5px; color:var(--green); background:none; border:1.5px dashed var(--sage, #A9C2B2); border-radius:12px; padding:10px 14px; cursor:pointer; width:100%; }
+.add:hover { background:var(--paper); }
+
+/* uploads */
+.drop { display:block; border:1.5px dashed #A9C2B2; border-radius:16px; padding:18px; text-align:center; color:var(--mute); font-size:14.5px; cursor:pointer; transition:background .2s, border-color .2s; margin-bottom:12px; }
+.drop:hover, .drop.over { background:var(--paper); border-color:var(--green); }
+.drop b { color:var(--green); }
+.drop input { display:none; }
+.files { display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:10px; margin-bottom:12px; }
+.file { position:relative; background:var(--paper); border-radius:12px; overflow:hidden; aspect-ratio:1; display:flex; align-items:flex-end; }
+.file img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.file span { position:relative; display:block; width:100%; font-size:11.5px; padding:6px 8px; background:rgb(255 255 255 / .9); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.file .x { position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; border:0; background:rgb(255 255 255 / .95); cursor:pointer; color:var(--ink); font-size:15px; line-height:1; z-index:1; }
+.file.doc-file { aspect-ratio:auto; min-height:64px; }
+.file.doc-file span { background:none; white-space:normal; }
+.up { font-size:13px; color:var(--mute); margin:-4px 0 10px; }
+
+.swatch { display:flex; align-items:center; gap:10px; }
+.swatch input[type=color] { width:52px; height:44px; padding:0; border:1.5px solid var(--rule); border-radius:12px; background:#fff; cursor:pointer; }
+.swatch input[type=text] { max-width:140px; font-family:ui-monospace, monospace; }
+.fonts { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:12px; }
+.fonts label { display:block; cursor:pointer; }
+.fonts input { position:absolute; opacity:0; }
+.fonts span { display:block; text-align:center; padding:12px 6px; border-radius:12px; background:var(--paper); font-size:14px; box-shadow:inset 0 0 0 1.5px transparent; }
+.fonts span b { display:block; font-size:20px; margin-bottom:2px; color:var(--ink); }
+.fonts input:checked + span { box-shadow:inset 0 0 0 2px var(--green); background:#fff; }
+.fonts input:focus-visible + span { outline:2px solid var(--green); outline-offset:2px; }
+
+.missing { background:var(--paper); border-radius:16px; padding:16px 18px; margin:18px 0; }
+.missing ul { margin:6px 0 0; padding-left:20px; }
+.saved { font-size:13px; color:var(--mute); position:sticky; bottom:12px; float:right; background:#fff; border-radius:999px; padding:4px 12px; box-shadow:0 2px 10px rgb(19 32 30 / .08); opacity:0; transition:opacity .3s; }
+.saved.on { opacity:1; }
+
+/* accounts */
+.acc { display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--rule); }
+.acc:first-child { border-top:1px solid var(--rule); }
+.acc input { width:22px; height:22px; accent-color:var(--green); }
+.acc b { display:block; }
+.acc small { color:var(--mute); font-size:13.5px; }
+.acc.first b::after { content:'Start first'; font-family:'Funnel Sans', sans-serif; font-size:11.5px; font-weight:600; padding:2px 8px; border-radius:999px; background:var(--amber); color:#6B4B12; margin-left:8px; vertical-align:2px; }
+
+/* invoices */
+.inv { display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); }
+.inv:first-child { border-top:1px solid var(--rule); }
+.inv .amt { font-variant-numeric:tabular-nums; font-weight:600; }
+
+.req { background:var(--paper); border-radius:14px; padding:12px 14px; margin-bottom:8px; font-size:15px; white-space:pre-wrap; }
+.req small { display:block; color:var(--mute); font-size:12.5px; margin-bottom:4px; }
+.empty { text-align:center; padding:80px 20px; }
+footer { padding:32px 0 60px; font-size:13px; color:var(--mute); }
+@media (max-width:640px) {
+  section.card { padding:22px 18px 20px; border-radius:18px; }
+  .grid2 { grid-template-columns:1fr; }
+  dl.sum { grid-template-columns:1fr; }
+  dl.sum dt { border-bottom:0; padding-bottom:0; }
+  .track { grid-template-columns:repeat(5, 1fr); }
+  .track li { font-size:11.5px; }
+  .fonts { grid-template-columns:1fr 1fr; }
+  .row { grid-template-columns:1fr !important; }
+  .row .full { grid-column:auto; }
+  .row .x { justify-self:end; }
+}
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="/" aria-label="taal"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="3" height="16" rx="1.5" fill="#A8382B"/><rect x="8.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/><circle cx="15.5" cy="12" r="2.1" fill="none" stroke="#13201E" stroke-width="1.6"/><rect x="19.5" y="7" width="3" height="10" rx="1.5" fill="#0F5C57"/></svg>taal</a>
+    <p class="help" id="help"></p>
+  </header>
+  <main id="app"><p class="empty">Loading your portal…</p></main>
+  <footer>This page is private to you: don't share the link. taal, studio software made in London.</footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  const token = (location.pathname.match(/[a-f0-9]{32}/) || [])[0];
+  const api = (p, o) => fetch('/api/client/' + token + (p ? '/' + p : ''), o).then(async r => {
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Something went wrong. Please try again.');
+    return j;
+  });
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const gbp = n => '£' + Number(n).toLocaleString('en-GB');
+  const date = iso => iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  let C = null, wired = false;
+
+  if (!token) { $('#app').innerHTML = '<p class="empty">This link is missing its private code. Use the link in the email we sent you.</p>'; return; }
+
+  function render() {
+    const c = C, signed = !!c.signed, stage = c.stage;
+    const idx = ['offered', 'signed', 'building', 'review', 'approved', 'live'].indexOf(stage);
+    const tracker = [
+      ['agreement', 'Sign', signed],
+      ['details', 'Your details', !!c.brief_submitted || idx >= 3],
+      ['accounts', 'Accounts', c.needs.every(a => c.accounts[a])],
+      ['review', 'Review', !!c.approved],
+      ['live', 'Go live', stage === 'live'],
+    ];
+    const nowAt = tracker.findIndex(t => !t[2]);
+    const next = !signed ? 'Read your agreement and sign it below. It takes a couple of minutes.'
+      : stage === 'live' ? 'You\'re live. Reply to any of our emails if you need anything.'
+      : c.approved ? 'Approved. We\'re connecting your accounts and setting your go-live date.'
+      : c.review_sent ? 'Your app is ready. Try it, then approve it or ask for changes.'
+      : c.brief_submitted ? 'Thanks: we\'re building your app from what you sent. Meanwhile, set up your accounts.'
+      : 'Next, send us your details and set up your accounts. Everything saves as you go.';
+    const first = (c.name || '').split(' ')[0];
+    $('#help').innerHTML = c.contact ? `Questions? <a href="mailto:${esc(c.contact)}">${esc(c.contact)}</a>` : '';
+    $('#app').innerHTML = `
+      <div class="hello">
+        <h1>${first ? 'Hi ' + esc(first) : esc(c.studio)}</h1>
+        <p class="next"><b>${esc(c.studio)}.</b> ${esc(next)}</p>
+        <ol class="track">${tracker.map(([id, label, done], i) => `<li class="${done ? 'done' : i === nowAt ? 'now' : ''}"><a href="#${id}">${esc(label)}</a></li>`).join('')}</ol>
+      </div>
+      ${agreementCard()}
+      ${paymentsCard()}
+      ${detailsCard()}
+      ${accountsCard()}
+      ${reviewCard()}
+      ${stage === 'live' ? `<section class="card" id="live"><h2>You're live</h2><p class="lede">Since ${esc(date(c.live_at))}. Your 12 months of updates and support run until ${esc(date(new Date(new Date(c.live_at).setFullYear(new Date(c.live_at).getFullYear() + 1))))}.</p></section>` : ''}`;
+    wire();
+  }
+
+  /* ---------- Agreement ---------- */
+  function agreementCard() {
+    const c = C, q = c.quote;
+    const sum = `<dl class="sum">
+      <dt>What you chose</dt><dd>${q.lines.map(l => esc(l.label)).join(', ')}</dd>
+      <dt>How you pay</dt><dd>${esc(c.pay_line)}${q.founding ? '<br><small class="hint">Founding offer: 30% off setup</small>' : ''}</dd>
+      <dt>Running costs</dt><dd>About £1 a day, paid to your own providers, not to us</dd></dl>`;
+    if (c.signed) {
+      return `<section class="card" id="agreement"><h2>Agreement <span class="chip">Signed</span></h2>
+        <p class="lede">Signed by ${esc(c.signed.name)} on ${esc(date(c.signed.at))}${c.countersigned ? ` and countersigned by ${esc(c.countersigned.name)} on ${esc(date(c.countersigned.at))}` : '. We\'ll countersign it shortly and email you the final copy'}.</p>
+        ${sum}<a class="btn ghost" href="/agreement/${token}" target="_blank" rel="noopener">Your copy (save as PDF)</a></section>`;
+    }
+    return `<section class="card" id="agreement"><h2>Your agreement</h2>
+      <p class="lede">Read it through, add your studio's details and sign. You'll get a copy by email straight away.</p>
+      ${sum}
+      <div class="doc" id="doc" tabindex="0" aria-label="The agreement">Loading the agreement…</div>
+      <form id="signForm" novalidate>
+        <div class="grid2">
+          <label class="f"><span>Studio's legal name</span><input type="text" name="legal_name" required autocomplete="organization" placeholder="e.g. Flow Yoga Ltd"><small>The company name, or your own name if you're a sole trader.</small></label>
+          <label class="f"><span>Company number <em class="hint" style="display:inline;font-style:normal">(if you have one)</em></span><input type="text" name="company_number" inputmode="numeric"></label>
+        </div>
+        <label class="f"><span>Address for the agreement</span><input type="text" name="address" required autocomplete="street-address" placeholder="Registered office, or your studio's address"></label>
+        <label class="f"><span>Studio location</span><input type="text" name="locations" placeholder="Leave empty if it's the address above"><small>One location is included; each extra one is £900.</small></label>
+        <label class="check"><input type="checkbox" name="care" ${c.order.care ? 'checked' : ''}><span>Add the care plan from my second year: ${gbp(q.care)} a month by Direct Debit, for updates, fixes and help after the 12 months included. You can stop it with 30 days' notice before each renewal.</span></label>
+        <div class="grid2">
+          <label class="f"><span>Your full name</span><input type="text" name="name" required autocomplete="name" value="${esc(c.name)}"></label>
+          <label class="f"><span>Your role</span><input type="text" name="title" placeholder="e.g. Owner, Director" autocomplete="organization-title"></label>
+        </div>
+        <label class="f"><span>Sign by typing your full name</span><input type="text" name="signature" required autocomplete="off" aria-describedby="sigShow"><small>It must match your name above.</small></label>
+        <div class="sigline" id="sigShow" aria-hidden="true"></div>
+        <label class="check"><input type="checkbox" name="accept" required><span>I've read the service agreement and the data processing agreement above, I agree to them, and I'm authorised to sign for the studio.</span></label>
+        <button class="btn" type="submit">Sign the agreement</button>
+        <p class="msg" id="signMsg" role="alert"></p>
+      </form></section>`;
+  }
+
+  /* ---------- Payments ---------- */
+  function paymentsCard() {
+    const c = C;
+    if (!c.signed) return '';
+    const label = { paid: 'Paid', open: 'Due', to_set_up: 'To set up', active: 'Set up', manual: 'Invoice to follow' };
+    const action = i => i.status === 'paid' || i.status === 'active' ? '' : i.url ? `<a class="btn small" href="${esc(i.url)}" target="_blank" rel="noopener">${i.kind === 'monthly' ? 'Set up' : 'Pay'}</a>` : '';
+    const list = c.invoices.length ? c.invoices.map(i => `<div class="inv"><div><b>${esc(i.label)}</b><br><small class="hint">${i.kind === 'monthly' ? 'Direct Debit or card' : 'By bank transfer or card, due within 14 days'}</small></div><span class="amt">${gbp(i.amount)}${i.kind === 'monthly' ? '<small class="hint" style="display:inline"> a month</small>' : ''}</span><span>${action(i) || `<span class="chip ${i.status === 'paid' || i.status === 'active' ? '' : 'wait'}">${esc(label[i.status] || i.status)}</span>`}</span></div>`).join('') : '<p class="hint">Nothing to pay yet.</p>';
+    const later = c.stage === 'live' ? (c.quote.months ? 'Your monthly payments started when you went live.' : 'The second half was due when you went live.') : c.quote.months ? 'Your monthly payments start when you go live.' : 'The second half is due when you go live.';
+    return `<section class="card" id="payments"><h2>Payments</h2><p class="lede">${esc(later)}</p>${list}</section>`;
+  }
+
+  /* ---------- Details ---------- */
+  const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const PARTS = {
+    classes: { title: 'Classes', hint: 'Each kind of class you run, once. You\'ll put them on the timetable next.', cols: '1.4fr .6fr .6fr auto', fields: [['name', 'Class name'], ['minutes', 'Minutes', 'number'], ['capacity', 'Spaces', 'number'], ['description', 'What it is, in a line or two', 'area']] },
+    timetable: { title: 'Timetable', hint: 'Your regular week. One row per class time.', cols: '1fr .7fr 1.3fr 1fr auto', fields: [['day', 'Day', 'day'], ['time', 'Time', 'time'], ['class', 'Class', 'classlist'], ['teacher', 'Teacher', 'teamlist']] },
+    treatments: { title: 'Treatments and appointments', hint: 'Anything booked one to one or by the session: massage, PT, sauna, physio. Prices in pounds.', cols: '1.4fr .6fr .7fr .7fr auto', fields: [['name', 'Name'], ['minutes', 'Minutes', 'number'], ['member_price', 'Member £', 'number'], ['price', 'Price £', 'number'], ['description', 'What it is', 'area']] },
+    memberships: { title: 'Memberships', hint: 'Monthly memberships and what each includes.', cols: '1.3fr .7fr 1.6fr auto', fields: [['name', 'Name'], ['price', '£ a month', 'number'], ['includes', 'What it includes']] },
+    packs: { title: 'Packs and drop-ins', hint: 'Class packs, intro offers and single sessions.', cols: '1.3fr .6fr .6fr .7fr auto', fields: [['name', 'Name'], ['price', 'Price £', 'number'], ['sessions', 'Sessions', 'number'], ['valid_days', 'Valid (days)', 'number']] },
+    team: { title: 'Team', hint: 'Everyone who teaches or treats, and anyone at the desk. Add their photos below.', cols: '1fr 1fr auto', fields: [['name', 'Name'], ['role', 'Role'], ['bio', 'A short bio', 'area']] },
+  };
+  const count = k => (C.brief[k] || []).filter(r => Object.values(r || {}).some(v => String(v ?? '').trim())).length;
+  const files = s => C.files.filter(f => f.section === s);
+
+  function detailsCard() {
+    const c = C, b = c.brief, st = b.studio || {}, br = b.brand || {}, web = b.website || {}, mem = b.members || {}, notes = b.notes || {};
+    const locked = !c.signed;
+    const status = (done, text) => `<span class="st ${done ? 'done' : ''}">${done ? '✓ ' : ''}${esc(text)}</span>`;
+    const listPart = (k, extra = '') => `<details class="part" data-part="${k}"><summary>${esc(PARTS[k].title)}${status(count(k) > 0, count(k) ? count(k) + ' added' : 'To add')}</summary><div class="partbody"><p class="hint">${esc(PARTS[k].hint)}</p><div class="rows" data-list="${k}"></div><button type="button" class="add" data-add="${k}">+ Add ${k === 'timetable' ? 'a class time' : k === 'team' ? 'a person' : k === 'classes' ? 'a class' : 'one'}</button>${extra}</div></details>`;
+    const font = br.font || 'modern';
+    return `<section class="card ${locked ? 'locked' : ''}" id="details"><h2>Your details${c.brief_submitted ? ' <span class="chip">Sent</span>' : ''}</h2>
+      <p class="lede">${locked ? 'Once you\'ve signed, this is where you send us everything for your build.' : 'Everything we need to build your app' + (c.order.site ? ' and website' : '') + '. It saves as you type, so come back any time. Rough is fine: we\'ll tidy it.'}</p>
+      <div class="body">
+      <details class="part" data-part="studio" open><summary>Your studio${status(st.about && st.address, st.about && st.address ? 'Done' : 'To add')}</summary><div class="partbody" data-obj="studio">
+        <label class="f"><span>One line about you</span><input type="text" data-k="tagline" value="${esc(st.tagline)}" placeholder="e.g. Reformer and yoga in the heart of Balham"></label>
+        <label class="f"><span>About your studio</span><textarea data-k="about" placeholder="A few lines: who you are, what you offer, what it feels like.">${esc(st.about)}</textarea></label>
+        <div class="grid2">
+          <label class="f"><span>Address</span><input type="text" data-k="address" value="${esc(st.address)}"></label>
+          <label class="f"><span>Opening hours</span><input type="text" data-k="hours" value="${esc(st.hours)}" placeholder="e.g. Weekdays 6am to 9pm, weekends 8am to 4pm"></label>
+          <label class="f"><span>Phone for members</span><input type="tel" data-k="phone" value="${esc(st.phone)}"></label>
+          <label class="f"><span>Email for members</span><input type="email" data-k="email" value="${esc(st.email)}"></label>
+          <label class="f"><span>Instagram</span><input type="text" data-k="instagram" value="${esc(st.instagram)}" placeholder="@yourstudio"></label>
+          <label class="f"><span>Web address you want</span><input type="text" data-k="domain" value="${esc(st.domain)}" placeholder="e.g. flowyoga.co.uk"><small>If you already own one, use that.</small></label>
+        </div></div></details>
+      <details class="part" data-part="brand"><summary>Brand and photos${status(files('logo').length && br.colour && files('photos').length >= 3, files('photos').length + ' photos')}</summary><div class="partbody" data-obj="brand">
+        <span class="lbl">Logo</span>${uploader('logo', 'Your logo: SVG or PNG with a clear background is best.')}
+        <div class="grid2">
+          <div class="f"><span class="lbl">Main colour</span><div class="swatch"><input type="color" data-k="colour" value="${esc(br.colour || '#135855')}" aria-label="Main colour"><input type="text" data-hex="colour" value="${esc(br.colour || '')}" placeholder="#135855" aria-label="Main colour as hex"></div></div>
+          <div class="f"><span class="lbl">Second colour</span><div class="swatch"><input type="color" data-k="accent" value="${esc(br.accent || '#D8BF8C')}" aria-label="Second colour"><input type="text" data-hex="accent" value="${esc(br.accent || '')}" placeholder="#D8BF8C" aria-label="Second colour as hex"></div></div>
+        </div>
+        <span class="lbl" style="margin-top:14px">Type</span>
+        <div class="fonts" role="radiogroup">${[['elegant', 'Elegant', "'Times New Roman', serif"], ['modern', 'Modern', 'system-ui'], ['bold', 'Bold', 'Impact, system-ui'], ['own', 'Our own', 'system-ui']].map(([v, l, ff]) => `<label><input type="radio" name="font" data-k="font" value="${v}" ${font === v ? 'checked' : ''}><span><b style="font-family:${ff}">Aa</b>${l}</span></label>`).join('')}</div>
+        <div data-own ${font === 'own' ? '' : 'hidden'}>
+          <div class="grid2"><label class="f"><span>Heading font</span><input type="text" data-k="heading_font" value="${esc(br.heading_font)}" placeholder="e.g. Canela"></label>
+          <label class="f"><span>Body font</span><input type="text" data-k="body_font" value="${esc(br.body_font)}" placeholder="e.g. Inter"></label></div>
+          ${uploader('fonts', 'Font files, if they aren\'t free Google Fonts (OTF, TTF, WOFF or a ZIP).')}
+        </div>
+        <span class="lbl" style="margin-top:6px">Photos</span>${uploader('photos', 'At least three: your space, a class, people. Landscape, and as large as you have.', true)}
+        <label class="f"><span>Anything else about your look</span><textarea data-k="notes" placeholder="Brand guidelines, sites you like, things to avoid.">${esc(br.notes)}</textarea></label>
+      </div></details>
+      ${listPart('classes')}
+      ${listPart('timetable')}
+      ${listPart('treatments')}
+      ${listPart('memberships')}
+      ${listPart('packs')}
+      ${listPart('team', `<span class="lbl" style="margin-top:16px">Team photos</span>${uploader('team', 'Name each file after the person, e.g. sam.jpg.', true)}`)}
+      ${c.order.site ? `<details class="part" data-part="website"><summary>Your website${status(web.home, web.home ? 'Started' : 'To add')}</summary><div class="partbody" data-obj="website">
+        <label class="f"><span>Home page headline</span><input type="text" data-k="home" value="${esc(web.home)}" placeholder="The first thing people read"></label>
+        <label class="f"><span>About page</span><textarea data-k="about" placeholder="Your story, in your words. We'll lay it out.">${esc(web.about)}</textarea></label>
+        <label class="f"><span>Questions people ask</span><textarea data-k="faq" placeholder="Question, then answer. One per paragraph.">${esc(web.faq)}</textarea></label>
+        <label class="f"><span>Pages you'd like</span><input type="text" data-k="pages" value="${esc(web.pages)}" placeholder="e.g. Home, Classes, Team, Prices, Contact"></label>
+      </div></details>` : ''}
+      <details class="part" data-part="members"><summary>Your members${status(files('members').length || mem.none, files('members').length ? 'Export added' : mem.none ? 'None to move' : 'To add')}</summary><div class="partbody" data-obj="members">
+        <p class="hint">An export of your members from your current system, so we can move them across. We'll handle the rest.</p>
+        <label class="f"><span>Your current system</span><input type="text" data-k="system" value="${esc(mem.system)}" placeholder="e.g. Mindbody, Glofox, TeamUp, a spreadsheet"></label>
+        ${uploader('members', 'The export: CSV or Excel. It\'s kept private and only used for your move.')}
+        <label class="check"><input type="checkbox" data-k="none" ${mem.none ? 'checked' : ''}><span>We don't have members to move</span></label>
+      </div></details>
+      <details class="part" data-part="notes"><summary>Anything else${status(notes.text || files('other').length, notes.text || files('other').length ? 'Added' : 'Optional')}</summary><div class="partbody" data-obj="notes">
+        <label class="f"><span>Notes for us</span><textarea data-k="text" placeholder="Booking rules, cancellation policy, things your current system does that you'd miss, links to files.">${esc(notes.text)}</textarea></label>
+        ${uploader('other', 'Any other files: price lists, policies, brand guidelines.')}
+      </div></details>
+      <div class="missing" id="missing"></div>
+      <button class="btn" type="button" id="submitBrief">${c.brief_submitted ? 'Send the updates' : 'Send it over'}</button>
+      <p class="msg" id="briefMsg" role="status"></p>
+      <span class="saved" id="saved">Saved</span>
+      </div></section>`;
+  }
+
+  function uploader(section, hint, many) {
+    const list = files(section);
+    const tiles = list.map(f => /^image\/(png|jpeg|webp|gif)/.test(f.type)
+      ? `<div class="file"><img src="/api/client/${token}/files/${f.id}" alt="" loading="lazy"><span>${esc(f.name)}</span><button type="button" class="x" data-rm="${f.id}" aria-label="Remove ${esc(f.name)}">×</button></div>`
+      : `<div class="file doc-file"><span>${esc(f.name)}</span><button type="button" class="x" data-rm="${f.id}" aria-label="Remove ${esc(f.name)}">×</button></div>`).join('');
+    const accept = section === 'members' ? '.csv,.xlsx,.xls,.txt' : section === 'fonts' ? '.otf,.ttf,.woff,.woff2,.zip' : section === 'other' ? '' : 'image/*,.heic,.svg';
+    return `${tiles ? `<div class="files">${tiles}</div>` : ''}<label class="drop" data-drop="${section}"><input type="file" ${many || section === 'other' || section === 'fonts' ? 'multiple' : ''} ${accept ? `accept="${accept}"` : ''} data-file="${section}"><b>Choose ${many ? 'files' : 'a file'}</b> or drop ${many ? 'them' : 'it'} here<br><small>${esc(hint)}</small></label><p class="up" data-up="${section}"></p>`;
+  }
+
+  function rowHtml(k, r, i) {
+    const p = PARTS[k];
+    const classes = (C.brief.classes || []).map(x => x && x.name).filter(Boolean);
+    const team = (C.brief.team || []).map(x => x && x.name).filter(Boolean);
+    const inputs = p.fields.map(([f, label, type]) => {
+      const v = esc(r[f]);
+      if (type === 'area') return `<textarea class="full" data-f="${f}" placeholder="${esc(label)}" aria-label="${esc(label)}">${v}</textarea>`;
+      if (type === 'day') return `<select data-f="${f}" aria-label="Day">${DAYS.map(d => `<option ${r[f] === d ? 'selected' : ''}>${d}</option>`).join('')}</select>`;
+      if (type === 'classlist') return `<input type="text" list="dl-classes" data-f="${f}" value="${v}" placeholder="${esc(label)}" aria-label="${esc(label)}">`;
+      if (type === 'teamlist') return `<input type="text" list="dl-team" data-f="${f}" value="${v}" placeholder="${esc(label)}" aria-label="${esc(label)}">`;
+      return `<input type="${type || 'text'}" ${type === 'number' ? 'min="0" step="any" inputmode="decimal"' : ''} data-f="${f}" value="${v}" placeholder="${esc(label)}" aria-label="${esc(label)}">`;
+    }).join('');
+    return `<div class="row" data-i="${i}" style="grid-template-columns:${p.cols}">${inputs}<button type="button" class="x" data-del="${k}" aria-label="Remove">×</button></div>`
+      + (k === 'timetable' && i === 0 ? `<datalist id="dl-classes">${classes.map(n => `<option value="${esc(n)}">`).join('')}</datalist><datalist id="dl-team">${team.map(n => `<option value="${esc(n)}">`).join('')}</datalist>` : '');
+  }
+
+  function drawList(k) {
+    const box = $(`[data-list="${k}"]`);
+    if (!box) return;
+    const items = C.brief[k] && C.brief[k].length ? C.brief[k] : [{}];
+    if (!C.brief[k] || !C.brief[k].length) C.brief[k] = items;
+    box.innerHTML = items.map((r, i) => rowHtml(k, r || {}, i)).join('');
+  }
+
+  function showMissing() {
+    const el = $('#missing');
+    if (!el) return;
+    const gaps = missingNow();
+    el.innerHTML = gaps.length ? `<b>Still to add</b><ul>${gaps.map(g => `<li>${esc(g)}</li>`).join('')}</ul><p class="hint" style="margin-top:8px">Send what you have whenever you like: we can start with part of it.</p>` : '<b class="ok">That\'s everything we need to build your app.</b> Send it over and we\'ll get started.';
+  }
+  function missingNow() {
+    const b = C.brief, out = [];
+    if (!files('logo').length) out.push('Your logo');
+    if (!(b.brand || {}).colour) out.push('Your main colour');
+    if (files('photos').length < 3) out.push('At least three photos');
+    if (!(b.studio || {}).about) out.push('A few lines about your studio');
+    if (!(b.studio || {}).address) out.push('Your address');
+    if (!count('classes') && !count('treatments')) out.push('Your classes or treatments');
+    if (count('classes') && !count('timetable')) out.push('Your timetable');
+    if (!count('memberships') && !count('packs') && !(b.treatments || []).some(t => t && t.price)) out.push('Your prices');
+    if (!count('team')) out.push('Your team');
+    if (!files('members').length && !(b.members || {}).none) out.push('Your member export (or tick that you have none)');
+    return out;
+  }
+
+  /* ---------- Accounts ---------- */
+  const ACC = {
+    apple: ['Apple Developer', 'Your app on the App Store, in your name. Apple checks your business first, which can take a couple of weeks.'],
+    google: ['Google Play', 'Your app on Google Play, in your name. Uses the same D-U-N-S number as Apple.'],
+    cloudflare: ['Cloudflare', 'Where your app and website run. Free to start; about £4 a month later.'],
+    stripe: ['Stripe', 'Takes your members\' payments and pays you out. Stripe checks your business.'],
+    resend: ['Resend', 'Sends booking confirmations and reminders from your own address.'],
+    domain: ['Your web address', 'Pointing your domain at your new app and site.'],
+  };
+  function accountsCard() {
+    const c = C, order = ['apple', 'google', 'cloudflare', 'stripe', 'resend', 'domain'].filter(a => c.needs.includes(a));
+    const done = order.filter(a => c.accounts[a]).length;
+    return `<section class="card ${c.signed ? '' : 'locked'}" id="accounts"><h2>Your accounts <span class="chip ${done === order.length ? '' : 'off'}">${done} of ${order.length}</span></h2>
+      <p class="lede">${c.signed ? 'Everything runs in accounts in your name, so you own it all. Each guide takes you through it step by step and shows you how to give us access. Tick each one when it\'s done.' : 'After signing, you\'ll set these up with our step by step guides.'}</p>
+      <div class="body">${order.map(a => `<label class="acc ${(a === 'apple' || a === 'google') && !c.accounts[a] ? 'first' : ''}"><input type="checkbox" data-acc="${a}" ${c.accounts[a] ? 'checked' : ''}><span><b>${esc(ACC[a][0])}</b><small>${esc(ACC[a][1])}</small></span><a class="btn small ghost" href="/setup/${a}" target="_blank" rel="noopener">Guide</a></label>`).join('')}</div></section>`;
+  }
+
+  /* ---------- Review ---------- */
+  function reviewCard() {
+    const c = C;
+    if (!c.review_sent) return `<section class="card locked" id="review"><h2>Review your app</h2><p class="lede">Once we've built it from your details, you'll try it here and approve it or ask for changes.</p><div class="body"></div></section>`;
+    const reqs = c.requests.slice().reverse().map(r => `<div class="req"><small>${esc(date(r.at))}</small>${esc(r.text)}</div>`).join('');
+    return `<section class="card" id="review"><h2>Review your app${c.approved ? ' <span class="chip">Approved</span>' : ''}</h2>
+      <p class="lede">${c.approved ? `You approved it on ${esc(date(c.approved.at))}. We're getting it ready to go live.` : 'Try it as a member, then switch to staff and owner with the bar at the top. It has sample members and bookings so everything works.'}</p>
+      <p style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px"><a class="btn" href="${esc(c.demo.member_url)}" target="_blank" rel="noopener">Open your app</a><a class="btn ghost" href="${esc(c.demo.admin_url)}" target="_blank" rel="noopener">Open the back office</a></p>
+      ${c.approved ? '' : `<label class="f"><span>Anything to change?</span><textarea id="reqText" placeholder="Be as specific as you like: what, where, and how it should be."></textarea><small>Your first round of changes is included.</small></label>
+      <p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost" type="button" id="sendReq">Send changes</button><button class="btn" type="button" id="approve">Approve it</button></p><p class="msg" id="revMsg" role="status"></p>`}
+      ${reqs ? `<h3 style="font-size:17px;margin:22px 0 10px">What you've asked for</h3>${reqs}` : ''}</section>`;
+  }
+
+  /* ---------- Behaviour ---------- */
+  function wire() {
+    const c = C;
+    // agreement
+    if (!c.signed) {
+      api('agreement').then(r => { $('#doc').innerHTML = r.html; }).catch(e => { $('#doc').textContent = e.message; });
+      const f = $('#signForm');
+      f.signature.addEventListener('input', () => { $('#sigShow').textContent = f.signature.value; });
+      f.addEventListener('submit', async ev => {
+        ev.preventDefault();
+        const btn = f.querySelector('button'); btn.disabled = true; $('#signMsg').textContent = '';
+        const d = Object.fromEntries(['legal_name', 'company_number', 'address', 'locations', 'name', 'title', 'signature'].map(k => [k, f[k].value]));
+        if (!d.locations.trim()) d.locations = d.address;
+        try {
+          const r = await api('sign', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...d, care: f.care.checked, accept: f.accept.checked }) });
+          C = r.client; render(); location.hash = 'details'; $('#details').scrollIntoView();
+        } catch (e) { $('#signMsg').textContent = e.message; btn.disabled = false; }
+      });
+    }
+    if (!c.signed) return;
+
+    // details: lists
+    Object.keys(PARTS).forEach(drawList);
+    $$('[data-add]').forEach(b => b.addEventListener('click', () => {
+      const k = b.dataset.add, last = (C.brief[k] || []).slice(-1)[0] || {};
+      // A new class time copies the day of the one before, to save choosing it again.
+      C.brief[k] = [...(C.brief[k] || []), k === 'timetable' && last.day ? { day: last.day } : {}];
+      drawList(k); saveList(k);
+      const rows = $$(`[data-list="${k}"] .row`); rows[rows.length - 1].querySelector('input,select').focus();
+    }));
+    if (!wired) {
+      wired = true;
+      document.addEventListener('input', onInput);
+      document.addEventListener('change', onInput);
+      document.addEventListener('click', ev => {
+        const del = ev.target.closest('[data-del]');
+        if (del) { const k = del.dataset.del, i = +del.closest('.row').dataset.i; C.brief[k].splice(i, 1); drawList(k); saveList(k); }
+        const rm = ev.target.closest('[data-rm]');
+        if (rm) { ev.preventDefault(); removeFile(rm.dataset.rm); }
+      });
+    }
+    // uploads
+    $$('[data-file]').forEach(inp => inp.addEventListener('change', () => uploadFiles(inp.dataset.file, [...inp.files])));
+    $$('[data-drop]').forEach(z => {
+      z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('over'); });
+      z.addEventListener('dragleave', () => z.classList.remove('over'));
+      z.addEventListener('drop', e => { e.preventDefault(); z.classList.remove('over'); uploadFiles(z.dataset.drop, [...e.dataTransfer.files]); });
+    });
+    showMissing();
+    $('#submitBrief').addEventListener('click', async () => {
+      await flush();
+      try { const r = await api('submit', { method: 'POST' }); C = r.client; render(); $('#briefMsg').innerHTML = `<span class="ok">Sent. ${r.missing.length ? 'We\'ll start with what you\'ve given us and ask for the rest.' : 'We\'ll email you when your app is ready to review.'}</span>`; $('#details').scrollIntoView({ block: 'end' }); }
+      catch (e) { $('#briefMsg').textContent = e.message; }
+    });
+    // accounts
+    $$('[data-acc]').forEach(cb => cb.addEventListener('change', async () => {
+      try { const r = await api('accounts', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ account: cb.dataset.acc, done: cb.checked }) }); C.accounts = r.accounts; render(); location.hash = 'accounts'; }
+      catch (e) { cb.checked = !cb.checked; alertMsg(e.message); }
+    }));
+    // review
+    const approveBtn = $('#approve');
+    if (approveBtn) {
+      approveBtn.addEventListener('click', async () => {
+        if (!confirm('Approve your app? We\'ll start getting it ready to go live.')) return;
+        try { const r = await api('approve', { method: 'POST' }); C = r.client; render(); location.hash = 'review'; } catch (e) { $('#revMsg').textContent = e.message; }
+      });
+      $('#sendReq').addEventListener('click', async () => {
+        const text = $('#reqText').value.trim();
+        if (!text) { $('#revMsg').textContent = 'Write what you\'d like changed first.'; return; }
+        try { const r = await api('request', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text }) }); C.requests = r.requests; render(); location.hash = 'review'; $('#revMsg').innerHTML = '<span class="ok">Sent. We\'ll email you when the changes are in.</span>'; }
+        catch (e) { $('#revMsg').textContent = e.message; }
+      });
+    }
+  }
+
+  // Autosave: each section a moment after the last keystroke.
+  const timers = {};
+  function onInput(ev) {
+    const t = ev.target;
+    const row = t.closest('[data-list] .row');
+    if (row) {
+      const k = row.parentElement.dataset.list, i = +row.dataset.i;
+      C.brief[k][i] = { ...(C.brief[k][i] || {}), [t.dataset.f]: t.type === 'number' ? (t.value === '' ? '' : +t.value) : t.value };
+      if (k === 'classes' || k === 'team') refreshLists();
+      return later(k, () => saveList(k));
+    }
+    const box = t.closest('[data-obj]');
+    if (!box || t.type === 'file') return;
+    const part = box.dataset.obj;
+    if (t.dataset.hex) {
+      const v = t.value.trim();
+      if (!/^#[0-9a-f]{6}$/i.test(v)) return;
+      box.querySelector(`[data-k="${t.dataset.hex}"]`).value = v;
+      C.brief[part] = { ...(C.brief[part] || {}), [t.dataset.hex]: v.toUpperCase() };
+    } else if (t.dataset.k) {
+      const v = t.type === 'checkbox' ? t.checked : t.value;
+      C.brief[part] = { ...(C.brief[part] || {}), [t.dataset.k]: t.type === 'color' ? v.toUpperCase() : v };
+      if (t.type === 'color') { const hx = box.querySelector(`[data-hex="${t.dataset.k}"]`); if (hx) hx.value = v.toUpperCase(); }
+      if (t.name === 'font') box.querySelector('[data-own]').hidden = v !== 'own';
+    } else return;
+    later(part, () => savePart(part));
+  }
+  function refreshLists() {
+    const dc = $('#dl-classes'), dt = $('#dl-team');
+    if (dc) dc.innerHTML = (C.brief.classes || []).map(x => x && x.name).filter(Boolean).map(n => `<option value="${esc(n)}">`).join('');
+    if (dt) dt.innerHTML = (C.brief.team || []).map(x => x && x.name).filter(Boolean).map(n => `<option value="${esc(n)}">`).join('');
+  }
+  function later(part, fn) { clearTimeout(timers[part]); timers[part] = setTimeout(() => { delete timers[part]; fn(); }, 700); pending[part] = fn; }
+  const pending = {};
+  async function flush() { for (const [k, fn] of Object.entries(pending)) { clearTimeout(timers[k]); delete pending[k]; await fn(); } }
+  const saveList = k => { delete pending[k]; return put(k, (C.brief[k] || []).filter(r => Object.values(r || {}).some(v => String(v ?? '').trim()))); };
+  const savePart = k => { delete pending[k]; return put(k, C.brief[k] || {}); };
+  async function put(part, data) {
+    try {
+      await api('brief', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ part, data }) });
+      const s = $('#saved'); s.textContent = 'Saved'; s.classList.add('on'); clearTimeout(s._t); s._t = setTimeout(() => s.classList.remove('on'), 1600);
+      showMissing();
+    } catch (e) { const s = $('#saved'); s.textContent = e.message; s.classList.add('on'); }
+  }
+  window.addEventListener('beforeunload', ev => { if (Object.keys(pending).length) { flush(); ev.preventDefault(); } });
+
+  // Photos are sized for the web before they go: 2400px on the long side, which keeps them sharp on
+  // any screen and small enough to send quickly. Logos and files that are already small stay as they are.
+  async function prepare(file, section) {
+    if (!/^(photos|team)$/.test(section) || !/^image\/(jpeg|png|webp|heic|heif)$/.test(file.type || '') || typeof createImageBitmap !== 'function') return file;
+    try {
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
+      if (scale === 1 && file.size < 1.5e6 && file.type !== 'image/heic' && file.type !== 'image/heif') return file;
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(bmp.width * scale); cv.height = Math.round(bmp.height * scale);
+      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+      const blob = await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.86));
+      return blob ? new File([blob], file.name.replace(/\.[a-z0-9]+$/i, '') + '.jpg', { type: 'image/jpeg' }) : file;
+    } catch { return file; }
+  }
+
+  async function uploadFiles(section, list) {
+    const note = $(`[data-up="${section}"]`);
+    for (const [i, original] of list.entries()) {
+      note.textContent = `Uploading ${list.length > 1 ? `${i + 1} of ${list.length}: ` : ''}${original.name}…`;
+      const file = await prepare(original, section);
+      const fd = new FormData(); fd.append('section', section); fd.append('file', file);
+      try { const r = await api('files', { method: 'POST', body: fd }); C.files = [...C.files.filter(f => !(section === 'logo' && f.section === 'logo')), r.file]; }
+      catch (e) { note.textContent = e.message; return; }
+    }
+    await flush();
+    const open = $$('details.part[open]').map(d => d.dataset.part);
+    render();
+    $$('details.part').forEach(d => { d.open = open.includes(d.dataset.part); });
+    const back = $(`[data-up="${section}"]`); if (back) { back.textContent = 'Uploaded.'; back.scrollIntoView({ block: 'center' }); }
+  }
+  async function removeFile(id) {
+    try {
+      await api('files/' + id, { method: 'DELETE' });
+      C.files = C.files.filter(f => f.id !== id);
+      const open = $$('details.part[open]').map(d => d.dataset.part);
+      await flush(); render(); $$('details.part').forEach(d => { d.open = open.includes(d.dataset.part); });
+      location.hash = 'details';
+    } catch (e) { alertMsg(e.message); }
+  }
+  function alertMsg(m) { const s = $('#saved'); if (s) { s.textContent = m; s.classList.add('on'); } else alert(m); }
+
+  api('').then(r => {
+    C = r.client; render();
+    if (location.hash) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+  }).catch(e => { $('#app').innerHTML = `<p class="empty">${esc(e.message)}</p>`; });
+})();
+</script>
+</body>
+</html>
