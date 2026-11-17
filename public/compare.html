@@ -87,6 +87,13 @@
 .prices td:first-child { font-family:'Funnel Display', sans-serif; font-weight:650; font-size:18px; white-space:nowrap; }
 .prices td small { display:block; color:var(--mute); font-size:13px; margin-top:4px; }
 .prices tr.us td:first-child { color:var(--green); }
+.pay { border-top:1px solid var(--rule); padding-top:22px; }
+.pay > p { font-size:14px; color:var(--mute); margin:-4px 0 12px; max-width:34em; }
+.money .suf { color:var(--mute); }
+.pay .note { font-size:13.5px; color:var(--mute); margin-top:12px; line-height:1.5; }
+.pay .note b { color:var(--ink); font-weight:600; }
+.fees { margin-top:14px; font-size:14.5px; color:var(--mute); }
+.fees b { color:var(--ink); font-weight:600; }
 @media (max-width: 900px) { .cmp { grid-template-columns:minmax(0,1fr); } }
 @media (max-width: 720px) {
   .prices thead { display:none; }
@@ -147,6 +154,17 @@
         <label>Other tools taal replaces<span class="money"><span>£</span><input type="number" id="otherFee" inputmode="decimal" min="0" step="1" value="0"></span><small>A marketing or email system, a rota app, staff messaging</small></label>
         <label id="siteLbl">Website builder and hosting<span class="money"><span>£</span><input type="number" id="siteFee" inputmode="decimal" min="0" step="1" value="0"></span><small>Squarespace, Wix or similar, each month</small></label>
       </div>
+      <div class="pay">
+        <h3>Card and Direct Debit fees</h3>
+        <p>Optional. Add what goes through your system in a year and your rate now, from your last payments statement.</p>
+        <div class="money-row">
+          <label>Taken each year<span class="money"><span>£</span><input type="number" id="turn" inputmode="decimal" min="0" step="1000" placeholder="e.g. 120000"></span><small>Memberships, classes, packs and treatments paid by card or Direct Debit</small></label>
+          <label>Average payment<span class="money"><span>£</span><input type="number" id="avg" inputmode="decimal" min="1" step="1" value="40"></span><small>Roughly: your takings divided by the number of payments</small></label>
+          <label>Your rate now<span class="money"><input type="number" id="rate" inputmode="decimal" min="0" step="0.05" value="1.5"><span class="suf">%</span></span></label>
+          <label>Plus, per payment<span class="money"><input type="number" id="per" inputmode="decimal" min="0" step="1" value="20"><span class="suf">p</span></span></label>
+        </div>
+        <p class="note">With taal you pay Stripe's standard UK rate, 1.5% plus 20p a card payment, straight to Stripe: <b>taal takes nothing on top</b>. Memberships on Direct Debit cost less (1%, capped at £4), so this side is the most it would be. Happy with your current payment provider, or want your members' Direct Debits to carry on without a break? Where your provider allows it, we can connect it to taal instead of Stripe.</p>
+      </div>
       <div class="toggles">
         <label class="tg"><span><b>Your own apps</b><small>On both sides: their branded app, or taal's apps</small></span><input type="checkbox" id="apps" checked></label>
         <label class="tg"><span><b>Your studio website</b><small>On both sides: your site now, or taal's at £800 once</small></span><input type="checkbox" id="site"></label>
@@ -163,6 +181,7 @@
         <div><small><i class="dash"></i>What you pay now</small><b id="totNow"></b></div>
         <div><small><i class="solid"></i>taal</small><b id="totTaal"></b></div>
       </div>
+      <p class="fees" id="fees" hidden></p>
       <div class="chart" id="chart">
         <svg viewBox="0 0 640 280" role="img" aria-labelledby="chartTitle"><title id="chartTitle">Running total over 36 months, now against taal</title><g id="plot"></g></svg>
         <div class="tip" id="tip"></div>
@@ -218,7 +237,7 @@
 <details class="fold" id="method"><summary><h2>How it's worked out</h2><small>What each side counts</small></summary>
   <div class="in">
     <div class="prose"><p>taal's side counts setup paid at the start, about £30 a month for hosting and email, the care plan if you switch it on, and with your own apps, Apple's developer fee of about £79 a year and Google's one-off $25 (about £20).</p>
-    <p>Your side counts what you enter, plus VAT if you say their prices are before VAT. Card fees and SMS aren't counted on either side, as they're similar either way.</p></div>
+    <p>Your side counts what you enter, plus VAT if you say their prices are before VAT. If you add what you take each year, card and Direct Debit fees are counted on both sides: your rate now on yours, and Stripe's standard UK rate (1.5% plus 20p a payment) on taal's, with nothing added by taal. Card fees carry no VAT. SMS isn't counted on either side.</p></div>
   </div>
 </details>
 </div></div>
@@ -255,20 +274,31 @@
     other: { fee: 150, app: 0, vat: false, src: 'Enter what you pay. Your invoice is the best guide.' },
   };
   const SETUP = 1900, APPS = 1000, SITE = 800, RUN = 30, CARE = 30, CARE_APPS = 40, APPLE = 79, GOOGLE = 20, OFF = 0.3, N = 36;
+  // Stripe's standard UK card rate, paid by the studio straight to Stripe; taal adds nothing.
+  const STRIPE_PCT = 1.5, STRIPE_P = 20;
   const $ = id => document.getElementById(id);
   const fee = $('fee'), appFee = $('appFee'), otherFee = $('otherFee'), siteFee = $('siteFee'), apps = $('apps'), site = $('site'), vat = $('vat'), care = $('care'), found = $('found');
   const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+  const turn = $('turn'), avg = $('avg'), rate = $('rate'), per = $('per');
+  // Payment fees a year: a percentage of what's taken, plus a fixed fee on each payment.
+  function feesYear(pct, pence) {
+    const t = Math.max(0, +turn.value || 0); if (!t) return 0;
+    const count = t / Math.max(1, +avg.value || 40);
+    return t * (Math.max(0, pct) / 100) + count * Math.max(0, pence) / 100;
+  }
+  const feesNow = () => feesYear(+rate.value || 0, +per.value || 0);
+  const feesTaal = () => feesYear(STRIPE_PCT, STRIPE_P);
 
   function taalAt(m) { // total paid by the end of month m (0 = the day you start)
     const withApps = apps.checked;
     let t = (SETUP + (withApps ? APPS : 0) + (site.checked ? SITE : 0)) * (found.checked ? 1 - OFF : 1) + RUN * m;
     if (withApps) t += GOOGLE + APPLE * Math.max(1, Math.ceil(m / 12));
     if (care.checked && m > 12) t += (withApps ? CARE_APPS : CARE) * (m - 12);
-    return t;
+    return t + feesTaal() * m / 12;
   }
   function nowAt(m) {
     const monthly = (+fee.value || 0) + (apps.checked ? (+appFee.value || 0) : 0) + (+otherFee.value || 0) + (site.checked ? (+siteFee.value || 0) : 0);
-    return monthly * (vat.checked ? 1.2 : 1) * m;
+    return monthly * (vat.checked ? 1.2 : 1) * m + feesNow() * m / 12;
   }
   function crossMonth() { for (let m = 1; m <= 120; m++) if (taalAt(m) <= nowAt(m)) return m; return null; }
 
@@ -320,10 +350,13 @@
     $('totNow').textContent = gbp(a); $('totTaal').textContent = gbp(b);
     const v = $('verdict'), why = $('why');
     // what you'd need to be paying now for taal to break even over the three years
-    const perMonth = b / N / (vat.checked ? 1.2 : 1);
+    const perMonth = Math.max(0, b - feesNow() * 3) / N / (vat.checked ? 1.2 : 1);
+    const fn = feesNow() * 3, ft = feesTaal() * 3;
+    $('fees').hidden = !(+turn.value > 0);
+    $('fees').innerHTML = `Card and Direct Debit fees over three years: <b>${gbp(fn)}</b> now, <b>${gbp(ft)}</b> through Stripe with taal${fn > ft ? `, ${gbp(fn - ft)} less` : fn < ft ? `, ${gbp(ft - fn)} more` : ''}. Both are in the totals.`;
     if (d >= 0) {
       v.textContent = gbp(d) + ' less over three years with taal.'; v.className = 'verdict';
-      why.textContent = `taal costs more at the start, because of setup. It's cheaper from month ${c}, and after that you save about ${gbp(nowAt(12) - (care.checked ? (apps.checked ? CARE_APPS : CARE) * 12 : 0) - RUN * 12 - (apps.checked ? APPLE : 0))} a year.`;
+      why.textContent = `taal costs more at the start, because of setup. It's cheaper from month ${c}, and after that you save about ${gbp((nowAt(36) - nowAt(24)) - (taalAt(36) - taalAt(24)))} a year.`;
     } else {
       v.textContent = gbp(-d) + ' more over three years with taal.'; v.className = 'verdict more';
       why.textContent = c ? `At this price taal only catches up in month ${c}. If you pay under about ${gbp(perMonth)} a month now, staying is cheaper over three years.`
@@ -339,7 +372,7 @@
     render();
   }
   document.querySelectorAll('#chips button').forEach(b => b.addEventListener('click', () => pick(b.dataset.p)));
-  [fee, appFee, otherFee].forEach(i => i.addEventListener('input', render));
+  [fee, appFee, otherFee, turn, avg, rate, per].forEach(i => i.addEventListener('input', render));
   siteFee.addEventListener('input', () => { if (+siteFee.value > 0) site.checked = true; render(); });
   [apps, site, vat, care, found].forEach(i => i.addEventListener('change', render));
   pick('teamup1');

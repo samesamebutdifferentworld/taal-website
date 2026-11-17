@@ -87,4 +87,4 @@ Everything runs in accounts in your studio's name and your licence is permanent,
 
 ### What about card fees?
 
-Stripe charges its standard rates on each payment. We don't add anything on top.
+Stripe charges its standard rates on each payment, paid straight to Stripe from your own account. We don't add anything on top. Prefer to keep your current payment provider, or want members' Direct Debits to carry on without a break? Where your provider allows it, we can connect it to taal instead. Compare your fees now.

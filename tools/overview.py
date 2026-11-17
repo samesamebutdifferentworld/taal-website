@@ -39,7 +39,7 @@ p {{ margin:0; }}
 .lede {{ font-size:14pt; line-height:1.45; color:#33403D; max-width:150mm; }}
 .phones {{ display:flex; gap:7mm; justify-content:center; margin:8mm 0 7mm; }}
 .ph {{ margin:0; width:44mm; }}
-.fr {{ border-radius:7mm; overflow:hidden; border:2.2mm solid #13201E; background:#13201E; box-shadow:0 6mm 14mm rgb(19 32 30 / .16); }}
+.fr {{ border-radius:7mm; overflow:hidden; border:2.2mm solid #13201E; background:#13201E; }}
 .fr img {{ display:block; width:100%; }}
 figcaption {{ text-align:center; font-size:9pt; color:#55625F; margin-top:3mm; }}
 .three {{ display:grid; grid-template-columns:repeat(3, 1fr); gap:5mm; }}
@@ -108,7 +108,7 @@ tr.tot td {{ font-weight:700; background:#E3E9E3; border-bottom:0; }}
 </tbody></table>
 <p class="note" style="margin-top:4mm">Prices include VAT and don't change. Paying once is in two parts: half when you sign and half when you go live. Monthly payments start at go-live.</p>
 <div class="three" style="margin-top:7mm">
-<div class="card"><h3>Running costs</h3>About £30 a month for hosting and email, paid straight to Cloudflare and Resend in your name, plus Stripe's card fees. Store apps add about £79 a year to Apple.</div>
+<div class="card"><h3>Running costs</h3>About £30 a month for hosting and email, paid straight to Cloudflare and Resend in your name. Card fees go straight to Stripe with nothing added, or keep your current payment provider where possible. Store apps add about £79 a year to Apple.</div>
 <div class="card"><h3>Care plan</h3>Optional, from your second year: £30 a month, or £40 with your own apps, for updates, fixes and help. Stop it any year with 30 days' notice.</div>
 <div class="card"><h3 class="seal">Founding offer</h3>30% off setup for our first three studios, in return for a short case study.</div>
 </div>
